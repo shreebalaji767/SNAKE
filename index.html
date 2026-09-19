@@ -13,40 +13,52 @@
 <style>
 /* =========================================================
    VOID SNAKE
-   Full Responsive Gaming Site
-   Single-file HTML
-   No libraries / No database / No storage
+   CLASSIC SNAKE — NAVY BLUE / LIGHT BLUE GAMING UI
+   SINGLE FILE — RESPONSIVE — NO EXTERNAL LIBRARIES
    ========================================================= */
 
 :root {
-  --bg: #020504;
-  --bg2: #07100b;
-  --bg3: #0b1710;
+  --bg-deep: #020817;
+  --bg-navy: #061329;
+  --bg-blue: #0a1f3d;
 
-  --panel: rgba(9, 18, 13, .96);
-  --panel2: rgba(14, 27, 19, .96);
+  --panel: rgba(7, 21, 43, 0.96);
+  --panel-2: rgba(10, 29, 57, 0.94);
+  --panel-3: rgba(15, 42, 78, 0.94);
 
-  --line: #263c30;
-  --line2: #3d5d49;
+  --border: #17385f;
+  --border-light: #2d6397;
+  --border-bright: #4c9ddd;
 
-  --text: #effff4;
-  --muted: #7f9487;
-  --muted2: #5d7065;
+  --text: #f2f8ff;
+  --text-soft: #c8d9eb;
+  --muted: #7d96b2;
 
-  --green: #8dffb1;
-  --green2: #52c97b;
-  --green3: #173b24;
+  --blue: #69c7ff;
+  --blue-bright: #8bd7ff;
+  --blue-soft: #3d91ce;
+  --blue-dark: #123f69;
 
-  --yellow: #f1d46c;
-  --red: #e07c72;
+  --cyan: #62e4ff;
 
-  --shadow: 0 30px 80px rgba(0,0,0,.62);
+  --danger: #ff7f88;
+  --danger-dark: #4b1e2a;
+
+  --gold: #ffd66b;
+
+  --shadow:
+    0 28px 80px rgba(0, 0, 0, 0.60);
 }
+
+/* =========================================================
+   RESET
+   ========================================================= */
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -57,7 +69,7 @@ body {
 }
 
 html {
-  background: var(--bg);
+  background: var(--bg-deep);
 }
 
 body {
@@ -74,24 +86,28 @@ body {
 
   background:
     radial-gradient(
-      circle at 50% -10%,
-      rgba(71, 139, 91, .22),
-      transparent 36%
+      circle at 50% -15%,
+      rgba(70, 159, 225, 0.25),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 100% 30%,
+      rgba(35, 96, 160, 0.14),
+      transparent 35%
     ),
     radial-gradient(
       circle at 0% 100%,
-      rgba(31, 94, 56, .14),
-      transparent 35%
+      rgba(31, 83, 143, 0.16),
+      transparent 36%
     ),
     linear-gradient(
       145deg,
-      var(--bg3),
-      var(--bg2) 45%,
-      var(--bg)
+      var(--bg-blue),
+      var(--bg-navy) 45%,
+      var(--bg-deep)
     );
 
   overflow-x: hidden;
-  overscroll-behavior: none;
 
   user-select: none;
   -webkit-user-select: none;
@@ -99,1424 +115,806 @@ body {
 }
 
 button {
-  font: inherit;
-}
-
-button,
-canvas {
-  touch-action: manipulation;
+  font-family: inherit;
 }
 
 /* =========================================================
-   APP
+   PAGE
    ========================================================= */
 
-.app {
-  width: 100%;
+.page {
+  width: min(96vw, 900px);
+
   min-height: 100vh;
   min-height: 100dvh;
+
+  margin: 0 auto;
+
+  padding:
+    max(12px, env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-left));
 }
 
 /* =========================================================
-   TOP NAV
+   TOP BAR
    ========================================================= */
 
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  display: grid;
 
+  grid-template-columns: 54px 1fr 54px;
+
+  align-items: center;
+
+  min-height: 76px;
+
+  margin-bottom: 10px;
+}
+
+.top-spacer {
+  width: 54px;
+  height: 54px;
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logo-wrap {
+  min-width: 0;
+
+  text-align: center;
+}
+
+.logo {
   width: 100%;
 
-  padding:
-    max(10px, env(safe-area-inset-top))
-    max(12px, env(safe-area-inset-right))
-    10px
-    max(12px, env(safe-area-inset-left));
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(2,5,4,.97),
-      rgba(2,5,4,.88)
-    );
-
-  border-bottom: 1px solid rgba(61,93,73,.35);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.nav-inner {
-  width: min(1180px, 100%);
-  min-height: 58px;
-
-  margin: auto;
-
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-
-  align-items: center;
-
-  gap: 14px;
-}
-
-/* =========================================================
-   BRAND
-   ========================================================= */
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  min-width: 0;
-
-  cursor: pointer;
-}
-
-.brand-mark {
-  width: 38px;
-  height: 38px;
-
-  flex: 0 0 38px;
-
-  display: grid;
-  place-items: center;
-
-  border: 1px solid var(--line2);
-  border-radius: 11px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #1a3021,
-      #09130d
-    );
-
-  color: var(--green);
-
-  font-size: 18px;
-  font-weight: 950;
-
-  box-shadow:
-    0 8px 22px rgba(0,0,0,.3),
-    inset 0 1px 0 rgba(255,255,255,.04);
-}
-
-.brand-text {
-  min-width: 0;
-}
-
-.brand-title {
   white-space: nowrap;
-
-  font-size: 16px;
-  font-weight: 950;
-
-  letter-spacing: 2px;
-}
-
-.brand-subtitle {
-  margin-top: 2px;
-
-  color: var(--muted2);
-
-  font-size: 7px;
-  font-weight: 900;
-
-  letter-spacing: 2px;
-}
-
-/* =========================================================
-   DESKTOP NAV
-   ========================================================= */
-
-.nav-links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 5px;
-}
-
-.nav-link {
-  min-height: 38px;
-
-  padding: 0 13px;
-
-  border: 1px solid transparent;
-  border-radius: 10px;
-
-  background: transparent;
-
-  color: var(--muted);
-
-  font-size: 10px;
-  font-weight: 900;
-
-  letter-spacing: 1px;
-
-  cursor: pointer;
-
-  transition:
-    background .15s ease,
-    color .15s ease,
-    border-color .15s ease;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  color: var(--text);
-
-  border-color: var(--line);
-
-  background:
-    rgba(25,46,32,.7);
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.icon-button {
-  width: 40px;
-  height: 40px;
-
-  display: grid;
-  place-items: center;
-
-  border: 1px solid var(--line);
-  border-radius: 11px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #17291e,
-      #09120c
-    );
-
-  color: var(--text);
-
-  cursor: pointer;
-
-  transition:
-    transform .12s ease,
-    border-color .12s ease,
-    background .12s ease;
-}
-
-.icon-button:hover {
-  border-color: var(--line2);
-}
-
-.icon-button:active {
-  transform: scale(.93);
-}
-
-.mobile-menu-button {
-  display: none;
-}
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.main {
-  width: min(1180px, calc(100% - 24px));
-
-  margin: auto;
-
-  padding:
-    22px 0
-    max(30px, env(safe-area-inset-bottom));
-}
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.hero {
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 1.25fr)
-    minmax(300px, .75fr);
-
-  gap: 18px;
-
-  margin-bottom: 18px;
-}
-
-.hero-card {
-  position: relative;
-
   overflow: hidden;
+  text-overflow: clip;
 
-  min-height: 220px;
-
-  padding: 30px;
-
-  border: 1px solid var(--line);
-
-  border-radius: 22px;
-
-  background:
-    radial-gradient(
-      circle at 85% 20%,
-      rgba(141,255,177,.09),
-      transparent 30%
-    ),
-    linear-gradient(
-      145deg,
-      rgba(17,34,23,.96),
-      rgba(5,11,8,.98)
-    );
-
-  box-shadow: var(--shadow);
-}
-
-.hero-card::after {
-  content: "";
-
-  position: absolute;
-
-  width: 240px;
-  height: 240px;
-
-  right: -100px;
-  bottom: -120px;
-
-  border-radius: 50%;
-
-  border: 1px solid rgba(141,255,177,.08);
-
-  box-shadow:
-    0 0 0 35px rgba(141,255,177,.025),
-    0 0 0 70px rgba(141,255,177,.018);
-
-  pointer-events: none;
-}
-
-.hero-kicker {
-  color: var(--green);
-
-  font-size: 9px;
-  font-weight: 950;
-
-  letter-spacing: 4px;
-}
-
-.hero-title {
-  margin-top: 10px;
+  color: #f4fbff;
 
   font-size:
-    clamp(40px, 7vw, 82px);
+    clamp(25px, 7vw, 58px);
 
-  line-height: .9;
+  line-height: 1;
 
   font-weight: 950;
 
   letter-spacing:
-    clamp(1px, .7vw, 7px);
+    clamp(1px, 0.85vw, 7px);
 
-  white-space: nowrap;
+  text-shadow:
+    0 0 12px rgba(105, 199, 255, 0.38),
+    0 0 30px rgba(80, 160, 230, 0.18);
 }
 
-.hero-title span {
-  color: var(--green);
-}
+.logo-subtitle {
+  margin-top: 7px;
 
-.hero-description {
-  max-width: 550px;
+  color: #7792ae;
 
-  margin-top: 17px;
+  font-size: 9px;
 
-  color: var(--muted);
+  font-weight: 900;
 
-  font-size: 13px;
-
-  line-height: 1.65;
-}
-
-.hero-buttons {
-  display: flex;
-  flex-wrap: wrap;
-
-  gap: 9px;
-
-  margin-top: 22px;
+  letter-spacing: 3px;
 }
 
 /* =========================================================
-   BUTTONS
+   MENU BUTTON
    ========================================================= */
 
-.button {
-  min-height: 45px;
+.menu-button {
+  width: 54px;
+  height: 54px;
 
-  padding: 0 18px;
+  display: flex;
 
-  border: 1px solid var(--line2);
-  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid var(--border-light);
+
+  border-radius: 15px;
 
   background:
     linear-gradient(
       145deg,
-      #182b1f,
-      #09140d
+      rgba(20, 49, 82, 0.98),
+      rgba(5, 17, 35, 0.99)
     );
 
-  color: var(--text);
+  color: #e9f7ff;
 
-  font-size: 10px;
-  font-weight: 950;
-
-  letter-spacing: 1.2px;
+  font-size: 25px;
 
   cursor: pointer;
 
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255,255,255,0.07),
+    0 0 0 rgba(80,180,255,0);
+
   transition:
-    transform .12s ease,
-    border-color .12s ease,
-    background .12s ease;
+    transform 0.12s ease,
+    border-color 0.12s ease,
+    background 0.12s ease,
+    box-shadow 0.12s ease;
+
+  touch-action: manipulation;
 }
 
-.button:hover {
-  border-color: #698973;
-}
-
-.button:active {
-  transform: scale(.96);
-}
-
-.button.primary {
-  border-color: #619875;
+.menu-button:hover {
+  border-color: var(--border-bright);
 
   background:
     linear-gradient(
       145deg,
-      #2b5a3a,
-      #14321f
+      #1c4b76,
+      #0a203e
     );
 
   box-shadow:
-    0 10px 25px rgba(47,112,70,.17);
+    0 10px 28px rgba(0, 0, 0, 0.30),
+    0 0 18px rgba(73, 163, 226, 0.14);
 }
 
-.button.danger {
-  border-color: #65423d;
-
-  background:
-    linear-gradient(
-      145deg,
-      #341e1b,
-      #1a0e0d
-    );
-
-  color: #ffe9e5;
+.menu-button:active {
+  transform: scale(0.93);
 }
 
 /* =========================================================
-   HERO STATS
+   STATUS
    ========================================================= */
 
-.stats-card {
+.status-bar {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-bottom: 11px;
+
+  color: #7690aa;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #46617c;
+
+  box-shadow:
+    0 0 8px rgba(80, 150, 210, 0.12);
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.status-dot.live {
+  background: var(--blue-bright);
+
+  box-shadow:
+    0 0 8px rgba(105, 199, 255, 0.65),
+    0 0 18px rgba(105, 199, 255, 0.30);
+}
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud {
   display: grid;
 
   grid-template-columns: 1fr 1fr;
 
   gap: 10px;
 
-  padding: 14px;
-
-  border: 1px solid var(--line);
-
-  border-radius: 22px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(13,26,18,.96),
-      rgba(5,10,7,.98)
-    );
-
-  box-shadow: var(--shadow);
+  margin-bottom: 12px;
 }
 
-.stat {
+.hud-card {
+  position: relative;
+
   min-width: 0;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 12px 13px;
 
-  min-height: 90px;
-
-  padding: 14px;
-
-  border: 1px solid rgba(61,93,73,.65);
+  border:
+    1px solid var(--border);
 
   border-radius: 15px;
 
   background:
-    rgba(3,8,5,.55);
+    linear-gradient(
+      145deg,
+      rgba(14, 38, 68, 0.96),
+      rgba(4, 15, 31, 0.96)
+    );
+
+  text-align: center;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 8px 25px rgba(0,0,0,0.14);
 }
 
-.stat-label {
-  color: var(--muted2);
+.hud-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 18%;
+  right: 18%;
+  top: 0;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(105,199,255,0.45),
+      transparent
+    );
+}
+
+.hud-label {
+  color: #7893ad;
 
   font-size: 8px;
+
   font-weight: 900;
 
   letter-spacing: 2px;
 }
 
-.stat-value {
-  margin-top: 6px;
+.hud-value {
+  margin-top: 3px;
 
-  color: var(--green);
+  color: #eaf8ff;
 
-  font-size: 28px;
+  font-size:
+    clamp(20px, 5vw, 29px);
+
   font-weight: 950;
+
+  text-shadow:
+    0 0 12px rgba(105,199,255,0.14);
 }
 
 /* =========================================================
-   GAME LAYOUT
+   GAME FRAME
    ========================================================= */
 
-.game-layout {
-  display: grid;
+.game-frame {
+  position: relative;
 
-  grid-template-columns:
-    minmax(0, 1fr)
-    260px;
+  width: 100%;
 
-  gap: 18px;
+  padding: 8px;
 
-  align-items: start;
-}
-
-/* =========================================================
-   GAME CARD
-   ========================================================= */
-
-.game-card {
-  min-width: 0;
-
-  padding: 12px;
-
-  border: 1px solid var(--line);
+  border:
+    1px solid #1e4a72;
 
   border-radius: 23px;
 
   background:
     linear-gradient(
       145deg,
-      rgba(15,28,20,.96),
-      rgba(4,9,6,.99)
+      rgba(13, 34, 60, 0.98),
+      rgba(3, 10, 22, 0.99)
     );
 
-  box-shadow: var(--shadow);
-}
-
-.game-top {
-  display: grid;
-
-  grid-template-columns: 1fr auto 1fr;
-
-  align-items: center;
-
-  gap: 8px;
-
-  padding: 3px 5px 11px;
-}
-
-.game-status {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-
-  color: var(--muted);
-
-  font-size: 8px;
-  font-weight: 900;
-
-  letter-spacing: 1.8px;
-}
-
-.live-dot {
-  width: 6px;
-  height: 6px;
-
-  border-radius: 50%;
-
-  background: #566a5d;
-}
-
-.live-dot.live {
-  background: var(--green);
-
   box-shadow:
-    0 0 11px rgba(141,255,177,.65);
+    var(--shadow),
+    0 0 45px rgba(33, 101, 157, 0.08);
 }
 
-.game-title {
-  text-align: center;
+.game-frame::before {
+  content: "";
 
-  color: #cfe6d6;
+  position: absolute;
 
-  font-size: 9px;
-  font-weight: 950;
+  inset: 0;
 
-  letter-spacing: 2px;
+  border-radius: 23px;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      120deg,
+      rgba(105,199,255,0.07),
+      transparent 34%,
+      transparent 68%,
+      rgba(255,255,255,0.025)
+    );
 }
 
-.game-actions {
+.game-frame::after {
+  content: "";
+
+  position: absolute;
+
+  top: 1px;
+  left: 15%;
+  right: 15%;
+
+  height: 1px;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(110,205,255,0.55),
+      transparent
+    );
+}
+
+/* =========================================================
+   CANVAS WRAP
+   ========================================================= */
+
+.canvas-wrap {
+  position: relative;
+
+  width: 100%;
+
   display: flex;
-  justify-content: flex-end;
-  gap: 6px;
-}
 
-.small-button {
-  min-width: 34px;
-  height: 34px;
+  justify-content: center;
 
-  padding: 0 9px;
+  overflow: hidden;
 
-  border: 1px solid var(--line);
-
-  border-radius: 9px;
-
-  background: #0b160f;
-
-  color: var(--muted);
-
-  font-size: 9px;
-  font-weight: 900;
-
-  cursor: pointer;
-}
-
-.small-button:hover {
-  color: var(--text);
-  border-color: var(--line2);
+  border-radius: 16px;
 }
 
 /* =========================================================
    CANVAS
    ========================================================= */
 
-.board-wrap {
-  position: relative;
-
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-}
-
 #gameCanvas {
   display: block;
 
-  width: min(100%, 680px);
+  width: min(100%, 720px);
 
   height: auto;
 
   aspect-ratio: 1 / 1;
 
-  border: 1px solid #385243;
+  border-radius: 15px;
 
-  border-radius: 16px;
+  border:
+    1px solid #24557e;
 
-  background: #030604;
+  background: #020914;
 
   image-rendering: pixelated;
 
-  box-shadow:
-    inset 0 0 45px rgba(0,0,0,.75),
-    0 15px 35px rgba(0,0,0,.3);
-
   touch-action: none;
+
+  box-shadow:
+    inset 0 0 45px rgba(0,0,0,0.82),
+    inset 0 0 12px rgba(63,151,218,0.08),
+    0 10px 28px rgba(0,0,0,0.42);
 }
 
 /* =========================================================
-   GAME OVERLAY
+   OVERLAY
    ========================================================= */
 
 .overlay {
   position: absolute;
 
-  inset: 0;
-
-  z-index: 30;
+  inset: 1px;
 
   display: flex;
 
   align-items: center;
   justify-content: center;
 
-  padding: 20px;
+  padding: 16px;
 
-  border-radius: 16px;
+  border-radius: 15px;
 
   background:
-    rgba(2,6,4,.82);
+    rgba(1, 7, 17, 0.82);
 
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(6px);
+
+  -webkit-backdrop-filter: blur(6px);
+
+  z-index: 20;
 }
 
 .overlay.hidden {
   display: none;
 }
 
-.panel {
-  width: min(410px, 100%);
+/* =========================================================
+   OVERLAY PANEL
+   ========================================================= */
 
-  padding: 28px 22px;
+.overlay-panel {
+  width: min(92%, 420px);
 
-  border: 1px solid #3d5c48;
+  padding: 28px 21px;
 
-  border-radius: 21px;
+  border:
+    1px solid #2e638f;
+
+  border-radius: 22px;
 
   background:
     linear-gradient(
       145deg,
-      rgba(20,37,26,.99),
-      rgba(6,12,8,.99)
+      rgba(14, 40, 69, 0.99),
+      rgba(3, 13, 28, 0.995)
     );
 
   text-align: center;
 
   box-shadow:
-    0 30px 80px rgba(0,0,0,.72),
-    inset 0 1px 0 rgba(255,255,255,.035);
-
-  animation:
-    panelIn .2s ease;
+    0 28px 75px rgba(0,0,0,0.72),
+    0 0 35px rgba(54,145,211,0.09),
+    inset 0 1px 0 rgba(255,255,255,0.045);
 }
 
-@keyframes panelIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(.98);
-  }
+.overlay-kicker {
+  margin-bottom: 9px;
 
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
+  color: #6e91ae;
 
-.panel-kicker {
-  color: #718878;
+  font-size: 9px;
 
-  font-size: 8px;
-  font-weight: 950;
+  font-weight: 900;
 
   letter-spacing: 3px;
 }
 
-.panel-title {
-  margin-top: 8px;
+.overlay-title {
+  margin-bottom: 11px;
 
-  color: #f0fff5;
+  color: #f0faff;
 
   font-size:
-    clamp(30px, 8vw, 48px);
+    clamp(28px, 8vw, 44px);
 
   line-height: 1;
 
   font-weight: 950;
 
   letter-spacing: 2px;
+
+  text-shadow:
+    0 0 20px rgba(105,199,255,0.18);
 }
 
-.panel-text {
-  margin: 14px auto 20px;
+.overlay-text {
+  margin-bottom: 21px;
 
-  max-width: 330px;
+  color: #8ca6bd;
 
-  color: var(--muted);
-
-  font-size: 12px;
+  font-size: 13px;
 
   line-height: 1.6;
 }
 
-.panel-buttons {
-  display: grid;
-
-  gap: 8px;
+.overlay-text strong {
+  color: #dff4ff;
 }
 
 /* =========================================================
-   SIDE PANEL
+   BUTTONS
    ========================================================= */
 
-.side {
+.menu-options {
   display: grid;
-  gap: 12px;
+
+  grid-template-columns: 1fr;
+
+  gap: 10px;
 }
 
-.side-card {
-  padding: 17px;
+.menu-option {
+  width: 100%;
 
-  border: 1px solid var(--line);
+  min-height: 50px;
 
-  border-radius: 18px;
+  padding: 12px 15px;
+
+  border:
+    1px solid #2c5b82;
+
+  border-radius: 14px;
 
   background:
     linear-gradient(
       145deg,
-      rgba(13,25,18,.95),
-      rgba(5,10,7,.98)
+      #122f50,
+      #071a31
+    );
+
+  color: #e9f7ff;
+
+  font-size: 13px;
+
+  font-weight: 950;
+
+  letter-spacing: 1.1px;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 5px 16px rgba(0,0,0,0.16);
+
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease,
+    background 0.12s ease,
+    box-shadow 0.12s ease;
+
+  touch-action: manipulation;
+}
+
+.menu-option:hover {
+  border-color: #5da9df;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1b466f,
+      #0b2441
     );
 
   box-shadow:
-    0 15px 40px rgba(0,0,0,.25);
+    0 7px 20px rgba(31,102,157,0.18);
 }
 
-.side-heading {
-  margin-bottom: 13px;
-
-  color: #dcefe2;
-
-  font-size: 9px;
-  font-weight: 950;
-
-  letter-spacing: 2px;
+.menu-option:active {
+  transform: scale(0.97);
 }
 
-.side-row {
-  display: flex;
+.menu-option.primary {
+  border-color: #4d9cd2;
 
-  align-items: center;
-  justify-content: space-between;
+  background:
+    linear-gradient(
+      145deg,
+      #2875ad,
+      #124b78
+    );
 
-  gap: 12px;
+  color: #ffffff;
 
-  min-height: 39px;
-
-  border-bottom: 1px solid rgba(61,93,73,.25);
-
-  color: var(--muted);
-
-  font-size: 10px;
+  box-shadow:
+    0 8px 24px rgba(35,122,181,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.10);
 }
 
-.side-row:last-child {
-  border-bottom: 0;
+.menu-option.primary:hover {
+  border-color: #80cfff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #348dcc,
+      #155988
+    );
 }
 
-.side-row strong {
-  color: #d9e9de;
+.menu-option.danger {
+  color: #ffe9eb;
+
+  border-color: #653744;
+
+  background:
+    linear-gradient(
+      145deg,
+      #3d1c28,
+      #1f1018
+    );
 }
 
-.key {
-  display: inline-grid;
-  place-items: center;
+.menu-option.danger:hover {
+  border-color: #a95b6b;
 
-  min-width: 28px;
-  height: 25px;
-
-  padding: 0 7px;
-
-  border: 1px solid var(--line2);
-  border-radius: 7px;
-
-  background: #0a150e;
-
-  color: var(--text);
-
-  font-size: 9px;
-  font-weight: 950;
-}
-
-.control-preview {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 5px;
-
-  width: 140px;
-
-  margin: auto;
-}
-
-.preview-key {
-  height: 34px;
-
-  display: grid;
-  place-items: center;
-
-  border: 1px solid var(--line);
-
-  border-radius: 8px;
-
-  background: #0a150e;
-
-  color: var(--green);
-
-  font-size: 14px;
-  font-weight: 950;
-}
-
-.empty {
-  visibility: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      #542431,
+      #29131b
+    );
 }
 
 /* =========================================================
    TOUCH CONTROLS
    ========================================================= */
 
-.touch-section {
-  display: none;
-
-  margin-top: 13px;
-
-  padding: 13px;
-
-  border: 1px solid var(--line);
-
-  border-radius: 18px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(12,24,17,.96),
-      rgba(5,10,7,.98)
-    );
-}
-
-.touch-title {
-  margin-bottom: 9px;
+.controls-title {
+  margin-top: 17px;
 
   text-align: center;
 
-  color: var(--muted2);
+  color: #718ca5;
 
   font-size: 8px;
-  font-weight: 950;
 
-  letter-spacing: 2px;
-}
-
-.dpad {
-  width: min(250px, 72vw);
-
-  margin: auto;
-
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-
-  gap: 7px;
-}
-
-.dpad button {
-  min-height: 52px;
-
-  border: 1px solid #36523f;
-
-  border-radius: 13px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #17291e,
-      #09120c
-    );
-
-  color: #eafff0;
-
-  font-size: 20px;
-  font-weight: 950;
-
-  cursor: pointer;
-
-  touch-action: manipulation;
-
-  transition: transform .08s ease;
-}
-
-.dpad button:active {
-  transform: scale(.91);
-
-  background: #21402d;
-}
-
-.dpad .empty {
-  visibility: hidden;
-}
-
-/* =========================================================
-   BOTTOM INFO
-   ========================================================= */
-
-.info-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 12px;
-
-  margin-top: 18px;
-}
-
-.info-card {
-  padding: 18px;
-
-  border: 1px solid var(--line);
-
-  border-radius: 17px;
-
-  background:
-    rgba(8,16,11,.85);
-}
-
-.info-icon {
-  color: var(--green);
-
-  font-size: 20px;
-}
-
-.info-title {
-  margin-top: 10px;
-
-  font-size: 10px;
-  font-weight: 950;
-
-  letter-spacing: 1.5px;
-}
-
-.info-text {
-  margin-top: 7px;
-
-  color: var(--muted);
-
-  font-size: 10px;
-
-  line-height: 1.55;
-}
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-.footer {
-  padding: 30px 0 8px;
-
-  text-align: center;
-
-  color: #4f6157;
-
-  font-size: 8px;
   font-weight: 900;
 
   letter-spacing: 2px;
 }
 
-/* =========================================================
-   MODAL
-   ========================================================= */
+.mobile-controls {
+  width: min(260px, 78vw);
 
-.modal {
-  position: fixed;
+  margin: 9px auto 0;
 
-  inset: 0;
+  display: grid;
 
-  z-index: 500;
+  grid-template-columns:
+    repeat(3, 1fr);
 
-  display: flex;
+  grid-template-rows:
+    repeat(3, 1fr);
 
-  align-items: center;
-  justify-content: center;
-
-  padding:
-    20px
-    max(20px, env(safe-area-inset-right))
-    20px
-    max(20px, env(safe-area-inset-left));
-
-  background:
-    rgba(1,4,2,.82);
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  gap: 8px;
 }
 
-.modal.hidden {
-  display: none;
-}
+.control-button {
+  min-width: 0;
 
-.modal-card {
-  width: min(480px, 100%);
+  min-height: 57px;
 
-  max-height: min(720px, 90vh);
+  border:
+    1px solid #285477;
 
-  overflow-y: auto;
-
-  padding: 24px;
-
-  border: 1px solid #3c5c48;
-
-  border-radius: 21px;
+  border-radius: 15px;
 
   background:
     linear-gradient(
       145deg,
-      rgba(18,34,24,.99),
-      rgba(5,11,7,.99)
+      #123455,
+      #07192f
     );
 
-  box-shadow: var(--shadow);
-}
+  color: #dff5ff;
 
-.modal-head {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 15px;
-
-  margin-bottom: 18px;
-}
-
-.modal-title {
   font-size: 22px;
-  font-weight: 950;
 
-  letter-spacing: 1px;
-}
-
-.close-button {
-  width: 36px;
-  height: 36px;
-
-  border: 1px solid var(--line);
-
-  border-radius: 10px;
-
-  background: #0a150e;
-
-  color: var(--muted);
+  font-weight: 900;
 
   cursor: pointer;
-
-  font-size: 16px;
-}
-
-.modal-section {
-  margin-top: 17px;
-}
-
-.modal-section h3 {
-  color: var(--green);
-
-  font-size: 9px;
-
-  letter-spacing: 2px;
-}
-
-.modal-section p {
-  margin-top: 8px;
-
-  color: var(--muted);
-
-  font-size: 11px;
-
-  line-height: 1.65;
-}
-
-.setting-row {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 15px;
-
-  padding: 14px 0;
-
-  border-bottom: 1px solid rgba(61,93,73,.3);
-
-  color: #dcece1;
-
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.toggle {
-  position: relative;
-
-  width: 47px;
-  height: 26px;
-
-  border: 1px solid var(--line2);
-
-  border-radius: 20px;
-
-  background: #08110b;
-
-  cursor: pointer;
-}
-
-.toggle::after {
-  content: "";
-
-  position: absolute;
-
-  top: 4px;
-  left: 4px;
-
-  width: 16px;
-  height: 16px;
-
-  border-radius: 50%;
-
-  background: #62766a;
-
-  transition: .15s ease;
-}
-
-.toggle.on {
-  background: #1d4930;
-  border-color: #619875;
-}
-
-.toggle.on::after {
-  left: 25px;
-
-  background: var(--green);
 
   box-shadow:
-    0 0 10px rgba(141,255,177,.5);
+    inset 0 1px 0 rgba(255,255,255,0.045),
+    0 6px 18px rgba(0,0,0,0.18);
+
+  touch-action: manipulation;
+
+  transition:
+    transform 0.08s ease,
+    background 0.08s ease,
+    border-color 0.08s ease;
+}
+
+.control-button:hover {
+  border-color: #4f91bd;
+
+  background:
+    linear-gradient(
+      145deg,
+      #19476f,
+      #0a223d
+    );
+}
+
+.control-button:active {
+  transform: scale(0.91);
+
+  border-color: #70caff;
+
+  background:
+    #1d5885;
+}
+
+.control-empty {
+  visibility: hidden;
 }
 
 /* =========================================================
-   MOBILE NAV
+   HELP
    ========================================================= */
 
-.mobile-nav {
-  display: none;
+.help {
+  margin-top: 14px;
+
+  padding-bottom: 5px;
+
+  text-align: center;
+
+  color: #627c96;
+
+  font-size: 10px;
+
+  line-height: 1.75;
+}
+
+.help strong {
+  color: #9bb4c9;
 }
 
 /* =========================================================
-   RESPONSIVE
+   SMALL DEVICE
    ========================================================= */
-
-@media (max-width: 900px) {
-
-  .hero {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-card {
-    min-height: 250px;
-  }
-
-  .game-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .side {
-    display: grid;
-
-    grid-template-columns:
-      1fr 1fr;
-  }
-
-  .touch-section {
-    display: block;
-  }
-
-}
-
-@media (max-width: 680px) {
-
-  .nav-inner {
-    grid-template-columns: auto 1fr auto;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .mobile-menu-button {
-    display: grid;
-  }
-
-  .main {
-    width: min(100% - 14px, 680px);
-
-    padding-top: 12px;
-  }
-
-  .hero-card {
-    padding: 23px;
-
-    border-radius: 19px;
-  }
-
-  .hero-title {
-    font-size:
-      clamp(39px, 13vw, 70px);
-
-    letter-spacing: 2px;
-  }
-
-  .hero-description {
-    font-size: 11px;
-  }
-
-  .stats-card {
-    border-radius: 19px;
-  }
-
-  .game-card {
-    padding: 7px;
-
-    border-radius: 19px;
-  }
-
-  .game-top {
-    padding-bottom: 7px;
-  }
-
-  .game-title {
-    font-size: 8px;
-  }
-
-  .side {
-    grid-template-columns: 1fr;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-
-}
 
 @media (max-width: 480px) {
 
+  .page {
+    width: 97vw;
+  }
+
   .topbar {
-    padding-left: 8px;
-    padding-right: 8px;
+    grid-template-columns:
+      45px 1fr 45px;
+
+    min-height: 59px;
   }
 
-  .brand-mark {
-    width: 35px;
-    height: 35px;
-
-    flex-basis: 35px;
+  .top-spacer,
+  .menu-button {
+    width: 45px;
+    height: 45px;
   }
 
-  .brand-title {
-    font-size: 13px;
+  .menu-button {
+    border-radius: 12px;
 
-    letter-spacing: 1.5px;
+    font-size: 22px;
   }
 
-  .brand-subtitle {
-    font-size: 6px;
-  }
-
-  .icon-button {
-    width: 37px;
-    height: 37px;
-  }
-
-  .main {
-    width: calc(100% - 10px);
-
-    padding-top: 9px;
-  }
-
-  .hero-card {
-    min-height: 230px;
-
-    padding: 20px;
-
-    border-radius: 18px;
-  }
-
-  .hero-kicker {
-    font-size: 7px;
-
-    letter-spacing: 3px;
-  }
-
-  .hero-title {
+  .logo {
     font-size:
-      clamp(37px, 13.5vw, 64px);
+      clamp(22px, 8.8vw, 40px);
 
     letter-spacing: 1px;
   }
 
-  .hero-buttons {
-    display: grid;
+  .logo-subtitle {
+    font-size: 7px;
 
-    grid-template-columns: 1fr 1fr;
+    letter-spacing: 2px;
   }
 
-  .hero-buttons .button:first-child {
-    grid-column: 1 / -1;
+  .game-frame {
+    padding: 5px;
+
+    border-radius: 18px;
   }
 
-  .button {
-    min-height: 44px;
-
-    padding: 0 12px;
-
-    font-size: 9px;
-  }
-
-  .stats-card {
-    padding: 9px;
-
-    gap: 7px;
-  }
-
-  .stat {
-    min-height: 76px;
-
-    padding: 10px;
-  }
-
-  .stat-value {
-    font-size: 23px;
-  }
-
-  .game-top {
-    grid-template-columns: 1fr auto;
-
-    padding: 2px 3px 7px;
-  }
-
-  .game-title {
-    display: none;
-  }
-
-  .game-actions {
-    gap: 4px;
-  }
-
-  .small-button {
-    height: 31px;
-
-    min-width: 31px;
-
-    padding: 0 7px;
-  }
-
+  .canvas-wrap,
   #gameCanvas {
     border-radius: 12px;
   }
@@ -1525,133 +923,214 @@ canvas {
     padding: 12px;
   }
 
-  .panel {
-    padding: 22px 15px;
-
-    border-radius: 17px;
+  .overlay-panel {
+    padding:
+      22px 15px;
   }
 
-  .panel-title {
-    font-size: 30px;
+  .menu-option {
+    min-height: 48px;
   }
 
-  .panel-text {
-    font-size: 11px;
+  .mobile-controls {
+    width:
+      min(230px, 73vw);
   }
 
-  .dpad {
-    width: min(220px, 70vw);
+  .control-button {
+    min-height: 50px;
+
+    font-size: 20px;
+
+    border-radius: 13px;
+  }
+
+}
+
+/* =========================================================
+   VERY SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+  .page {
+    width: 98vw;
+  }
+
+  .topbar {
+    grid-template-columns:
+      40px 1fr 40px;
+  }
+
+  .top-spacer,
+  .menu-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .menu-button {
+    font-size: 19px;
+  }
+
+  .logo {
+    font-size: 23px;
+
+    letter-spacing: 0;
+  }
+
+  .logo-subtitle {
+    font-size: 6px;
+
+    letter-spacing: 1.5px;
+  }
+
+  .hud-card {
+    padding: 9px 8px;
+  }
+
+  .mobile-controls {
+    width: 205px;
 
     gap: 6px;
   }
 
-  .dpad button {
-    min-height: 48px;
+  .control-button {
+    min-height: 45px;
 
     font-size: 18px;
 
     border-radius: 11px;
   }
 
-  .modal-card {
-    padding: 19px;
-
-    border-radius: 18px;
+  .help {
+    font-size: 9px;
   }
 
 }
 
-@media (max-width: 350px) {
+/* =========================================================
+   TABLET
+   ========================================================= */
 
-  .brand-subtitle {
-    display: none;
+@media (min-width: 600px) {
+
+  .page {
+    padding-top: 18px;
   }
 
-  .hero-title {
-    font-size: 35px;
-  }
-
-  .hero-description {
-    font-size: 10px;
-  }
-
-  .stat {
-    min-height: 68px;
-  }
-
-  .stat-label {
-    font-size: 7px;
-  }
-
-  .stat-value {
-    font-size: 20px;
-  }
-
-  .dpad {
-    width: 195px;
-  }
-
-  .dpad button {
-    min-height: 43px;
-
-    font-size: 16px;
+  .mobile-controls {
+    width: 235px;
   }
 
 }
 
-@media (orientation: landscape) and (max-height: 600px) {
+/* =========================================================
+   DESKTOP
+   ========================================================= */
 
-  .topbar {
-    position: relative;
+@media (min-width: 900px) {
+
+  .page {
+    padding-top: 24px;
   }
 
-  .main {
-    padding-top: 8px;
-  }
-
-  .hero {
-    grid-template-columns: 1fr 260px;
-  }
-
-  .hero-card {
-    min-height: 170px;
-
-    padding: 20px;
-  }
-
-  .hero-title {
-    font-size: 44px;
-  }
-
-  .hero-description {
-    margin-top: 10px;
-  }
-
-  .hero-buttons {
-    margin-top: 12px;
-  }
-
-  .game-layout {
-    grid-template-columns: 1fr 230px;
-  }
-
-  .touch-section {
-    display: block;
+  .mobile-controls {
+    width: 220px;
   }
 
 }
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
 
 @media (min-width: 1200px) {
 
-  .main {
+  .page {
+    width: min(92vw, 960px);
+
     padding-top: 28px;
   }
 
-  .hero-card {
-    min-height: 250px;
+  .game-frame {
+    padding: 10px;
+  }
+
+  .mobile-controls {
+    width: 215px;
   }
 
 }
+
+/* =========================================================
+   LANDSCAPE PHONE / TABLET
+   ========================================================= */
+
+@media (
+  orientation: landscape
+) and (max-height: 650px) {
+
+  .page {
+    padding-top: 8px;
+  }
+
+  .topbar {
+    min-height: 48px;
+
+    margin-bottom: 5px;
+  }
+
+  .top-spacer,
+  .menu-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .logo {
+    font-size: 25px;
+  }
+
+  .logo-subtitle {
+    display: none;
+  }
+
+  .status-bar {
+    margin-bottom: 5px;
+  }
+
+  .hud {
+    margin-bottom: 6px;
+  }
+
+  .game-frame {
+    padding: 5px;
+  }
+
+  .mobile-controls {
+    width: 180px;
+
+    margin-top: 5px;
+  }
+
+  .control-button {
+    min-height: 40px;
+
+    font-size: 17px;
+  }
+
+  .controls-title {
+    margin-top: 7px;
+  }
+
+  .help {
+    margin-top: 6px;
+  }
+
+}
+
+/* =========================================================
+   ACCESSIBILITY / REDUCED MOTION
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -1659,8 +1138,15 @@ canvas {
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+
+    transition-duration:
+      0.01ms !important;
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
   }
 
 }
@@ -1669,164 +1155,71 @@ canvas {
 
 <body>
 
-<div class="app">
+<main class="page">
 
-<!-- =======================================================
-     TOP NAVIGATION
-     ======================================================== -->
+  <!-- =====================================================
+       TOP BAR
+       ====================================================== -->
 
-<header class="topbar">
+  <header class="topbar">
 
-  <div class="nav-inner">
+    <div class="top-spacer"></div>
 
-    <div
-      class="brand"
-      id="brandHome"
-      role="button"
-      tabindex="0"
+    <div class="logo-wrap">
+
+      <div class="logo">
+        VOID SNAKE
+      </div>
+
+      <div class="logo-subtitle">
+        CLASSIC SNAKE
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="menu-button"
+      id="menuButton"
+      aria-label="Open menu"
+      title="Menu"
     >
+      ☰
+    </button>
 
-      <div class="brand-mark">
-        V
-      </div>
+  </header>
 
-      <div class="brand-text">
+  <!-- =====================================================
+       STATUS
+       ====================================================== -->
 
-        <div class="brand-title">
-          VOID SNAKE
-        </div>
+  <div class="status-bar">
 
-        <div class="brand-subtitle">
-          CLASSIC ARCADE
-        </div>
+    <span
+      class="status-dot"
+      id="statusDot"
+    ></span>
 
-      </div>
-
-    </div>
-
-    <nav class="nav-links">
-
-      <button
-        class="nav-link active"
-        data-nav="home"
-      >
-        HOME
-      </button>
-
-      <button
-        class="nav-link"
-        data-nav="howto"
-      >
-        HOW TO PLAY
-      </button>
-
-      <button
-        class="nav-link"
-        data-nav="settings"
-      >
-        SETTINGS
-      </button>
-
-      <button
-        class="nav-link"
-        data-nav="about"
-      >
-        ABOUT
-      </button>
-
-    </nav>
-
-    <div class="nav-right">
-
-      <button
-        class="icon-button"
-        id="soundButton"
-        aria-label="Toggle sound"
-        title="Sound"
-      >
-        🔊
-      </button>
-
-      <button
-        class="icon-button mobile-menu-button"
-        id="mobileMenuButton"
-        aria-label="Open menu"
-      >
-        ☰
-      </button>
-
-    </div>
+    <span id="statusText">
+      READY
+    </span>
 
   </div>
 
-</header>
+  <!-- =====================================================
+       HUD
+       ====================================================== -->
 
-<!-- =======================================================
-     MAIN
-     ======================================================== -->
+  <section class="hud">
 
-<main class="main">
+    <div class="hud-card">
 
-<!-- =======================================================
-     HERO
-     ======================================================== -->
-
-<section class="hero">
-
-  <div class="hero-card">
-
-    <div class="hero-kicker">
-      CLASSIC ARCADE EXPERIENCE
-    </div>
-
-    <h1 class="hero-title">
-      VOID <span>SNAKE</span>
-    </h1>
-
-    <p class="hero-description">
-      Enter the void, control your snake, collect energy,
-      grow longer and survive as long as possible.
-      Classic Snake gameplay rebuilt as a responsive
-      modern gaming experience.
-    </p>
-
-    <div class="hero-buttons">
-
-      <button
-        class="button primary"
-        id="heroPlay"
-      >
-        ▶ PLAY NOW
-      </button>
-
-      <button
-        class="button"
-        id="heroHow"
-      >
-        ? HOW TO PLAY
-      </button>
-
-      <button
-        class="button"
-        id="heroSettings"
-      >
-        ⚙ SETTINGS
-      </button>
-
-    </div>
-
-  </div>
-
-  <div class="stats-card">
-
-    <div class="stat">
-
-      <div class="stat-label">
-        CURRENT SCORE
+      <div class="hud-label">
+        SCORE
       </div>
 
       <div
-        class="stat-value"
+        class="hud-value"
         id="scoreValue"
       >
         0
@@ -1834,14 +1227,14 @@ canvas {
 
     </div>
 
-    <div class="stat">
+    <div class="hud-card">
 
-      <div class="stat-label">
+      <div class="hud-label">
         LENGTH
       </div>
 
       <div
-        class="stat-value"
+        class="hud-value"
         id="lengthValue"
       >
         3
@@ -1849,142 +1242,56 @@ canvas {
 
     </div>
 
-    <div class="stat">
+  </section>
 
-      <div class="stat-label">
-        BEST SCORE
-      </div>
+  <!-- =====================================================
+       GAME
+       ====================================================== -->
 
-      <div
-        class="stat-value"
-        id="bestValue"
-      >
-        0
-      </div>
+  <section class="game-frame">
 
-    </div>
-
-    <div class="stat">
-
-      <div class="stat-label">
-        STATUS
-      </div>
-
-      <div
-        class="stat-value"
-        id="statusValue"
-      >
-        READY
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- =======================================================
-     GAME
-     ======================================================== -->
-
-<section class="game-layout">
-
-  <div class="game-card">
-
-    <div class="game-top">
-
-      <div class="game-status">
-
-        <span
-          class="live-dot"
-          id="liveDot"
-        ></span>
-
-        <span id="statusText">
-          READY
-        </span>
-
-      </div>
-
-      <div class="game-title">
-        VOID ARENA
-      </div>
-
-      <div class="game-actions">
-
-        <button
-          class="small-button"
-          id="pauseButton"
-          title="Pause"
-        >
-          ❚❚
-        </button>
-
-        <button
-          class="small-button"
-          id="restartButton"
-          title="Restart"
-        >
-          ↻
-        </button>
-
-        <button
-          class="small-button"
-          id="gameMenuButton"
-          title="Menu"
-        >
-          ☰
-        </button>
-
-      </div>
-
-    </div>
-
-    <div class="board-wrap">
+    <div class="canvas-wrap">
 
       <canvas
         id="gameCanvas"
         width="600"
         height="600"
-        aria-label="VOID SNAKE game board"
+        aria-label="VOID SNAKE game"
       ></canvas>
 
-      <!-- START -->
+      <!-- ===================================================
+           START SCREEN
+           ==================================================== -->
 
       <div
         class="overlay"
         id="startOverlay"
       >
 
-        <div class="panel">
+        <div class="overlay-panel">
 
-          <div class="panel-kicker">
-            WELCOME TO THE VOID
+          <div class="overlay-kicker">
+            WELCOME TO
           </div>
 
-          <div class="panel-title">
+          <div class="overlay-title">
             VOID SNAKE
           </div>
 
-          <div class="panel-text">
-            Classic Snake. No levels. No distractions.
-            Eat the energy, grow your snake and survive.
+          <div class="overlay-text">
+            Classic Snake gameplay.
+            <br>
+            Eat. Grow. Survive.
           </div>
 
-          <div class="panel-buttons">
+          <div class="menu-options">
 
             <button
-              class="button primary"
-              id="startButton"
+              type="button"
+              class="menu-option primary"
+              id="startPlayButton"
             >
-              ▶ PLAY
-            </button>
-
-            <button
-              class="button"
-              id="startHowButton"
-            >
-              ? HOW TO PLAY
+              PLAY
             </button>
 
           </div>
@@ -1993,63 +1300,61 @@ canvas {
 
       </div>
 
-      <!-- MENU -->
+      <!-- ===================================================
+           MENU
+           ==================================================== -->
 
       <div
         class="overlay hidden"
         id="menuOverlay"
       >
 
-        <div class="panel">
+        <div class="overlay-panel">
 
-          <div class="panel-kicker">
-            GAME MENU
+          <div class="overlay-kicker">
+            VOID SNAKE
           </div>
 
-          <div class="panel-title">
+          <div class="overlay-title">
             MENU
           </div>
 
-          <div class="panel-text">
-            Control your current game or configure
-            the VOID SNAKE experience.
+          <div class="overlay-text">
+            Control the game from here.
           </div>
 
-          <div class="panel-buttons">
+          <div class="menu-options">
 
             <button
-              class="button primary"
-              id="menuResume"
+              type="button"
+              class="menu-option primary"
+              id="menuPlayButton"
             >
-              ▶ RESUME
+              PLAY
             </button>
 
             <button
-              class="button"
-              id="menuRestart"
+              type="button"
+              class="menu-option"
+              id="menuPauseButton"
             >
-              ↻ RESTART
+              PAUSE
             </button>
 
             <button
-              class="button"
-              id="menuHow"
+              type="button"
+              class="menu-option"
+              id="menuResumeButton"
             >
-              ? HOW TO PLAY
+              RESUME
             </button>
 
             <button
-              class="button"
-              id="menuSettings"
+              type="button"
+              class="menu-option danger"
+              id="menuExitButton"
             >
-              ⚙ SETTINGS
-            </button>
-
-            <button
-              class="button danger"
-              id="menuHome"
-            >
-              ⌂ MAIN MENU
+              EXIT
             </button>
 
           </div>
@@ -2058,48 +1363,53 @@ canvas {
 
       </div>
 
-      <!-- PAUSE -->
+      <!-- ===================================================
+           PAUSE
+           ==================================================== -->
 
       <div
         class="overlay hidden"
         id="pauseOverlay"
       >
 
-        <div class="panel">
+        <div class="overlay-panel">
 
-          <div class="panel-kicker">
+          <div class="overlay-kicker">
             GAME STATUS
           </div>
 
-          <div class="panel-title">
+          <div class="overlay-title">
             PAUSED
           </div>
 
-          <div class="panel-text">
+          <div class="overlay-text">
             Your snake is waiting.
           </div>
 
-          <div class="panel-buttons">
+          <div class="menu-options">
 
             <button
-              class="button primary"
-              id="pauseResume"
+              type="button"
+              class="menu-option primary"
+              id="pauseResumeButton"
             >
-              ▶ RESUME
+              RESUME
             </button>
 
             <button
-              class="button"
-              id="pauseRestart"
+              type="button"
+              class="menu-option"
+              id="pauseMenuButton"
             >
-              ↻ RESTART
+              MENU
             </button>
 
             <button
-              class="button"
-              id="pauseMenu"
+              type="button"
+              class="menu-option danger"
+              id="pauseExitButton"
             >
-              ☰ MENU
+              EXIT
             </button>
 
           </div>
@@ -2108,24 +1418,26 @@ canvas {
 
       </div>
 
-      <!-- GAME OVER -->
+      <!-- ===================================================
+           GAME OVER
+           ==================================================== -->
 
       <div
         class="overlay hidden"
         id="gameOverOverlay"
       >
 
-        <div class="panel">
+        <div class="overlay-panel">
 
-          <div class="panel-kicker">
+          <div class="overlay-kicker">
             RUN COMPLETE
           </div>
 
-          <div class="panel-title">
+          <div class="overlay-title">
             GAME OVER
           </div>
 
-          <div class="panel-text">
+          <div class="overlay-text">
 
             SCORE:
             <strong id="finalScore">
@@ -2139,29 +1451,32 @@ canvas {
               3
             </strong>
 
-            <br>
-
-            BEST:
-            <strong id="finalBest">
-              0
-            </strong>
-
           </div>
 
-          <div class="panel-buttons">
+          <div class="menu-options">
 
             <button
-              class="button primary"
-              id="playAgain"
+              type="button"
+              class="menu-option primary"
+              id="gameOverPlayButton"
             >
-              ↻ PLAY AGAIN
+              PLAY AGAIN
             </button>
 
             <button
-              class="button"
-              id="gameOverHome"
+              type="button"
+              class="menu-option"
+              id="gameOverMenuButton"
             >
-              ⌂ MAIN MENU
+              MENU
+            </button>
+
+            <button
+              type="button"
+              class="menu-option danger"
+              id="gameOverExitButton"
+            >
+              EXIT
             </button>
 
           </div>
@@ -2172,562 +1487,126 @@ canvas {
 
     </div>
 
-    <!-- TOUCH -->
+  </section>
 
-    <div class="touch-section">
+  <!-- =====================================================
+       TOUCH CONTROLS
+       ====================================================== -->
 
-      <div class="touch-title">
-        TOUCH CONTROLS
-      </div>
+  <div class="controls-title">
+    TOUCH CONTROLS
+  </div>
 
-      <div class="dpad">
+  <div class="mobile-controls">
 
-        <button
-          class="empty"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          .
-        </button>
+    <button
+      type="button"
+      class="control-button control-empty"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      .
+    </button>
 
-        <button data-direction="up">
-          ▲
-        </button>
+    <button
+      type="button"
+      class="control-button"
+      data-direction="up"
+      aria-label="Move up"
+    >
+      ▲
+    </button>
 
-        <button
-          class="empty"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          .
-        </button>
+    <button
+      type="button"
+      class="control-button control-empty"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      .
+    </button>
 
-        <button data-direction="left">
-          ◀
-        </button>
+    <button
+      type="button"
+      class="control-button"
+      data-direction="left"
+      aria-label="Move left"
+    >
+      ◀
+    </button>
 
-        <button data-direction="down">
-          ▼
-        </button>
+    <button
+      type="button"
+      class="control-button"
+      data-direction="down"
+      aria-label="Move down"
+    >
+      ▼
+    </button>
 
-        <button data-direction="right">
-          ▶
-        </button>
+    <button
+      type="button"
+      class="control-button"
+      data-direction="right"
+      aria-label="Move right"
+    >
+      ▶
+    </button>
 
-        <button
-          class="empty"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          .
-        </button>
+    <button
+      type="button"
+      class="control-button control-empty"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      .
+    </button>
 
-        <button
-          class="empty"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          .
-        </button>
+    <button
+      type="button"
+      class="control-button control-empty"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      .
+    </button>
 
-        <button
-          class="empty"
-          tabindex="-1"
-          aria-hidden="true"
-        >
-          .
-        </button>
-
-      </div>
-
-    </div>
+    <button
+      type="button"
+      class="control-button control-empty"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      .
+    </button>
 
   </div>
 
   <!-- =====================================================
-       SIDE PANEL
+       HELP
        ====================================================== -->
 
-  <aside class="side">
+  <div class="help">
 
-    <div class="side-card">
+    <strong>PC:</strong>
+    WASD / Arrow Keys
+    &nbsp; • &nbsp;
 
-      <div class="side-heading">
-        CONTROLS
-      </div>
+    <strong>ESC:</strong>
+    Menu
+    &nbsp; • &nbsp;
 
-      <div class="side-row">
-        <span>Move Up</span>
-        <strong>
-          <span class="key">W</span>
-          <span class="key">↑</span>
-        </strong>
-      </div>
+    <strong>SPACE:</strong>
+    Pause
 
-      <div class="side-row">
-        <span>Move Down</span>
-        <strong>
-          <span class="key">S</span>
-          <span class="key">↓</span>
-        </strong>
-      </div>
+    <br>
 
-      <div class="side-row">
-        <span>Move Left</span>
-        <strong>
-          <span class="key">A</span>
-          <span class="key">←</span>
-        </strong>
-      </div>
-
-      <div class="side-row">
-        <span>Move Right</span>
-        <strong>
-          <span class="key">D</span>
-          <span class="key">→</span>
-        </strong>
-      </div>
-
-      <div class="side-row">
-        <span>Pause</span>
-        <strong>
-          <span class="key">SPACE</span>
-        </strong>
-      </div>
-
-      <div class="side-row">
-        <span>Menu</span>
-        <strong>
-          <span class="key">ESC</span>
-        </strong>
-      </div>
-
-    </div>
-
-    <div class="side-card">
-
-      <div class="side-heading">
-        D-PAD
-      </div>
-
-      <div class="control-preview">
-
-        <span class="empty preview-key">.</span>
-
-        <span class="preview-key">▲</span>
-
-        <span class="empty preview-key">.</span>
-
-        <span class="preview-key">◀</span>
-
-        <span class="preview-key">▼</span>
-
-        <span class="preview-key">▶</span>
-
-        <span class="empty preview-key">.</span>
-
-        <span class="empty preview-key">.</span>
-
-        <span class="empty preview-key">.</span>
-
-      </div>
-
-    </div>
-
-    <div class="side-card">
-
-      <div class="side-heading">
-        GAME RULES
-      </div>
-
-      <div class="side-row">
-        <span>Food</span>
-        <strong>+10</strong>
-      </div>
-
-      <div class="side-row">
-        <span>Growth</span>
-        <strong>+1</strong>
-      </div>
-
-      <div class="side-row">
-        <span>Walls</span>
-        <strong>DEADLY</strong>
-      </div>
-
-      <div class="side-row">
-        <span>Body</span>
-        <strong>DEADLY</strong>
-      </div>
-
-    </div>
-
-  </aside>
-
-</section>
-
-<!-- =======================================================
-     INFORMATION
-     ======================================================== -->
-
-<section class="info-grid">
-
-  <div class="info-card">
-
-    <div class="info-icon">
-      🐍
-    </div>
-
-    <div class="info-title">
-      CLASSIC GAMEPLAY
-    </div>
-
-    <div class="info-text">
-      Simple Snake rules with smooth responsive
-      controls and a modern arcade interface.
-    </div>
+    <strong>PHONE / TABLET:</strong>
+    Touch buttons or swipe on the board
 
   </div>
-
-  <div class="info-card">
-
-    <div class="info-icon">
-      📱
-    </div>
-
-    <div class="info-title">
-      PLAY ANYWHERE
-    </div>
-
-    <div class="info-text">
-      Designed for phones, tablets, laptops and
-      desktop screens in portrait or landscape.
-    </div>
-
-  </div>
-
-  <div class="info-card">
-
-    <div class="info-icon">
-      ⚡
-    </div>
-
-    <div class="info-title">
-      GET FASTER
-    </div>
-
-    <div class="info-text">
-      The snake gradually becomes faster as your
-      score increases. There is no displayed level system.
-    </div>
-
-  </div>
-
-</section>
-
-<footer class="footer">
-  VOID SNAKE • CLASSIC ARCADE • PLAY THE VOID
-</footer>
 
 </main>
-
-</div>
-
-<!-- =======================================================
-     HOW TO PLAY MODAL
-     ======================================================== -->
-
-<div
-  class="modal hidden"
-  id="howModal"
->
-
-  <div class="modal-card">
-
-    <div class="modal-head">
-
-      <div class="modal-title">
-        HOW TO PLAY
-      </div>
-
-      <button
-        class="close-button"
-        data-close="howModal"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>OBJECTIVE</h3>
-
-      <p>
-        Control the snake and collect the glowing food.
-        Every food item increases your score and makes
-        the snake longer.
-      </p>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>AVOID</h3>
-
-      <p>
-        Do not hit the outside walls and do not run
-        the snake into its own body.
-      </p>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>COMPUTER</h3>
-
-      <p>
-        Use W A S D or the Arrow Keys to move.
-        Press SPACE to pause or resume.
-        Press ESC to open the menu.
-      </p>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>PHONE / TABLET</h3>
-
-      <p>
-        Use the on-screen D-pad or swipe directly
-        across the game board.
-      </p>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>SCORING</h3>
-
-      <p>
-        Each food item gives 10 points and increases
-        the snake length by one segment.
-      </p>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- =======================================================
-     SETTINGS MODAL
-     ======================================================== -->
-
-<div
-  class="modal hidden"
-  id="settingsModal"
->
-
-  <div class="modal-card">
-
-    <div class="modal-head">
-
-      <div class="modal-title">
-        SETTINGS
-      </div>
-
-      <button
-        class="close-button"
-        data-close="settingsModal"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div class="setting-row">
-
-      <span>
-        SOUND EFFECTS
-      </span>
-
-      <button
-        class="toggle on"
-        id="soundToggle"
-        aria-label="Toggle sound"
-      ></button>
-
-    </div>
-
-    <div class="setting-row">
-
-      <span>
-        VIBRATION
-      </span>
-
-      <button
-        class="toggle on"
-        id="vibrationToggle"
-        aria-label="Toggle vibration"
-      ></button>
-
-    </div>
-
-    <div class="setting-row">
-
-      <span>
-        FULLSCREEN
-      </span>
-
-      <button
-        class="button"
-        id="fullscreenButton"
-      >
-        ENTER
-      </button>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>DISPLAY</h3>
-
-      <p>
-        VOID SNAKE automatically adapts its layout,
-        game board and controls to your screen size.
-      </p>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- =======================================================
-     ABOUT MODAL
-     ======================================================== -->
-
-<div
-  class="modal hidden"
-  id="aboutModal"
->
-
-  <div class="modal-card">
-
-    <div class="modal-head">
-
-      <div class="modal-title">
-        ABOUT
-      </div>
-
-      <button
-        class="close-button"
-        data-close="aboutModal"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>VOID SNAKE</h3>
-
-      <p>
-        A modern responsive take on the classic Snake
-        arcade game. Built as a lightweight single-page
-        gaming experience.
-      </p>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>PLATFORM</h3>
-
-      <p>
-        Designed for Android, iPhone, iPad, tablets,
-        laptops and desktop computers.
-      </p>
-
-    </div>
-
-    <div class="modal-section">
-
-      <h3>VERSION</h3>
-
-      <p>
-        VOID SNAKE • Classic Arcade Edition
-      </p>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- =======================================================
-     MOBILE MENU
-     ======================================================== -->
-
-<div
-  class="modal hidden"
-  id="mobileMenuModal"
->
-
-  <div class="modal-card">
-
-    <div class="modal-head">
-
-      <div class="modal-title">
-        VOID MENU
-      </div>
-
-      <button
-        class="close-button"
-        data-close="mobileMenuModal"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div class="panel-buttons">
-
-      <button
-        class="button primary"
-        id="mobilePlay"
-      >
-        ▶ PLAY
-      </button>
-
-      <button
-        class="button"
-        id="mobileHow"
-      >
-        ? HOW TO PLAY
-      </button>
-
-      <button
-        class="button"
-        id="mobileSettings"
-      >
-        ⚙ SETTINGS
-      </button>
-
-      <button
-        class="button"
-        id="mobileAbout"
-      >
-        ℹ ABOUT
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
 
 <script>
 "use strict";
@@ -2774,19 +1653,11 @@ let nextDirection = {
 
 let score = 0;
 
-let bestScore = 0;
-
 let speed = START_SPEED;
 
 let timer = null;
 
 let state = "menu";
-
-let soundEnabled = true;
-
-let vibrationEnabled = true;
-
-let audioContext = null;
 
 let touchStartX = 0;
 
@@ -2802,17 +1673,14 @@ const scoreValue =
 const lengthValue =
   document.getElementById("lengthValue");
 
-const bestValue =
-  document.getElementById("bestValue");
+const menuButton =
+  document.getElementById("menuButton");
 
-const statusValue =
-  document.getElementById("statusValue");
+const statusDot =
+  document.getElementById("statusDot");
 
 const statusText =
   document.getElementById("statusText");
-
-const liveDot =
-  document.getElementById("liveDot");
 
 const startOverlay =
   document.getElementById("startOverlay");
@@ -2826,133 +1694,67 @@ const pauseOverlay =
 const gameOverOverlay =
   document.getElementById("gameOverOverlay");
 
+const startPlayButton =
+  document.getElementById("startPlayButton");
+
+const menuPlayButton =
+  document.getElementById("menuPlayButton");
+
+const menuPauseButton =
+  document.getElementById("menuPauseButton");
+
+const menuResumeButton =
+  document.getElementById("menuResumeButton");
+
+const menuExitButton =
+  document.getElementById("menuExitButton");
+
+const pauseResumeButton =
+  document.getElementById("pauseResumeButton");
+
+const pauseMenuButton =
+  document.getElementById("pauseMenuButton");
+
+const pauseExitButton =
+  document.getElementById("pauseExitButton");
+
+const gameOverPlayButton =
+  document.getElementById("gameOverPlayButton");
+
+const gameOverMenuButton =
+  document.getElementById("gameOverMenuButton");
+
+const gameOverExitButton =
+  document.getElementById("gameOverExitButton");
+
 const finalScore =
   document.getElementById("finalScore");
 
 const finalLength =
   document.getElementById("finalLength");
 
-const finalBest =
-  document.getElementById("finalBest");
-
-/* =========================================================
-   AUDIO
-   ========================================================= */
-
-function beep(
-  frequency = 440,
-  duration = .06
-) {
-
-  if (!soundEnabled) {
-    return;
-  }
-
-  try {
-
-    if (!audioContext) {
-
-      audioContext =
-        new (
-          window.AudioContext ||
-          window.webkitAudioContext
-        )();
-
-    }
-
-    const oscillator =
-      audioContext.createOscillator();
-
-    const gain =
-      audioContext.createGain();
-
-    oscillator.type = "square";
-
-    oscillator.frequency.value =
-      frequency;
-
-    gain.gain.setValueAtTime(
-      .045,
-      audioContext.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-      .001,
-      audioContext.currentTime + duration
-    );
-
-    oscillator.connect(gain);
-
-    gain.connect(
-      audioContext.destination
-    );
-
-    oscillator.start();
-
-    oscillator.stop(
-      audioContext.currentTime + duration
-    );
-
-  } catch (error) {
-    /* Audio unavailable. */
-  }
-
-}
-
-function vibrate(pattern = 25) {
-
-  if (
-    vibrationEnabled &&
-    navigator.vibrate
-  ) {
-
-    navigator.vibrate(pattern);
-
-  }
-
-}
-
 /* =========================================================
    STATUS
    ========================================================= */
 
-function setStatus(
-  text,
-  live = false
-) {
+function setStatus(text, live) {
 
-  statusText.textContent =
-    text;
+  statusText.textContent = text;
 
-  statusValue.textContent =
-    text;
+  if (live) {
 
-  liveDot.classList.toggle(
-    "live",
-    live
-  );
+    statusDot.classList.add("live");
+
+  } else {
+
+    statusDot.classList.remove("live");
+
+  }
 
 }
 
 /* =========================================================
-   HUD
-   ========================================================= */
-
-function updateHUD() {
-
-  scoreValue.textContent =
-    String(score);
-
-  lengthValue.textContent =
-    String(snake.length);
-
-  bestValue.textContent =
-    String(bestScore);
-
-}
-
-/* =========================================================
-   SNAKE
+   CREATE SNAKE
    ========================================================= */
 
 function createSnake() {
@@ -2973,7 +1775,7 @@ function createSnake() {
 
     snake.push({
       x: x - i,
-      y
+      y: y
     });
 
   }
@@ -2981,7 +1783,7 @@ function createSnake() {
 }
 
 /* =========================================================
-   RESET
+   RESET GAME
    ========================================================= */
 
 function resetGame() {
@@ -3013,7 +1815,7 @@ function resetGame() {
 }
 
 /* =========================================================
-   START
+   START GAME
    ========================================================= */
 
 function startGame() {
@@ -3022,14 +1824,12 @@ function startGame() {
 
   state = "playing";
 
-  hideOverlays();
+  hideAllOverlays();
 
   setStatus(
     "PLAYING",
     true
   );
-
-  beep(520, .07);
 
   startTimer();
 
@@ -3043,11 +1843,10 @@ function startTimer() {
 
   stopTimer();
 
-  timer =
-    setInterval(
-      gameTick,
-      speed
-    );
+  timer = setInterval(
+    gameTick,
+    speed
+  );
 
 }
 
@@ -3073,18 +1872,16 @@ function gameTick() {
     return;
   }
 
-  direction =
-    nextDirection;
+  direction = nextDirection;
 
-  const head =
-    snake[0];
+  const head = snake[0];
 
   const newHead = {
     x: head.x + direction.x,
     y: head.y + direction.y
   };
 
-  /* WALL */
+  /* WALL COLLISION */
 
   if (
     newHead.x < 0 ||
@@ -3102,6 +1899,11 @@ function gameTick() {
   const eating =
     newHead.x === food.x &&
     newHead.y === food.y;
+
+  /*
+   * When not eating, the final tail
+   * moves away during this tick.
+   */
 
   const collisionLimit =
     eating
@@ -3127,13 +1929,16 @@ function gameTick() {
 
   }
 
-  snake.unshift(
-    newHead
-  );
+  snake.unshift(newHead);
 
   if (eating) {
 
     score += 10;
+
+    /*
+     * No visible level system.
+     * The game gradually becomes faster.
+     */
 
     speed =
       Math.max(
@@ -3144,10 +1949,6 @@ function gameTick() {
       );
 
     placeFood();
-
-    beep(720, .08);
-
-    vibrate(20);
 
     startTimer();
 
@@ -3171,7 +1972,14 @@ function placeFood() {
 
   let valid = false;
 
-  while (!valid) {
+  let attempts = 0;
+
+  while (
+    !valid &&
+    attempts < 1000
+  ) {
+
+    attempts++;
 
     food.x =
       Math.floor(
@@ -3214,31 +2022,55 @@ function setDirection(name) {
     return;
   }
 
-  let next = null;
+  let newDirection = null;
 
   if (name === "up") {
-    next = { x: 0, y: -1 };
+
+    newDirection = {
+      x: 0,
+      y: -1
+    };
+
   }
 
   if (name === "down") {
-    next = { x: 0, y: 1 };
+
+    newDirection = {
+      x: 0,
+      y: 1
+    };
+
   }
 
   if (name === "left") {
-    next = { x: -1, y: 0 };
+
+    newDirection = {
+      x: -1,
+      y: 0
+    };
+
   }
 
   if (name === "right") {
-    next = { x: 1, y: 0 };
+
+    newDirection = {
+      x: 1,
+      y: 0
+    };
+
   }
 
-  if (!next) {
+  if (!newDirection) {
     return;
   }
 
+  /*
+   * Prevent immediate reverse.
+   */
+
   if (
-    next.x === -direction.x &&
-    next.y === -direction.y
+    newDirection.x === -direction.x &&
+    newDirection.y === -direction.y
   ) {
 
     return;
@@ -3246,7 +2078,7 @@ function setDirection(name) {
   }
 
   nextDirection =
-    next;
+    newDirection;
 
 }
 
@@ -3264,7 +2096,7 @@ function pauseGame() {
 
   state = "paused";
 
-  hideOverlays();
+  hideAllOverlays();
 
   pauseOverlay.classList.remove(
     "hidden"
@@ -3274,8 +2106,6 @@ function pauseGame() {
     "PAUSED",
     false
   );
-
-  beep(300, .06);
 
 }
 
@@ -3291,7 +2121,7 @@ function resumeGame() {
 
   state = "playing";
 
-  hideOverlays();
+  hideAllOverlays();
 
   setStatus(
     "PLAYING",
@@ -3300,59 +2130,148 @@ function resumeGame() {
 
   startTimer();
 
-  beep(520, .06);
-
 }
 
 /* =========================================================
    MENU
    ========================================================= */
 
-function openGameMenu() {
+function openMenu() {
+
+  /*
+   * Start screen.
+   */
+
+  if (state === "menu") {
+
+    hideAllOverlays();
+
+    startOverlay.classList.remove(
+      "hidden"
+    );
+
+    setStatus(
+      "READY",
+      false
+    );
+
+    return;
+
+  }
+
+  /*
+   * If playing, pause automatically
+   * before showing the menu.
+   */
 
   if (state === "playing") {
 
-    pauseGame();
+    stopTimer();
+
+    state = "paused";
+
+    setStatus(
+      "PAUSED",
+      false
+    );
 
   }
 
-  if (
-    state === "gameover" ||
-    state === "menu"
-  ) {
+  /*
+   * If game over, menu is still available.
+   */
 
-    state = "menu";
+  if (state === "gameover") {
+
+    setStatus(
+      "GAME OVER",
+      false
+    );
 
   }
 
-  hideOverlays();
+  hideAllOverlays();
 
   menuOverlay.classList.remove(
     "hidden"
   );
 
-  setStatus(
-    state === "paused"
-      ? "PAUSED"
-      : "MENU",
-    false
-  );
+  updateMenu();
 
 }
 
 /* =========================================================
-   HOME
+   UPDATE MENU
    ========================================================= */
 
-function goHome() {
+function updateMenu() {
+
+  /*
+   * PAUSED
+   */
+
+  if (state === "paused") {
+
+    menuPlayButton.style.display =
+      "none";
+
+    menuPauseButton.style.display =
+      "none";
+
+    menuResumeButton.style.display =
+      "block";
+
+    return;
+
+  }
+
+  /*
+   * PLAYING
+   */
+
+  if (state === "playing") {
+
+    menuPlayButton.style.display =
+      "none";
+
+    menuPauseButton.style.display =
+      "block";
+
+    menuResumeButton.style.display =
+      "none";
+
+    return;
+
+  }
+
+  /*
+   * MENU / GAME OVER
+   */
+
+  menuPlayButton.style.display =
+    "block";
+
+  menuPauseButton.style.display =
+    "none";
+
+  menuResumeButton.style.display =
+    "none";
+
+}
+
+/* =========================================================
+   EXIT
+   ========================================================= */
+
+function exitGame() {
 
   stopTimer();
 
-  state = "menu";
-
   resetGame();
 
-  hideOverlays();
+  state = "menu";
+
+  hideAllOverlays();
 
   startOverlay.classList.remove(
     "hidden"
@@ -3366,16 +2285,6 @@ function goHome() {
 }
 
 /* =========================================================
-   RESTART
-   ========================================================= */
-
-function restartGame() {
-
-  startGame();
-
-}
-
-/* =========================================================
    GAME OVER
    ========================================================= */
 
@@ -3385,25 +2294,13 @@ function gameOver() {
 
   state = "gameover";
 
-  if (score > bestScore) {
-
-    bestScore =
-      score;
-
-  }
-
   finalScore.textContent =
     String(score);
 
   finalLength.textContent =
     String(snake.length);
 
-  finalBest.textContent =
-    String(bestScore);
-
-  updateHUD();
-
-  hideOverlays();
+  hideAllOverlays();
 
   gameOverOverlay.classList.remove(
     "hidden"
@@ -3414,23 +2311,15 @@ function gameOver() {
     false
   );
 
-  beep(180, .16);
-
-  vibrate([
-    50,
-    50,
-    100
-  ]);
-
   draw();
 
 }
 
 /* =========================================================
-   OVERLAYS
+   HIDE ALL OVERLAYS
    ========================================================= */
 
-function hideOverlays() {
+function hideAllOverlays() {
 
   startOverlay.classList.add(
     "hidden"
@@ -3451,36 +2340,16 @@ function hideOverlays() {
 }
 
 /* =========================================================
-   MODALS
+   HUD
    ========================================================= */
 
-function openModal(id) {
+function updateHUD() {
 
-  const modal =
-    document.getElementById(id);
+  scoreValue.textContent =
+    String(score);
 
-  if (modal) {
-
-    modal.classList.remove(
-      "hidden"
-    );
-
-  }
-
-}
-
-function closeModal(id) {
-
-  const modal =
-    document.getElementById(id);
-
-  if (modal) {
-
-    modal.classList.add(
-      "hidden"
-    );
-
-  }
+  lengthValue.textContent =
+    String(snake.length);
 
 }
 
@@ -3514,27 +2383,64 @@ function draw() {
 function drawBackground() {
 
   const gradient =
-    ctx.createRadialGradient(
-      canvas.width / 2,
-      canvas.height / 2,
-      20,
-      canvas.width / 2,
-      canvas.height / 2,
-      canvas.width * .7
+    ctx.createLinearGradient(
+      0,
+      0,
+      canvas.width,
+      canvas.height
     );
 
   gradient.addColorStop(
     0,
-    "#07130c"
+    "#06182d"
+  );
+
+  gradient.addColorStop(
+    0.5,
+    "#020b18"
   );
 
   gradient.addColorStop(
     1,
-    "#020604"
+    "#01050c"
   );
 
   ctx.fillStyle =
     gradient;
+
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  /*
+   * Soft blue center glow.
+   */
+
+  const glow =
+    ctx.createRadialGradient(
+      canvas.width * 0.5,
+      canvas.height * 0.45,
+      0,
+      canvas.width * 0.5,
+      canvas.height * 0.45,
+      canvas.width * 0.65
+    );
+
+  glow.addColorStop(
+    0,
+    "rgba(30,105,165,0.10)"
+  );
+
+  glow.addColorStop(
+    1,
+    "rgba(0,0,0,0)"
+  );
+
+  ctx.fillStyle =
+    glow;
 
   ctx.fillRect(
     0,
@@ -3552,7 +2458,7 @@ function drawBackground() {
 function drawGrid() {
 
   ctx.strokeStyle =
-    "rgba(130,160,140,.055)";
+    "rgba(86,154,201,0.075)";
 
   ctx.lineWidth = 1;
 
@@ -3614,8 +2520,31 @@ function drawFood() {
   const radius =
     Math.max(
       5,
-      CELL * .27
+      CELL * 0.27
     );
+
+  /*
+   * Outer glow.
+   */
+
+  ctx.beginPath();
+
+  ctx.arc(
+    x,
+    y,
+    radius * 1.8,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fillStyle =
+    "rgba(255,214,107,0.07)";
+
+  ctx.fill();
+
+  /*
+   * Main food.
+   */
 
   ctx.beginPath();
 
@@ -3628,16 +2557,35 @@ function drawFood() {
   );
 
   ctx.fillStyle =
-    "#f1d46c";
+    "#ffd66b";
 
   ctx.shadowColor =
-    "rgba(241,212,108,.7)";
+    "rgba(255,214,107,0.65)";
 
-  ctx.shadowBlur = 16;
+  ctx.shadowBlur = 14;
 
   ctx.fill();
 
   ctx.shadowBlur = 0;
+
+  /*
+   * Highlight.
+   */
+
+  ctx.beginPath();
+
+  ctx.arc(
+    x - radius * 0.28,
+    y - radius * 0.28,
+    radius * 0.25,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fillStyle =
+    "#fff5c9";
+
+  ctx.fill();
 
 }
 
@@ -3665,39 +2613,83 @@ function drawSnake() {
     const padding =
       Math.max(
         2,
-        CELL * .08
+        CELL * 0.075
       );
 
     const size =
-      CELL -
-      padding * 2;
+      CELL - padding * 2;
+
+    /*
+     * HEAD
+     */
 
     if (i === 0) {
 
+      const headGradient =
+        ctx.createLinearGradient(
+          x,
+          y,
+          x + CELL,
+          y + CELL
+        );
+
+      headGradient.addColorStop(
+        0,
+        "#a5e7ff"
+      );
+
+      headGradient.addColorStop(
+        0.5,
+        "#62c7f5"
+      );
+
+      headGradient.addColorStop(
+        1,
+        "#3288c2"
+      );
+
       ctx.fillStyle =
-        "#8dffb1";
+        headGradient;
 
       ctx.shadowColor =
-        "rgba(141,255,177,.4)";
+        "rgba(88,195,255,0.35)";
 
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 10;
 
-    } else {
+    }
 
-      const shade =
+    /*
+     * BODY
+     */
+
+    else {
+
+      const fade =
         Math.max(
-          80,
-          170 - i * 2
+          0.35,
+          1 - i / Math.max(
+            snake.length * 1.5,
+            10
+          )
+        );
+
+      const r =
+        Math.floor(
+          35 + 40 * fade
+        );
+
+      const g =
+        Math.floor(
+          111 + 70 * fade
+        );
+
+      const b =
+        Math.floor(
+          163 + 65 * fade
         );
 
       ctx.fillStyle =
-        "rgb(" +
-        Math.floor(shade * .43) +
-        "," +
-        shade +
-        "," +
-        Math.floor(shade * .60) +
-        ")";
+        `rgb(${r},${g},${b})`;
 
       ctx.shadowBlur = 0;
 
@@ -3711,13 +2703,44 @@ function drawSnake() {
       size,
       Math.max(
         3,
-        CELL * .12
+        CELL * 0.12
       )
     );
 
     ctx.fill();
 
     ctx.shadowBlur = 0;
+
+    /*
+     * Body highlight.
+     */
+
+    if (i !== 0) {
+
+      ctx.strokeStyle =
+        "rgba(160,220,255,0.10)";
+
+      ctx.lineWidth = 1;
+
+      roundedRect(
+        ctx,
+        x + padding + 0.5,
+        y + padding + 0.5,
+        size - 1,
+        size - 1,
+        Math.max(
+          3,
+          CELL * 0.12
+        )
+      );
+
+      ctx.stroke();
+
+    }
+
+    /*
+     * HEAD EYES
+     */
 
     if (i === 0) {
 
@@ -3736,15 +2759,12 @@ function drawSnake() {
    EYES
    ========================================================= */
 
-function drawEyes(
-  x,
-  y
-) {
+function drawEyes(x, y) {
 
   const radius =
     Math.max(
       2,
-      CELL * .07
+      CELL * 0.065
     );
 
   let x1;
@@ -3754,40 +2774,70 @@ function drawEyes(
 
   if (direction.x === 1) {
 
-    x1 = x + CELL * .68;
-    y1 = y + CELL * .30;
+    x1 =
+      x + CELL * 0.68;
 
-    x2 = x + CELL * .68;
-    y2 = y + CELL * .70;
+    y1 =
+      y + CELL * 0.30;
 
-  } else if (direction.x === -1) {
+    x2 =
+      x + CELL * 0.68;
 
-    x1 = x + CELL * .32;
-    y1 = y + CELL * .30;
+    y2 =
+      y + CELL * 0.70;
 
-    x2 = x + CELL * .32;
-    y2 = y + CELL * .70;
+  }
 
-  } else if (direction.y === -1) {
+  else if (direction.x === -1) {
 
-    x1 = x + CELL * .30;
-    y1 = y + CELL * .32;
+    x1 =
+      x + CELL * 0.32;
 
-    x2 = x + CELL * .70;
-    y2 = y + CELL * .32;
+    y1 =
+      y + CELL * 0.30;
 
-  } else {
+    x2 =
+      x + CELL * 0.32;
 
-    x1 = x + CELL * .30;
-    y1 = y + CELL * .68;
+    y2 =
+      y + CELL * 0.70;
 
-    x2 = x + CELL * .70;
-    y2 = y + CELL * .68;
+  }
+
+  else if (direction.y === -1) {
+
+    x1 =
+      x + CELL * 0.30;
+
+    y1 =
+      y + CELL * 0.32;
+
+    x2 =
+      x + CELL * 0.70;
+
+    y2 =
+      y + CELL * 0.32;
+
+  }
+
+  else {
+
+    x1 =
+      x + CELL * 0.30;
+
+    y1 =
+      y + CELL * 0.68;
+
+    x2 =
+      x + CELL * 0.70;
+
+    y2 =
+      y + CELL * 0.68;
 
   }
 
   ctx.fillStyle =
-    "#061008";
+    "#02101c";
 
   ctx.beginPath();
 
@@ -3816,7 +2866,7 @@ function drawEyes(
 }
 
 /* =========================================================
-   ROUNDED RECT
+   ROUNDED RECTANGLE
    ========================================================= */
 
 function roundedRect(
@@ -3889,46 +2939,27 @@ document.addEventListener(
     const key =
       event.key.toLowerCase();
 
+    /*
+     * ESC = MENU
+     */
+
     if (event.key === "Escape") {
 
       event.preventDefault();
 
-      closeAllModals();
-
-      if (
-        state === "playing" ||
-        state === "paused"
-      ) {
-
-        openGameMenu();
-
-      }
+      openMenu();
 
       return;
 
     }
 
-    if (event.code === "Space") {
-
-      event.preventDefault();
-
-      if (state === "playing") {
-
-        pauseGame();
-
-      } else if (state === "paused") {
-
-        resumeGame();
-
-      }
-
-      return;
-
-    }
+    /*
+     * UP
+     */
 
     if (
-      key === "w" ||
-      key === "arrowup"
+      key === "arrowup" ||
+      key === "w"
     ) {
 
       event.preventDefault();
@@ -3939,9 +2970,13 @@ document.addEventListener(
 
     }
 
+    /*
+     * DOWN
+     */
+
     if (
-      key === "s" ||
-      key === "arrowdown"
+      key === "arrowdown" ||
+      key === "s"
     ) {
 
       event.preventDefault();
@@ -3952,9 +2987,13 @@ document.addEventListener(
 
     }
 
+    /*
+     * LEFT
+     */
+
     if (
-      key === "a" ||
-      key === "arrowleft"
+      key === "arrowleft" ||
+      key === "a"
     ) {
 
       event.preventDefault();
@@ -3965,14 +3004,42 @@ document.addEventListener(
 
     }
 
+    /*
+     * RIGHT
+     */
+
     if (
-      key === "d" ||
-      key === "arrowright"
+      key === "arrowright" ||
+      key === "d"
     ) {
 
       event.preventDefault();
 
       setDirection("right");
+
+      return;
+
+    }
+
+    /*
+     * SPACE = PAUSE / RESUME
+     */
+
+    if (event.code === "Space") {
+
+      event.preventDefault();
+
+      if (state === "playing") {
+
+        pauseGame();
+
+      }
+
+      else if (state === "paused") {
+
+        resumeGame();
+
+      }
 
     }
 
@@ -3980,493 +3047,175 @@ document.addEventListener(
 );
 
 /* =========================================================
-   TOP NAV
+   MENU BUTTON
    ========================================================= */
 
-document
-  .querySelectorAll("[data-nav]")
-  .forEach(function(button) {
+menuButton.addEventListener(
+  "click",
+  function() {
 
-    button.addEventListener(
-      "click",
-      function() {
+    openMenu();
 
-        const nav =
-          button.dataset.nav;
+  }
+);
 
-        if (nav === "home") {
+/* =========================================================
+   START PLAY
+   ========================================================= */
 
-          goHome();
+startPlayButton.addEventListener(
+  "click",
+  function() {
 
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
+    startGame();
 
-        }
+  }
+);
 
-        if (nav === "howto") {
+/* =========================================================
+   MENU PLAY
+   ========================================================= */
 
-          openModal("howModal");
+menuPlayButton.addEventListener(
+  "click",
+  function() {
 
-        }
+    startGame();
 
-        if (nav === "settings") {
+  }
+);
 
-          openModal("settingsModal");
+/* =========================================================
+   MENU PAUSE
+   ========================================================= */
 
-        }
+menuPauseButton.addEventListener(
+  "click",
+  function() {
 
-        if (nav === "about") {
+    pauseGame();
 
-          openModal("aboutModal");
+    openMenu();
 
-        }
+  }
+);
 
-      }
+/* =========================================================
+   MENU RESUME
+   ========================================================= */
+
+menuResumeButton.addEventListener(
+  "click",
+  function() {
+
+    resumeGame();
+
+  }
+);
+
+/* =========================================================
+   MENU EXIT
+   ========================================================= */
+
+menuExitButton.addEventListener(
+  "click",
+  function() {
+
+    exitGame();
+
+  }
+);
+
+/* =========================================================
+   PAUSE RESUME
+   ========================================================= */
+
+pauseResumeButton.addEventListener(
+  "click",
+  function() {
+
+    resumeGame();
+
+  }
+);
+
+/* =========================================================
+   PAUSE MENU
+   ========================================================= */
+
+pauseMenuButton.addEventListener(
+  "click",
+  function() {
+
+    openMenu();
+
+  }
+);
+
+/* =========================================================
+   PAUSE EXIT
+   ========================================================= */
+
+pauseExitButton.addEventListener(
+  "click",
+  function() {
+
+    exitGame();
+
+  }
+);
+
+/* =========================================================
+   GAME OVER PLAY AGAIN
+   ========================================================= */
+
+gameOverPlayButton.addEventListener(
+  "click",
+  function() {
+
+    startGame();
+
+  }
+);
+
+/* =========================================================
+   GAME OVER MENU
+   ========================================================= */
+
+gameOverMenuButton.addEventListener(
+  "click",
+  function() {
+
+    state = "menu";
+
+    stopTimer();
+
+    hideAllOverlays();
+
+    startOverlay.classList.remove(
+      "hidden"
     );
 
-  });
-
-/* =========================================================
-   BRAND
-   ========================================================= */
-
-document
-  .getElementById("brandHome")
-  .addEventListener(
-    "click",
-    goHome
-  );
-
-/* =========================================================
-   HERO BUTTONS
-   ========================================================= */
-
-document
-  .getElementById("heroPlay")
-  .addEventListener(
-    "click",
-    startGame
-  );
-
-document
-  .getElementById("heroHow")
-  .addEventListener(
-    "click",
-    function() {
-      openModal("howModal");
-    }
-  );
-
-document
-  .getElementById("heroSettings")
-  .addEventListener(
-    "click",
-    function() {
-      openModal("settingsModal");
-    }
-  );
-
-/* =========================================================
-   GAME BUTTONS
-   ========================================================= */
-
-document
-  .getElementById("startButton")
-  .addEventListener(
-    "click",
-    startGame
-  );
-
-document
-  .getElementById("startHowButton")
-  .addEventListener(
-    "click",
-    function() {
-      openModal("howModal");
-    }
-  );
-
-document
-  .getElementById("pauseButton")
-  .addEventListener(
-    "click",
-    function() {
-
-      if (state === "playing") {
-
-        pauseGame();
-
-      } else if (state === "paused") {
-
-        resumeGame();
-
-      }
-
-    }
-  );
-
-document
-  .getElementById("restartButton")
-  .addEventListener(
-    "click",
-    restartGame
-  );
-
-document
-  .getElementById("gameMenuButton")
-  .addEventListener(
-    "click",
-    openGameMenu
-  );
-
-/* =========================================================
-   MENU BUTTONS
-   ========================================================= */
-
-document
-  .getElementById("menuResume")
-  .addEventListener(
-    "click",
-    function() {
-
-      if (state === "paused") {
-
-        resumeGame();
-
-      } else {
-
-        startGame();
-
-      }
-
-    }
-  );
-
-document
-  .getElementById("menuRestart")
-  .addEventListener(
-    "click",
-    restartGame
-  );
-
-document
-  .getElementById("menuHow")
-  .addEventListener(
-    "click",
-    function() {
-      openModal("howModal");
-    }
-  );
-
-document
-  .getElementById("menuSettings")
-  .addEventListener(
-    "click",
-    function() {
-      openModal("settingsModal");
-    }
-  );
-
-document
-  .getElementById("menuHome")
-  .addEventListener(
-    "click",
-    goHome
-  );
-
-/* =========================================================
-   PAUSE
-   ========================================================= */
-
-document
-  .getElementById("pauseResume")
-  .addEventListener(
-    "click",
-    resumeGame
-  );
-
-document
-  .getElementById("pauseRestart")
-  .addEventListener(
-    "click",
-    restartGame
-  );
-
-document
-  .getElementById("pauseMenu")
-  .addEventListener(
-    "click",
-    openGameMenu
-  );
-
-/* =========================================================
-   GAME OVER
-   ========================================================= */
-
-document
-  .getElementById("playAgain")
-  .addEventListener(
-    "click",
-    startGame
-  );
-
-document
-  .getElementById("gameOverHome")
-  .addEventListener(
-    "click",
-    goHome
-  );
-
-/* =========================================================
-   MODAL CLOSE
-   ========================================================= */
-
-document
-  .querySelectorAll("[data-close]")
-  .forEach(function(button) {
-
-    button.addEventListener(
-      "click",
-      function() {
-
-        closeModal(
-          button.dataset.close
-        );
-
-      }
+    setStatus(
+      "READY",
+      false
     );
 
-  });
-
-function closeAllModals() {
-
-  document
-    .querySelectorAll(".modal")
-    .forEach(function(modal) {
-
-      modal.classList.add(
-        "hidden"
-      );
-
-    });
-
-}
+  }
+);
 
 /* =========================================================
-   SOUND
+   GAME OVER EXIT
    ========================================================= */
 
-function updateSoundUI() {
+gameOverExitButton.addEventListener(
+  "click",
+  function() {
 
-  const toggle =
-    document.getElementById(
-      "soundToggle"
-    );
+    exitGame();
 
-  toggle.classList.toggle(
-    "on",
-    soundEnabled
-  );
-
-  document
-    .getElementById("soundButton")
-    .textContent =
-      soundEnabled
-        ? "🔊"
-        : "🔇";
-
-}
-
-document
-  .getElementById("soundToggle")
-  .addEventListener(
-    "click",
-    function() {
-
-      soundEnabled =
-        !soundEnabled;
-
-      updateSoundUI();
-
-      if (soundEnabled) {
-
-        beep(600, .06);
-
-      }
-
-    }
-  );
-
-document
-  .getElementById("soundButton")
-  .addEventListener(
-    "click",
-    function() {
-
-      soundEnabled =
-        !soundEnabled;
-
-      updateSoundUI();
-
-      if (soundEnabled) {
-
-        beep(600, .06);
-
-      }
-
-    }
-  );
-
-/* =========================================================
-   VIBRATION
-   ========================================================= */
-
-document
-  .getElementById("vibrationToggle")
-  .addEventListener(
-    "click",
-    function() {
-
-      vibrationEnabled =
-        !vibrationEnabled;
-
-      this.classList.toggle(
-        "on",
-        vibrationEnabled
-      );
-
-      if (vibrationEnabled) {
-
-        vibrate(30);
-
-      }
-
-    }
-  );
-
-/* =========================================================
-   FULLSCREEN
-   ========================================================= */
-
-document
-  .getElementById("fullscreenButton")
-  .addEventListener(
-    "click",
-    async function() {
-
-      try {
-
-        if (!document.fullscreenElement) {
-
-          await document.documentElement
-            .requestFullscreen();
-
-          this.textContent =
-            "EXIT";
-
-        } else {
-
-          await document.exitFullscreen();
-
-          this.textContent =
-            "ENTER";
-
-        }
-
-      } catch (error) {
-
-        this.textContent =
-          "UNAVAILABLE";
-
-      }
-
-    }
-  );
-
-/* =========================================================
-   MOBILE MENU
-   ========================================================= */
-
-document
-  .getElementById("mobileMenuButton")
-  .addEventListener(
-    "click",
-    function() {
-
-      openModal(
-        "mobileMenuModal"
-      );
-
-    }
-  );
-
-document
-  .getElementById("mobilePlay")
-  .addEventListener(
-    "click",
-    function() {
-
-      closeModal(
-        "mobileMenuModal"
-      );
-
-      startGame();
-
-    }
-  );
-
-document
-  .getElementById("mobileHow")
-  .addEventListener(
-    "click",
-    function() {
-
-      closeModal(
-        "mobileMenuModal"
-      );
-
-      openModal(
-        "howModal"
-      );
-
-    }
-  );
-
-document
-  .getElementById("mobileSettings")
-  .addEventListener(
-    "click",
-    function() {
-
-      closeModal(
-        "mobileMenuModal"
-      );
-
-      openModal(
-        "settingsModal"
-      );
-
-    }
-  );
-
-document
-  .getElementById("mobileAbout")
-  .addEventListener(
-    "click",
-    function() {
-
-      closeModal(
-        "mobileMenuModal"
-      );
-
-      openModal(
-        "aboutModal"
-      );
-
-    }
-  );
+  }
+);
 
 /* =========================================================
    TOUCH D-PAD
@@ -4476,25 +3225,32 @@ document
   .querySelectorAll(
     "[data-direction]"
   )
-  .forEach(function(button) {
+  .forEach(
+    function(button) {
 
-    button.addEventListener(
-      "pointerdown",
-      function(event) {
+      button.addEventListener(
+        "pointerdown",
+        function(event) {
 
-        event.preventDefault();
+          event.preventDefault();
 
-        setDirection(
-          button.dataset.direction
-        );
+          const directionName =
+            button.getAttribute(
+              "data-direction"
+            );
 
-      }
-    );
+          setDirection(
+            directionName
+          );
 
-  });
+        }
+      );
+
+    }
+  );
 
 /* =========================================================
-   SWIPE
+   SWIPE START
    ========================================================= */
 
 canvas.addEventListener(
@@ -4503,7 +3259,7 @@ canvas.addEventListener(
 
     if (
       !event.touches ||
-      !event.touches.length
+      event.touches.length === 0
     ) {
 
       return;
@@ -4522,13 +3278,17 @@ canvas.addEventListener(
   }
 );
 
+/* =========================================================
+   SWIPE END
+   ========================================================= */
+
 canvas.addEventListener(
   "touchend",
   function(event) {
 
     if (
       !event.changedTouches ||
-      !event.changedTouches.length
+      event.changedTouches.length === 0
     ) {
 
       return;
@@ -4552,8 +3312,13 @@ canvas.addEventListener(
     const absY =
       Math.abs(dy);
 
+    const minimumSwipe = 25;
+
     if (
-      Math.max(absX, absY) < 25
+      Math.max(
+        absX,
+        absY
+      ) < minimumSwipe
     ) {
 
       return;
@@ -4568,7 +3333,9 @@ canvas.addEventListener(
           : "left"
       );
 
-    } else {
+    }
+
+    else {
 
       setDirection(
         dy > 0
@@ -4584,6 +3351,10 @@ canvas.addEventListener(
   }
 );
 
+/* =========================================================
+   PREVENT BOARD TOUCH SCROLL
+   ========================================================= */
+
 canvas.addEventListener(
   "touchmove",
   function(event) {
@@ -4597,31 +3368,21 @@ canvas.addEventListener(
 );
 
 /* =========================================================
-   CLOSE MODALS WHEN CLICKING BACKDROP
+   POINTER CANCEL SAFETY
    ========================================================= */
 
-document
-  .querySelectorAll(".modal")
-  .forEach(function(modal) {
+window.addEventListener(
+  "blur",
+  function() {
 
-    modal.addEventListener(
-      "click",
-      function(event) {
+    if (state === "playing") {
 
-        if (
-          event.target === modal
-        ) {
+      pauseGame();
 
-          modal.classList.add(
-            "hidden"
-          );
+    }
 
-        }
-
-      }
-    );
-
-  });
+  }
+);
 
 /* =========================================================
    INITIALIZE
@@ -4631,7 +3392,7 @@ resetGame();
 
 state = "menu";
 
-hideOverlays();
+hideAllOverlays();
 
 startOverlay.classList.remove(
   "hidden"
@@ -4641,8 +3402,6 @@ setStatus(
   "READY",
   false
 );
-
-updateSoundUI();
 
 </script>
 
