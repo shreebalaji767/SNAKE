@@ -13,7 +13,6 @@
 <title>VOID SNAKE 3D</title>
 
 <style>
-
 /* =========================================================
    RESET
 ========================================================= */
@@ -40,10 +39,7 @@ body{
     position:fixed;
     inset:0;
     color:#fff;
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 /* =========================================================
@@ -93,10 +89,10 @@ body{
     justify-content:center;
 
     padding:
-        max(20px,env(safe-area-inset-top))
-        max(20px,env(safe-area-inset-right))
-        max(20px,env(safe-area-inset-bottom))
-        max(20px,env(safe-area-inset-left));
+        max(14px,env(safe-area-inset-top))
+        max(14px,env(safe-area-inset-right))
+        max(14px,env(safe-area-inset-bottom))
+        max(14px,env(safe-area-inset-left));
 
     background:
         radial-gradient(
@@ -116,14 +112,13 @@ body{
 ========================================================= */
 
 .menu-card{
-    width:min(520px,94vw);
-    max-width:520px;
+    width:min(500px,calc(100vw - 28px));
+    max-height:calc(100vh - 28px);
 
-    max-height:90dvh;
     overflow:auto;
 
     padding:
-        clamp(22px,5vw,36px)
+        clamp(20px,5vw,34px)
         clamp(16px,5vw,28px);
 
     border:
@@ -137,117 +132,95 @@ body{
 
     backdrop-filter:blur(20px);
 
-    -webkit-backdrop-filter:blur(20px);
-
     box-shadow:
         0 30px 100px rgba(0,0,0,.65),
         inset 0 1px 0 rgba(255,255,255,.08);
 
     text-align:center;
 
-    overflow-x:hidden;
+    scrollbar-width:none;
+}
+
+.menu-card::-webkit-scrollbar{
+    display:none;
 }
 
 /* =========================================================
    LOGO
-   ALWAYS CONTAINED INSIDE MENU CARD
 ========================================================= */
 
 .logo{
     width:100%;
     max-width:100%;
 
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-
     overflow:hidden;
 
-    text-align:center;
+    font-size:
+        clamp(30px,9vw,64px);
+
+    line-height:.95;
 
     font-weight:1000;
 
-    line-height:.9;
+    letter-spacing:
+        clamp(.025em,1.2vw,.07em);
 
-    letter-spacing:.025em;
+    white-space:nowrap;
+
+    text-align:center;
 
     text-shadow:
         0 0 12px rgba(0,255,170,.75),
         0 0 40px rgba(0,255,170,.28);
 }
 
-.logo-main{
-    display:block;
-
-    width:100%;
-    max-width:100%;
-
-    overflow:hidden;
-
-    white-space:nowrap;
-
-    font-size:
-        clamp(
-            27px,
-            9vw,
-            64px
-        );
-
-    line-height:.9;
-
-    letter-spacing:.025em;
-}
-
-.logo-main span{
+.logo span{
     color:#00ffaa;
 }
 
 .logo-small{
-    margin-top:10px;
+    margin-top:8px;
 
     font-size:
-        clamp(
-            13px,
-            3vw,
-            22px
-        );
+        clamp(18px,4.5vw,30px);
 
     line-height:1;
 
-    letter-spacing:.30em;
+    letter-spacing:.28em;
 
     color:#91fff0;
 }
 
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
 .subtitle{
-    margin:
-        clamp(14px,3vw,20px)
-        0
-        clamp(18px,4vw,25px);
+    margin:18px 0 23px;
 
     color:#81949e;
 
-    font-size:
-        clamp(9px,2vw,11px);
+    font-size:10px;
 
     font-weight:700;
 
-    letter-spacing:.18em;
+    letter-spacing:
+        clamp(.12em,2vw,.25em);
 }
 
 /* =========================================================
-   MENU BUTTONS
+   BUTTONS
 ========================================================= */
 
 .menu-buttons{
     display:grid;
-    gap:11px;
+    gap:10px;
 }
 
 .menu-btn{
     width:100%;
-    min-height:58px;
+
+    min-height:56px;
 
     border:
         1px solid
@@ -264,7 +237,7 @@ body{
 
     color:#fff;
 
-    font-size:15px;
+    font-size:14px;
     font-weight:900;
 
     letter-spacing:.10em;
@@ -274,9 +247,9 @@ body{
     touch-action:manipulation;
 
     transition:
-        transform .15s ease,
-        border-color .15s ease,
-        box-shadow .15s ease;
+        transform .12s ease,
+        border-color .12s ease,
+        box-shadow .12s ease;
 }
 
 .menu-btn:hover{
@@ -311,11 +284,11 @@ body{
 }
 
 /* =========================================================
-   CONTROL HELP
+   CONTROL INFO
 ========================================================= */
 
 .control-info{
-    margin-top:18px;
+    margin-top:17px;
 
     padding:12px;
 
@@ -330,7 +303,7 @@ body{
 
     color:#74858e;
 
-    font-size:11px;
+    font-size:10px;
 
     line-height:1.7;
 }
@@ -339,14 +312,18 @@ body{
     color:#a8babf;
 }
 
+/* =========================================================
+   VERSION
+========================================================= */
+
 .version{
-    margin-top:18px;
+    margin-top:17px;
 
     color:#53636b;
 
-    font-size:10px;
+    font-size:9px;
 
-    letter-spacing:.14em;
+    letter-spacing:.13em;
 }
 
 /* =========================================================
@@ -362,10 +339,10 @@ body{
     z-index:20;
 
     padding:
-        max(14px,env(safe-area-inset-top))
-        max(14px,env(safe-area-inset-right))
+        max(12px,env(safe-area-inset-top))
+        max(12px,env(safe-area-inset-right))
         0
-        max(14px,env(safe-area-inset-left));
+        max(12px,env(safe-area-inset-left));
 
     pointer-events:none;
 }
@@ -386,9 +363,9 @@ body{
 }
 
 .stat{
-    min-width:78px;
+    min-width:70px;
 
-    padding:8px 11px;
+    padding:7px 10px;
 
     border:
         1px solid
@@ -409,23 +386,23 @@ body{
 
     color:#6d7d86;
 
-    font-size:8px;
+    font-size:7px;
 
     font-weight:900;
 
-    letter-spacing:.15em;
+    letter-spacing:.14em;
 }
 
 .stat-value{
-    font-size:16px;
+    font-size:15px;
     font-weight:1000;
 }
 
 .hud-pause{
     pointer-events:auto;
 
-    width:48px;
-    height:48px;
+    width:46px;
+    height:46px;
 
     border:
         1px solid
@@ -438,7 +415,7 @@ body{
 
     color:#fff;
 
-    font-size:18px;
+    font-size:17px;
 
     cursor:pointer;
 
@@ -448,7 +425,7 @@ body{
 }
 
 /* =========================================================
-   TOUCH CONTROL LAYER
+   TOUCH CONTROLS
 ========================================================= */
 
 #touchControls{
@@ -471,21 +448,21 @@ body{
 
     bottom:
         max(
-            22px,
+            20px,
             env(safe-area-inset-bottom)
         );
 
     width:
         clamp(
             105px,
-            22vw,
+            24vw,
             145px
         );
 
     height:
         clamp(
             105px,
-            22vw,
+            24vw,
             145px
         );
 
@@ -498,8 +475,8 @@ body{
     background:
         radial-gradient(
             circle,
-            rgba(0,255,170,.09),
-            rgba(0,0,0,.27)
+            rgba(0,255,170,.10),
+            rgba(0,0,0,.32)
         );
 
     box-shadow:
@@ -508,13 +485,9 @@ body{
 
     backdrop-filter:blur(10px);
 
-    -webkit-backdrop-filter:blur(10px);
-
     pointer-events:auto;
 
     touch-action:none;
-
-    user-select:none;
 }
 
 #joystick-ring{
@@ -535,16 +508,16 @@ body{
 
     width:
         clamp(
-            48px,
-            9vw,
-            64px
+            46px,
+            10vw,
+            62px
         );
 
     height:
         clamp(
-            48px,
-            9vw,
-            64px
+            46px,
+            10vw,
+            62px
         );
 
     left:50%;
@@ -591,7 +564,7 @@ body{
 }
 
 /* =========================================================
-   RIGHT TOUCH BUTTONS
+   TOUCH ACTION BUTTONS
 ========================================================= */
 
 #actionControls{
@@ -605,7 +578,7 @@ body{
 
     bottom:
         max(
-            22px,
+            20px,
             env(safe-area-inset-bottom)
         );
 
@@ -617,22 +590,22 @@ body{
 
     gap:11px;
 
-    pointer-events:none;
+    pointer-events:auto;
 }
 
 .touch-btn{
     width:
         clamp(
             58px,
-            13vw,
-            78px
+            14vw,
+            76px
         );
 
     height:
         clamp(
             58px,
-            13vw,
-            78px
+            14vw,
+            76px
         );
 
     border-radius:50%;
@@ -642,11 +615,11 @@ body{
         rgba(255,255,255,.16);
 
     background:
-        rgba(0,0,0,.35);
+        rgba(0,0,0,.40);
 
     color:#fff;
 
-    font-size:11px;
+    font-size:10px;
 
     font-weight:1000;
 
@@ -654,13 +627,9 @@ body{
 
     backdrop-filter:blur(10px);
 
-    -webkit-backdrop-filter:blur(10px);
-
     pointer-events:auto;
 
     touch-action:none;
-
-    user-select:none;
 }
 
 .touch-btn.boost{
@@ -688,9 +657,9 @@ body{
 ========================================================= */
 
 .overlay-card{
-    width:min(440px,92vw);
+    width:min(440px,calc(100vw - 28px));
 
-    padding:30px 24px;
+    padding:28px 22px;
 
     border:
         1px solid
@@ -703,8 +672,6 @@ body{
 
     backdrop-filter:blur(20px);
 
-    -webkit-backdrop-filter:blur(20px);
-
     box-shadow:
         0 30px 100px
         rgba(0,0,0,.68);
@@ -716,17 +683,19 @@ body{
     margin-bottom:8px;
 
     font-size:
-        clamp(30px,7vw,42px);
+        clamp(28px,7vw,42px);
 
     font-weight:1000;
 
-    letter-spacing:.05em;
+    letter-spacing:.04em;
 }
 
 .overlay-text{
-    margin-bottom:24px;
+    margin-bottom:22px;
 
     color:#82939b;
+
+    font-size:13px;
 }
 
 .overlay-buttons{
@@ -742,7 +711,7 @@ body{
     position:fixed;
 
     left:50%;
-    bottom:15px;
+    bottom:14px;
 
     transform:translateX(-50%);
 
@@ -763,7 +732,7 @@ body{
 
     font-size:9px;
 
-    letter-spacing:.08em;
+    letter-spacing:.07em;
 
     backdrop-filter:blur(8px);
 
@@ -771,48 +740,29 @@ body{
 }
 
 /* =========================================================
-   TOUCH DEVICE ONLY
-========================================================= */
-
-/*
-   CSS alone cannot reliably identify every touchscreen.
-   JavaScript below adds .touch-device to <body>.
-*/
-
-body:not(.touch-device) #touchControls{
-    display:none !important;
-}
-
-body.touch-device #desktopControls{
-    display:none !important;
-}
-
-/* =========================================================
    RESPONSIVE
 ========================================================= */
+
+@media(max-width:800px){
+
+    #desktopControls{
+        display:none;
+    }
+}
 
 @media(max-width:600px){
 
     .menu-card{
-        width:94vw;
-
-        padding:
-            25px 17px;
-
         border-radius:22px;
     }
 
     .menu-btn{
-        min-height:53px;
-    }
-
-    .control-info{
-        font-size:10px;
+        min-height:52px;
     }
 
     .stat{
-        min-width:68px;
-        padding:7px 9px;
+        min-width:64px;
+        padding:6px 8px;
     }
 
     .stat-value{
@@ -820,13 +770,13 @@ body.touch-device #desktopControls{
     }
 
     .hud-pause{
-        width:44px;
-        height:44px;
+        width:43px;
+        height:43px;
     }
 }
 
 /* =========================================================
-   SMALL LANDSCAPE PHONES
+   SMALL LANDSCAPE
 ========================================================= */
 
 @media(
@@ -836,29 +786,32 @@ body.touch-device #desktopControls{
 ){
 
     .menu-card{
-        max-height:94dvh;
-        padding:17px;
+        max-height:94vh;
+        padding:15px 18px;
     }
 
-    .logo-main{
-        font-size:38px;
+    .logo{
+        font-size:
+            clamp(28px,8vh,42px);
     }
 
     .logo-small{
-        margin-top:6px;
-        font-size:13px;
+        font-size:16px;
+        margin-top:4px;
     }
 
     .subtitle{
-        margin:8px 0 12px;
+        margin:7px 0 10px;
     }
 
     .menu-buttons{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:
+            repeat(3,1fr);
     }
 
     .menu-btn{
-        min-height:44px;
+        min-height:43px;
+        font-size:11px;
     }
 
     .control-info{
@@ -866,18 +819,18 @@ body.touch-device #desktopControls{
     }
 
     #joystick{
-        width:96px;
-        height:96px;
+        width:94px;
+        height:94px;
     }
 
     #joystick-knob{
-        width:43px;
-        height:43px;
+        width:42px;
+        height:42px;
     }
 
     .touch-btn{
-        width:56px;
-        height:56px;
+        width:54px;
+        height:54px;
     }
 }
 
@@ -887,42 +840,40 @@ body.touch-device #desktopControls{
 
 @media(max-width:360px){
 
-    .logo-main{
-        font-size:27px;
+    .logo{
+        font-size:29px;
+        letter-spacing:.02em;
     }
 
     .logo-small{
-        font-size:12px;
+        font-size:17px;
     }
 
     .stat{
-        min-width:62px;
+        min-width:59px;
     }
 
     .stat-label{
-        font-size:7px;
+        font-size:6px;
     }
 
     .stat-value{
-        font-size:13px;
+        font-size:12px;
     }
 }
 
 /* =========================================================
-   REDUCED MOTION
+   TOUCH DEVICE CLASS
 ========================================================= */
 
-@media(prefers-reduced-motion:reduce){
-
-    *,
-    *::before,
-    *::after{
-        scroll-behavior:auto !important;
-        transition:none !important;
-        animation:none !important;
-    }
+body.touch-device #desktopControls{
+    display:none;
 }
 
+/* Hide touch controls when not a touch device */
+body.non-touch-device #touchControls{
+    display:none !important;
+}
 </style>
 
 <!-- =========================================================
@@ -949,23 +900,16 @@ body.touch-device #desktopControls{
      MAIN MENU
 ========================================================= -->
 
-<section
-    id="mainMenu"
-    class="screen"
->
+<section id="mainMenu" class="screen">
 
     <div class="menu-card">
 
         <div class="logo">
-
-            <div class="logo-main">
-                VOID<span>SNAKE</span>
-            </div>
+            VOID<span>SNAKE</span>
 
             <div class="logo-small">
                 3D
             </div>
-
         </div>
 
         <div class="subtitle">
@@ -974,24 +918,15 @@ body.touch-device #desktopControls{
 
         <div class="menu-buttons">
 
-            <button
-                id="playBtn"
-                class="menu-btn primary"
-            >
+            <button id="playBtn" class="menu-btn primary">
                 ▶ PLAY
             </button>
 
-            <button
-                id="menuPauseBtn"
-                class="menu-btn"
-            >
+            <button id="menuPauseBtn" class="menu-btn">
                 ⏸ PAUSE / RESUME
             </button>
 
-            <button
-                id="exitBtn"
-                class="menu-btn danger"
-            >
+            <button id="exitBtn" class="menu-btn danger">
                 ✕ EXIT
             </button>
 
@@ -999,16 +934,26 @@ body.touch-device #desktopControls{
 
         <div class="control-info">
 
-            <strong>PC:</strong>
-            WASD / Arrow Keys • Shift Boost
+            <strong>MOVE:</strong>
+            W / ↑ Forward &nbsp; • &nbsp;
+            S / ↓ Backward
             <br>
 
-            <strong>Touch:</strong>
-            Joystick / Swipe • BOOST
+            <strong>TURN:</strong>
+            A / ← Left &nbsp; • &nbsp;
+            D / → Right
             <br>
 
-            <strong>Controller:</strong>
-            Left Stick • A / Start
+            <strong>BOOST:</strong>
+            Shift / BOOST Button
+            <br>
+
+            <strong>TOUCH:</strong>
+            Joystick / Swipe
+            <br>
+
+            <strong>CONTROLLER:</strong>
+            Left Stick
 
         </div>
 
@@ -1024,10 +969,7 @@ body.touch-device #desktopControls{
      HUD
 ========================================================= -->
 
-<div
-    id="hud"
-    class="hidden"
->
+<div id="hud" class="hidden">
 
     <div class="hud-row">
 
@@ -1038,10 +980,7 @@ body.touch-device #desktopControls{
                     SCORE
                 </span>
 
-                <span
-                    id="scoreValue"
-                    class="stat-value"
-                >
+                <span id="scoreValue" class="stat-value">
                     0
                 </span>
             </div>
@@ -1051,10 +990,7 @@ body.touch-device #desktopControls{
                     LENGTH
                 </span>
 
-                <span
-                    id="lengthValue"
-                    class="stat-value"
-                >
+                <span id="lengthValue" class="stat-value">
                     8
                 </span>
             </div>
@@ -1064,20 +1000,14 @@ body.touch-device #desktopControls{
                     SPEED
                 </span>
 
-                <span
-                    id="speedValue"
-                    class="stat-value"
-                >
+                <span id="speedValue" class="stat-value">
                     5.2
                 </span>
             </div>
 
         </div>
 
-        <button
-            id="pauseHudBtn"
-            class="hud-pause"
-        >
+        <button id="pauseHudBtn" class="hud-pause">
             Ⅱ
         </button>
 
@@ -1089,10 +1019,7 @@ body.touch-device #desktopControls{
      TOUCH CONTROLS
 ========================================================= -->
 
-<div
-    id="touchControls"
-    class="hidden"
->
+<div id="touchControls" class="hidden">
 
     <div id="joystick">
 
@@ -1108,17 +1035,11 @@ body.touch-device #desktopControls{
 
     <div id="actionControls">
 
-        <button
-            id="boostBtn"
-            class="touch-btn boost"
-        >
+        <button id="boostBtn" class="touch-btn boost">
             BOOST
         </button>
 
-        <button
-            id="touchPauseBtn"
-            class="touch-btn"
-        >
+        <button id="touchPauseBtn" class="touch-btn">
             Ⅱ
         </button>
 
@@ -1127,17 +1048,14 @@ body.touch-device #desktopControls{
 </div>
 
 <div id="desktopControls">
-    WASD / ARROWS • SHIFT BOOST • SPACE PAUSE
+    W / ↑ FORWARD • S / ↓ BACK • A / ← LEFT • D / → RIGHT • SHIFT BOOST • SPACE PAUSE
 </div>
 
 <!-- =========================================================
      PAUSE
 ========================================================= -->
 
-<section
-    id="pauseScreen"
-    class="screen hidden"
->
+<section id="pauseScreen" class="screen hidden">
 
     <div class="overlay-card">
 
@@ -1151,24 +1069,15 @@ body.touch-device #desktopControls{
 
         <div class="overlay-buttons">
 
-            <button
-                id="resumeBtn"
-                class="menu-btn primary"
-            >
+            <button id="resumeBtn" class="menu-btn primary">
                 ▶ RESUME
             </button>
 
-            <button
-                id="restartBtn"
-                class="menu-btn"
-            >
+            <button id="restartBtn" class="menu-btn">
                 ↻ RESTART
             </button>
 
-            <button
-                id="pauseExitBtn"
-                class="menu-btn danger"
-            >
+            <button id="pauseExitBtn" class="menu-btn danger">
                 ✕ EXIT
             </button>
 
@@ -1182,10 +1091,7 @@ body.touch-device #desktopControls{
      GAME OVER
 ========================================================= -->
 
-<section
-    id="gameOverScreen"
-    class="screen hidden"
->
+<section id="gameOverScreen" class="screen hidden">
 
     <div class="overlay-card">
 
@@ -1213,17 +1119,11 @@ body.touch-device #desktopControls{
 
         <div class="overlay-buttons">
 
-            <button
-                id="playAgainBtn"
-                class="menu-btn primary"
-            >
+            <button id="playAgainBtn" class="menu-btn primary">
                 ▶ PLAY AGAIN
             </button>
 
-            <button
-                id="gameOverExitBtn"
-                class="menu-btn danger"
-            >
+            <button id="gameOverExitBtn" class="menu-btn danger">
                 ✕ EXIT
             </button>
 
@@ -1236,6 +1136,31 @@ body.touch-device #desktopControls{
 <script type="module">
 
 import * as THREE from "three";
+
+/* =========================================================
+   DEVICE DETECTION
+========================================================= */
+
+const hasTouch =
+    (
+        "ontouchstart" in window
+    ) ||
+    (
+        navigator.maxTouchPoints > 0
+    ) ||
+    (
+        navigator.msMaxTouchPoints > 0
+    );
+
+document.body.classList.toggle(
+    "touch-device",
+    hasTouch
+);
+
+document.body.classList.toggle(
+    "non-touch-device",
+    !hasTouch
+);
 
 /* =========================================================
    DOM
@@ -1281,91 +1206,6 @@ const boostBtn =
     document.getElementById("boostBtn");
 
 /* =========================================================
-   TOUCH DEVICE DETECTION
-========================================================= */
-
-function detectTouchDevice(){
-
-    const touchPoints =
-        navigator.maxTouchPoints ||
-        navigator.msMaxTouchPoints ||
-        0;
-
-    const coarsePointer =
-        window.matchMedia &&
-        window.matchMedia(
-            "(pointer: coarse)"
-        ).matches;
-
-    const touchEvent =
-        "ontouchstart" in window;
-
-    return (
-        touchPoints > 0 ||
-        coarsePointer ||
-        touchEvent
-    );
-}
-
-let isTouchDevice =
-    detectTouchDevice();
-
-function updateTouchUI(){
-
-    isTouchDevice =
-        detectTouchDevice();
-
-    document.body.classList.toggle(
-        "touch-device",
-        isTouchDevice
-    );
-
-    if(
-        isTouchDevice &&
-        !hud.classList.contains("hidden")
-    ){
-
-        touchControls.classList.remove(
-            "hidden"
-        );
-
-    }else{
-
-        touchControls.classList.add(
-            "hidden"
-        );
-    }
-}
-
-updateTouchUI();
-
-if(window.matchMedia){
-
-    const pointerQuery =
-        window.matchMedia(
-            "(pointer: coarse)"
-        );
-
-    if(
-        pointerQuery.addEventListener
-    ){
-
-        pointerQuery.addEventListener(
-            "change",
-            updateTouchUI
-        );
-
-    }else if(
-        pointerQuery.addListener
-    ){
-
-        pointerQuery.addListener(
-            updateTouchUI
-        );
-    }
-}
-
-/* =========================================================
    THREE.JS
 ========================================================= */
 
@@ -1399,7 +1239,12 @@ renderer.outputColorSpace =
 renderer.toneMapping =
     THREE.ACESFilmicToneMapping;
 
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure =
+    1.1;
+
+/* =========================================================
+   SCENE
+========================================================= */
 
 const scene =
     new THREE.Scene();
@@ -1519,7 +1364,7 @@ grid.position.y = .015;
 scene.add(grid);
 
 /* =========================================================
-   WORLD OBJECTS
+   ROCKS
 ========================================================= */
 
 function createRock(
@@ -1542,14 +1387,16 @@ function createRock(
 
     rock.position.set(
         x,
-        scale*.5,
+        scale * .5,
         z
     );
 
     rock.scale.set(
         scale,
-        scale *
-        (.6 + Math.random()*.5),
+        scale * (
+            .6 +
+            Math.random() * .5
+        ),
         scale
     );
 
@@ -1574,9 +1421,14 @@ for(let i=0;i<85;i++){
         (Math.random()-.5) *
         (WORLD_SIZE-15),
 
-        .35 + Math.random()*1.8
+        .35 +
+        Math.random()*1.8
     );
 }
+
+/* =========================================================
+   TREES
+========================================================= */
 
 function createTree(
     x,
@@ -1601,6 +1453,7 @@ function createTree(
         );
 
     trunk.position.y = 1.2;
+
     trunk.castShadow = true;
 
     group.add(trunk);
@@ -1619,6 +1472,7 @@ function createTree(
         );
 
     leaves.position.y = 3.1;
+
     leaves.castShadow = true;
 
     group.add(leaves);
@@ -1652,7 +1506,7 @@ const snakeGroup =
 
 scene.add(snakeGroup);
 
-let snakeSegments = [];
+const snakeSegments = [];
 
 const START_LENGTH = 8;
 
@@ -1822,7 +1676,7 @@ const tongue =
     );
 
 tongue.rotation.x =
-    Math.PI/2;
+    Math.PI / 2;
 
 tongue.position.set(
     0,
@@ -1832,9 +1686,7 @@ tongue.position.set(
 
 headGroup.add(tongue);
 
-snakeGroup.add(
-    headGroup
-);
+snakeGroup.add(headGroup);
 
 /* =========================================================
    BODY
@@ -1853,7 +1705,7 @@ function createBodySegment(
             ),
             new THREE.MeshStandardMaterial({
                 color:
-                    index%2===0
+                    index % 2 === 0
                     ? 0x00a96f
                     : 0x00885c,
                 roughness:.48,
@@ -1872,38 +1724,31 @@ function createBodySegment(
     return segment;
 }
 
-function createInitialSnake(){
+for(
+    let i=0;
+    i<START_LENGTH;
+    i++
+){
 
-    snakeSegments = [];
+    const position =
+        new THREE.Vector3(
+            0,
+            .58,
+            i * bodySpacing
+        );
 
-    for(
-        let i=0;
-        i<START_LENGTH;
-        i++
-    ){
+    const mesh =
+        createBodySegment(i);
 
-        const position =
-            new THREE.Vector3(
-                0,
-                .58,
-                i*bodySpacing
-            );
+    mesh.position.copy(position);
 
-        const mesh =
-            createBodySegment(i);
+    snakeGroup.add(mesh);
 
-        mesh.position.copy(position);
-
-        snakeGroup.add(mesh);
-
-        snakeSegments.push({
-            mesh,
-            position
-        });
-    }
+    snakeSegments.push({
+        mesh,
+        position
+    });
 }
-
-createInitialSnake();
 
 /* =========================================================
    FOOD
@@ -1916,8 +1761,6 @@ function createFood(){
     if(food){
 
         scene.remove(food);
-
-        food = null;
     }
 
     const group =
@@ -1990,11 +1833,7 @@ function pickupEffect(
     position
 ){
 
-    for(
-        let i=0;
-        i<18;
-        i++
-    ){
+    for(let i=0;i<18;i++){
 
         const particle =
             new THREE.Mesh(
@@ -2011,9 +1850,7 @@ function pickupEffect(
                 })
             );
 
-        particle.position.copy(
-            position
-        );
+        particle.position.copy(position);
 
         particle.userData.velocity =
             new THREE.Vector3(
@@ -2049,7 +1886,7 @@ function updateParticles(dt){
         );
 
         p.userData.velocity.y -=
-            5*dt;
+            5 * dt;
 
         p.scale.setScalar(
             Math.max(
@@ -2059,14 +1896,10 @@ function updateParticles(dt){
         );
 
         if(
-            p.userData.life<=0
+            p.userData.life <= 0
         ){
 
             scene.remove(p);
-
-            p.material.dispose();
-
-            p.geometry.dispose();
 
             particles.splice(i,1);
         }
@@ -2119,11 +1952,16 @@ function showGame(){
 
     hud.classList.remove("hidden");
 
+    if(hasTouch){
+
+        touchControls.classList.remove(
+            "hidden"
+        );
+    }
+
     pauseScreen.classList.add("hidden");
 
     gameOverScreen.classList.add("hidden");
-
-    updateTouchUI();
 }
 
 function showMenu(){
@@ -2179,27 +2017,44 @@ function resetGame(){
     headGroup.rotation.y = 0;
 
     /*
-       Remove all old body meshes.
-       This fixes duplicate snake bodies
-       after restarting.
+       Remove extra grown segments.
     */
 
-    for(
-        const segment of snakeSegments
+    while(
+        snakeSegments.length >
+        START_LENGTH
     ){
 
-        snakeGroup.remove(
-            segment.mesh
+        const extra =
+            snakeSegments.pop();
+
+        scene.remove(
+            extra.mesh
         );
-
-        segment.mesh.geometry.dispose();
-
-        segment.mesh.material.dispose();
     }
 
-    snakeSegments = [];
+    for(
+        let i=0;
+        i<snakeSegments.length;
+        i++
+    ){
 
-    createInitialSnake();
+        const p =
+            new THREE.Vector3(
+                0,
+                .58,
+                i * bodySpacing
+            );
+
+        snakeSegments[i]
+            .position
+            .copy(p);
+
+        snakeSegments[i]
+            .mesh
+            .position
+            .copy(p);
+    }
 
     createFood();
 
@@ -2218,8 +2073,6 @@ function resetGame(){
     );
 
     resetJoystick();
-
-    setBoost(false);
 }
 
 /* =========================================================
@@ -2245,8 +2098,7 @@ function pauseGame(){
 
     if(
         !running ||
-        dead ||
-        paused
+        dead
     ){
         return;
     }
@@ -2255,19 +2107,18 @@ function pauseGame(){
 
     boosting = false;
 
-    setBoost(false);
-
     pauseScreen.classList.remove(
         "hidden"
     );
+
+    resetJoystick();
+
+    updateHUD();
 }
 
 function resumeGame(){
 
-    if(
-        dead ||
-        !running
-    ){
+    if(dead){
         return;
     }
 
@@ -2301,7 +2152,9 @@ function togglePause(){
 function exitGame(){
 
     running = false;
+
     paused = false;
+
     dead = false;
 
     boosting = false;
@@ -2312,8 +2165,20 @@ function exitGame(){
 }
 
 /* =========================================================
-   DIRECTION
+   MOVEMENT CONTROL
 ========================================================= */
+
+/*
+    CONTROL MAP:
+
+    W / UP       = FORWARD
+    S / DOWN     = BACKWARD
+    A / LEFT     = LEFT
+    D / RIGHT    = RIGHT
+
+    Forward is always the snake's
+    current forward direction.
+*/
 
 function setDirection(
     x,
@@ -2321,8 +2186,8 @@ function setDirection(
 ){
 
     if(
-        Math.abs(x) +
-        Math.abs(z) < .01
+        Math.abs(x)+Math.abs(z)
+        < .01
     ){
         return;
     }
@@ -2335,19 +2200,17 @@ function setDirection(
         ).normalize();
 
     /*
-       Prevent immediate 180°
-       reverse direction.
+       Prevent direct 180-degree turn.
     */
 
     if(
-        next.dot(direction) < -.82
+        next.dot(direction)
+        < -.82
     ){
         return;
     }
 
-    desiredDirection.copy(
-        next
-    );
+    desiredDirection.copy(next);
 }
 
 /* =========================================================
@@ -2361,63 +2224,118 @@ window.addEventListener(
         const key =
             event.key.toLowerCase();
 
+        const controlKeys = [
+            "w",
+            "a",
+            "s",
+            "d",
+            "arrowup",
+            "arrowdown",
+            "arrowleft",
+            "arrowright",
+            "shift",
+            " ",
+            "escape"
+        ];
+
         if(
-            [
-                "arrowup",
-                "arrowdown",
-                "arrowleft",
-                "arrowright",
-                "w",
-                "a",
-                "s",
-                "d",
-                " ",
-                "shift",
-                "escape"
-            ].includes(key)
+            controlKeys.includes(key)
         ){
 
             event.preventDefault();
         }
 
+        /*
+           FORWARD
+           W / UP
+        */
+
         if(
-            key==="w" ||
-            key==="arrowup"
+            key === "w" ||
+            key === "arrowup"
         ){
 
-            setDirection(0,-1);
+            setDirection(
+                0,
+                -1
+            );
 
-        }else if(
-            key==="s" ||
-            key==="arrowdown"
+            return;
+        }
+
+        /*
+           BACKWARD
+           S / DOWN
+        */
+
+        if(
+            key === "s" ||
+            key === "arrowdown"
         ){
 
-            setDirection(0,1);
+            setDirection(
+                0,
+                1
+            );
 
-        }else if(
-            key==="a" ||
-            key==="arrowleft"
+            return;
+        }
+
+        /*
+           LEFT
+           A / LEFT
+        */
+
+        if(
+            key === "a" ||
+            key === "arrowleft"
         ){
 
-            setDirection(-1,0);
+            setDirection(
+                -1,
+                0
+            );
 
-        }else if(
-            key==="d" ||
-            key==="arrowright"
+            return;
+        }
+
+        /*
+           RIGHT
+           D / RIGHT
+        */
+
+        if(
+            key === "d" ||
+            key === "arrowright"
         ){
 
-            setDirection(1,0);
+            setDirection(
+                1,
+                0
+            );
 
-        }else if(
-            key===" " ||
-            key==="escape"
+            return;
+        }
+
+        /*
+           PAUSE
+        */
+
+        if(
+            key === " " ||
+            key === "escape"
         ){
 
             togglePause();
 
-        }else if(
-            key==="shift"
-        ){
+            return;
+        }
+
+        /*
+           BOOST
+        */
+
+        if(key === "shift"){
 
             setBoost(true);
         }
@@ -2433,7 +2351,8 @@ window.addEventListener(
     event => {
 
         if(
-            event.key.toLowerCase()==="shift"
+            event.key.toLowerCase()
+            === "shift"
         ){
 
             setBoost(false);
@@ -2442,13 +2361,10 @@ window.addEventListener(
 );
 
 /* =========================================================
-   MOUSE / SWIPE
+   MOUSE CONTROL
 ========================================================= */
 
-let canvasPointerActive = false;
-
-let swipeStartX = 0;
-let swipeStartY = 0;
+let mouseDown = false;
 
 function mouseDirection(
     clientX,
@@ -2456,30 +2372,30 @@ function mouseDirection(
 ){
 
     const centerX =
-        window.innerWidth/2;
+        window.innerWidth / 2;
 
     const centerY =
-        window.innerHeight/2;
+        window.innerHeight / 2;
 
     const dx =
-        clientX-centerX;
+        clientX - centerX;
 
     const dy =
-        clientY-centerY;
+        clientY - centerY;
 
     if(
-        Math.hypot(dx,dy)<35
+        Math.hypot(dx,dy) < 45
     ){
         return;
     }
 
     if(
-        Math.abs(dx)>
+        Math.abs(dx) >
         Math.abs(dy)
     ){
 
         setDirection(
-            dx>0 ? 1 : -1,
+            dx > 0 ? 1 : -1,
             0
         );
 
@@ -2487,55 +2403,36 @@ function mouseDirection(
 
         setDirection(
             0,
-            dy>0 ? 1 : -1
+            dy > 0 ? 1 : -1
         );
     }
 }
+
+/*
+   Mouse is ONLY used when
+   pointerType is mouse.
+*/
 
 canvas.addEventListener(
     "pointerdown",
     event => {
 
-        /*
-           Ignore canvas touch events while
-           the virtual controls are being used.
-        */
-
         if(
-            event.pointerType==="touch" &&
-            isTouchDevice
+            event.pointerType !== "mouse"
         ){
-
-            canvasPointerActive = true;
-
-            swipeStartX =
-                event.clientX;
-
-            swipeStartY =
-                event.clientY;
-
-            canvas.setPointerCapture(
-                event.pointerId
-            );
-
             return;
         }
 
-        if(
-            event.pointerType==="mouse"
-        ){
+        mouseDown = true;
 
-            canvasPointerActive = true;
+        canvas.setPointerCapture(
+            event.pointerId
+        );
 
-            canvas.setPointerCapture(
-                event.pointerId
-            );
-
-            mouseDirection(
-                event.clientX,
-                event.clientY
-            );
-        }
+        mouseDirection(
+            event.clientX,
+            event.clientY
+        );
     }
 );
 
@@ -2544,89 +2441,190 @@ canvas.addEventListener(
     event => {
 
         if(
-            !canvasPointerActive
+            !mouseDown ||
+            event.pointerType !== "mouse"
         ){
             return;
         }
 
+        mouseDirection(
+            event.clientX,
+            event.clientY
+        );
+    }
+);
+
+canvas.addEventListener(
+    "pointerup",
+    event => {
+
         if(
-            event.pointerType==="mouse"
+            event.pointerType === "mouse"
         ){
 
-            mouseDirection(
-                event.clientX,
-                event.clientY
-            );
-
-            return;
-        }
-
-        if(
-            event.pointerType==="touch"
-        ){
-
-            const dx =
-                event.clientX -
-                swipeStartX;
-
-            const dy =
-                event.clientY -
-                swipeStartY;
-
-            if(
-                Math.hypot(dx,dy)>=35
-            ){
-
-                if(
-                    Math.abs(dx)>
-                    Math.abs(dy)
-                ){
-
-                    setDirection(
-                        dx>0 ? 1 : -1,
-                        0
-                    );
-
-                }else{
-
-                    setDirection(
-                        0,
-                        dy>0 ? 1 : -1
-                    );
-                }
-
-                swipeStartX =
-                    event.clientX;
-
-                swipeStartY =
-                    event.clientY;
-            }
+            mouseDown = false;
         }
     }
 );
 
-function stopCanvasPointer(){
+canvas.addEventListener(
+    "pointercancel",
+    event => {
 
-    canvasPointerActive = false;
+        if(
+            event.pointerType === "mouse"
+        ){
+
+            mouseDown = false;
+        }
+    }
+);
+
+/* =========================================================
+   TOUCH SWIPE
+========================================================= */
+
+let swipeActive = false;
+
+let swipeStartX = 0;
+let swipeStartY = 0;
+
+canvas.addEventListener(
+    "pointerdown",
+    event => {
+
+        if(
+            event.pointerType !== "touch"
+        ){
+            return;
+        }
+
+        /*
+           Ignore touch if the game
+           is not running.
+        */
+
+        if(
+            !running ||
+            paused ||
+            dead
+        ){
+            return;
+        }
+
+        swipeActive = true;
+
+        swipeStartX =
+            event.clientX;
+
+        swipeStartY =
+            event.clientY;
+
+        canvas.setPointerCapture(
+            event.pointerId
+        );
+    },
+    {
+        passive:false
+    }
+);
+
+canvas.addEventListener(
+    "pointermove",
+    event => {
+
+        if(
+            event.pointerType !== "touch" ||
+            !swipeActive
+        ){
+            return;
+        }
+
+        event.preventDefault();
+
+        const dx =
+            event.clientX -
+            swipeStartX;
+
+        const dy =
+            event.clientY -
+            swipeStartY;
+
+        if(
+            Math.hypot(dx,dy) < 35
+        ){
+            return;
+        }
+
+        if(
+            Math.abs(dx) >
+            Math.abs(dy)
+        ){
+
+            if(dx > 0){
+
+                setDirection(
+                    1,
+                    0
+                );
+
+            }else{
+
+                setDirection(
+                    -1,
+                    0
+                );
+            }
+
+        }else{
+
+            if(dy > 0){
+
+                setDirection(
+                    0,
+                    1
+                );
+
+            }else{
+
+                setDirection(
+                    0,
+                    -1
+                );
+            }
+        }
+
+        swipeStartX =
+            event.clientX;
+
+        swipeStartY =
+            event.clientY;
+    },
+    {
+        passive:false
+    }
+);
+
+function stopSwipe(){
+
+    swipeActive = false;
 }
 
 canvas.addEventListener(
     "pointerup",
-    stopCanvasPointer
+    stopSwipe
 );
 
 canvas.addEventListener(
     "pointercancel",
-    stopCanvasPointer
+    stopSwipe
 );
 
 /* =========================================================
-   JOYSTICK
+   TOUCH JOYSTICK
 ========================================================= */
 
 let joystickActive = false;
-
-let joystickPointerId = null;
 
 function updateJoystick(
     clientX,
@@ -2638,33 +2636,31 @@ function updateJoystick(
 
     const cx =
         rect.left +
-        rect.width/2;
+        rect.width / 2;
 
     const cy =
         rect.top +
-        rect.height/2;
+        rect.height / 2;
 
     let dx =
-        clientX-cx;
+        clientX - cx;
 
     let dy =
-        clientY-cy;
+        clientY - cy;
 
     const max =
-        rect.width*.34;
+        rect.width * .34;
 
     const distance =
         Math.hypot(dx,dy);
 
-    if(
-        distance>max
-    ){
+    if(distance > max){
 
         dx =
-            dx/distance*max;
+            dx / distance * max;
 
         dy =
-            dy/distance*max;
+            dy / distance * max;
     }
 
     joystickKnob.style.transform =
@@ -2674,34 +2670,42 @@ function updateJoystick(
         )`;
 
     if(
-        Math.hypot(dx,dy)>10
+        Math.hypot(dx,dy) < 12
+    ){
+        return;
+    }
+
+    /*
+       JOYSTICK:
+
+       UP    = FORWARD
+       DOWN  = BACKWARD
+       LEFT  = LEFT
+       RIGHT = RIGHT
+    */
+
+    if(
+        Math.abs(dx) >
+        Math.abs(dy)
     ){
 
-        if(
-            Math.abs(dx)>
-            Math.abs(dy)
-        ){
+        setDirection(
+            dx > 0 ? 1 : -1,
+            0
+        );
 
-            setDirection(
-                dx>0 ? 1 : -1,
-                0
-            );
+    }else{
 
-        }else{
-
-            setDirection(
-                0,
-                dy>0 ? 1 : -1
-            );
-        }
+        setDirection(
+            0,
+            dy > 0 ? 1 : -1
+        );
     }
 }
 
 function resetJoystick(){
 
     joystickActive = false;
-
-    joystickPointerId = null;
 
     joystickKnob.style.transform =
         "translate(-50%,-50%)";
@@ -2711,18 +2715,15 @@ joystick.addEventListener(
     "pointerdown",
     event => {
 
-        if(!isTouchDevice){
+        if(
+            event.pointerType !== "touch"
+        ){
             return;
         }
 
         event.preventDefault();
 
-        event.stopPropagation();
-
         joystickActive = true;
-
-        joystickPointerId =
-            event.pointerId;
 
         joystick.setPointerCapture(
             event.pointerId
@@ -2732,6 +2733,9 @@ joystick.addEventListener(
             event.clientX,
             event.clientY
         );
+    },
+    {
+        passive:false
     }
 );
 
@@ -2741,8 +2745,7 @@ joystick.addEventListener(
 
         if(
             !joystickActive ||
-            event.pointerId !==
-            joystickPointerId
+            event.pointerType !== "touch"
         ){
             return;
         }
@@ -2753,30 +2756,19 @@ joystick.addEventListener(
             event.clientX,
             event.clientY
         );
+    },
+    {
+        passive:false
     }
 );
 
 joystick.addEventListener(
     "pointerup",
-    event => {
-
-        if(
-            event.pointerId ===
-            joystickPointerId
-        ){
-
-            resetJoystick();
-        }
-    }
-);
-
-joystick.addEventListener(
-    "pointercancel",
     resetJoystick
 );
 
 joystick.addEventListener(
-    "lostpointercapture",
+    "pointercancel",
     resetJoystick
 );
 
@@ -2788,11 +2780,11 @@ function setBoost(
     value
 ){
 
-    boosting = !!value;
+    boosting = value;
 
     boostBtn.classList.toggle(
         "active",
-        boosting
+        value
     );
 
     updateHUD();
@@ -2802,27 +2794,28 @@ boostBtn.addEventListener(
     "pointerdown",
     event => {
 
-        if(!isTouchDevice){
+        if(
+            event.pointerType !== "touch"
+        ){
             return;
         }
 
         event.preventDefault();
-
-        event.stopPropagation();
 
         setBoost(true);
 
         boostBtn.setPointerCapture(
             event.pointerId
         );
+    },
+    {
+        passive:false
     }
 );
 
 boostBtn.addEventListener(
     "pointerup",
-    event => {
-
-        event.preventDefault();
+    () => {
 
         setBoost(false);
     }
@@ -2837,10 +2830,14 @@ boostBtn.addEventListener(
 );
 
 boostBtn.addEventListener(
-    "lostpointercapture",
-    () => {
+    "pointerleave",
+    event => {
 
-        setBoost(false);
+        if(
+            event.pointerType === "mouse"
+        ){
+            setBoost(false);
+        }
     }
 );
 
@@ -2850,8 +2847,8 @@ boostBtn.addEventListener(
 
 let gamepadIndex = null;
 
-let previousA = false;
-let previousStart = false;
+let gamepadStartWasDown = false;
+let gamepadAWasDown = false;
 
 window.addEventListener(
     "gamepadconnected",
@@ -2878,10 +2875,14 @@ window.addEventListener(
 
 function updateGamepad(){
 
+    if(
+        !navigator.getGamepads
+    ){
+        return;
+    }
+
     const pads =
-        navigator.getGamepads
-        ? navigator.getGamepads()
-        : [];
+        navigator.getGamepads();
 
     let pad = null;
 
@@ -2925,16 +2926,16 @@ function updateGamepad(){
         pad.axes[1] || 0;
 
     if(
-        Math.hypot(x,y)>.35
+        Math.hypot(x,y) > .35
     ){
 
         if(
-            Math.abs(x)>
+            Math.abs(x) >
             Math.abs(y)
         ){
 
             setDirection(
-                x>0 ? 1 : -1,
+                x > 0 ? 1 : -1,
                 0
             );
 
@@ -2942,98 +2943,97 @@ function updateGamepad(){
 
             setDirection(
                 0,
-                y>0 ? 1 : -1
+                y > 0 ? 1 : -1
             );
         }
     }
 
-    const a =
+    const aDown =
         !!(
             pad.buttons[0] &&
             pad.buttons[0].pressed
         );
 
-    const start =
+    const startDown =
         !!(
             pad.buttons[9] &&
             pad.buttons[9].pressed
         );
 
     /*
-       A button:
-       Menu -> Play
+       A:
+       Menu -> Start
        Pause -> Resume
+       Game Over -> Play Again
     */
 
     if(
-        a &&
-        !previousA
+        aDown &&
+        !gamepadAWasDown
     ){
 
-        if(
-            !running
-        ){
+        if(!running){
 
             startGame();
 
-        }else if(
-            paused
-        ){
+        }else if(paused){
 
             resumeGame();
         }
     }
 
     /*
-       Start:
-       Running -> Pause
-       Paused -> Resume
+       START:
+       Pause / Resume
     */
 
     if(
-        start &&
-        !previousStart
+        startDown &&
+        !gamepadStartWasDown
     ){
 
         if(running){
 
             togglePause();
-
-        }else{
-
-            startGame();
         }
     }
 
-    previousA = a;
-    previousStart = start;
+    gamepadAWasDown =
+        aDown;
+
+    gamepadStartWasDown =
+        startDown;
 
     const boostPressed =
-        !!(
+        (
             pad.buttons[4] &&
             pad.buttons[4].pressed
         ) ||
-        !!(
+        (
             pad.buttons[5] &&
             pad.buttons[5].pressed
         );
 
-    setBoost(boostPressed);
+    setBoost(
+        boostPressed
+    );
 }
 
 /* =========================================================
    SNAKE MOVEMENT
 ========================================================= */
 
-function moveSnake(
-    dt
-){
+function moveSnake(dt){
+
+    /*
+       Smooth direction.
+    */
 
     direction.lerp(
         desiredDirection,
         Math.min(
             1,
-            dt*10
+            dt * 10
         )
     );
 
@@ -3049,21 +3049,25 @@ function moveSnake(
 
     snakeHead.addScaledVector(
         direction,
-        speed*dt
+        speed * dt
     );
 
     const limit =
-        WORLD_SIZE/2-5;
+        WORLD_SIZE / 2 - 5;
 
     if(
-        Math.abs(snakeHead.x)>limit ||
-        Math.abs(snakeHead.z)>limit
+        Math.abs(snakeHead.x) > limit ||
+        Math.abs(snakeHead.z) > limit
     ){
 
         endGame();
 
         return;
     }
+
+    /*
+       Body follows head.
+    */
 
     let previous =
         snakeHead.clone();
@@ -3077,10 +3081,11 @@ function moveSnake(
         const segment =
             snakeSegments[i];
 
+        const target =
+            previous.clone();
+
         const difference =
-            previous
-            .clone()
-            .sub(
+            target.sub(
                 segment.position
             );
 
@@ -3088,14 +3093,15 @@ function moveSnake(
             difference.length();
 
         if(
-            distance>bodySpacing
+            distance > bodySpacing
         ){
 
             segment.position.add(
                 difference
                     .normalize()
                     .multiplyScalar(
-                        distance-bodySpacing
+                        distance -
+                        bodySpacing
                     )
             );
         }
@@ -3124,7 +3130,7 @@ function moveSnake(
             angle,
             Math.min(
                 1,
-                dt*12
+                dt * 12
             )
         );
 }
@@ -3145,7 +3151,7 @@ function checkFood(){
         );
 
     if(
-        distance<1.5
+        distance < 1.5
     ){
 
         score += 10;
@@ -3156,7 +3162,7 @@ function checkFood(){
             Math.min(
                 12,
                 5.2 +
-                snakeLength*.11
+                snakeLength * .11
             );
 
         growSnake();
@@ -3185,12 +3191,12 @@ function growSnake(){
 
     const last =
         snakeSegments[
-            snakeSegments.length-1
+            snakeSegments.length - 1
         ].position;
 
     mesh.position.copy(last);
 
-    snakeGroup.add(mesh);
+    scene.add(mesh);
 
     snakeSegments.push({
         mesh,
@@ -3205,7 +3211,7 @@ function growSnake(){
 function checkSelfCollision(){
 
     if(
-        snakeSegments.length<6
+        snakeSegments.length < 6
     ){
         return;
     }
@@ -3219,7 +3225,7 @@ function checkSelfCollision(){
         if(
             snakeHead.distanceTo(
                 snakeSegments[i].position
-            )<.65
+            ) < .65
         ){
 
             endGame();
@@ -3247,8 +3253,6 @@ function endGame(){
 
     boosting = false;
 
-    setBoost(false);
-
     finalScore.textContent =
         score;
 
@@ -3272,9 +3276,7 @@ function endGame(){
 const cameraTarget =
     new THREE.Vector3();
 
-function updateCamera(
-    dt
-){
+function updateCamera(dt){
 
     const behind =
         direction.clone()
@@ -3290,7 +3292,7 @@ function updateCamera(
         desired,
         Math.min(
             1,
-            dt*3.5
+            dt * 3.5
         )
     );
 
@@ -3298,7 +3300,7 @@ function updateCamera(
         snakeHead,
         Math.min(
             1,
-            dt*5
+            dt * 5
         )
     );
 
@@ -3313,9 +3315,7 @@ function updateCamera(
    WORLD ANIMATION
 ========================================================= */
 
-function animateWorld(
-    time
-){
+function animateWorld(time){
 
     if(food){
 
@@ -3326,20 +3326,20 @@ function animateWorld(
         food.position.y =
             .7 +
             Math.sin(
-                time*.004
-            )*.18;
+                time * .004
+            ) * .18;
     }
 
     const breathing =
         1 +
         Math.sin(
-            time*.006
-        )*.025;
+            time * .006
+        ) * .025;
 
     head.scale.set(
         breathing,
-        breathing*.78,
-        breathing*1.18
+        breathing * .78,
+        breathing * 1.18
     );
 }
 
@@ -3347,9 +3347,7 @@ function animateWorld(
    MAIN LOOP
 ========================================================= */
 
-function animate(
-    time
-){
+function animate(time){
 
     requestAnimationFrame(
         animate
@@ -3371,14 +3369,11 @@ function animate(
 
         moveSnake(dt);
 
-        if(running){
+        checkFood();
 
-            checkFood();
+        checkSelfCollision();
 
-            checkSelfCollision();
-
-            updateCamera(dt);
-        }
+        updateCamera(dt);
     }
 
     updateParticles(dt);
@@ -3436,12 +3431,7 @@ document.getElementById(
     "touchPauseBtn"
 ).addEventListener(
     "click",
-    event => {
-
-        event.preventDefault();
-
-        togglePause();
-    }
+    togglePause
 );
 
 document.getElementById(
@@ -3508,16 +3498,11 @@ function resizeGame(){
             2
         )
     );
-
-    updateTouchUI();
 }
 
 window.addEventListener(
     "resize",
-    resizeGame,
-    {
-        passive:true
-    }
+    resizeGame
 );
 
 window.addEventListener(
@@ -3528,9 +3513,6 @@ window.addEventListener(
             resizeGame,
             250
         );
-    },
-    {
-        passive:true
     }
 );
 
@@ -3541,7 +3523,9 @@ window.addEventListener(
 document.addEventListener(
     "gesturestart",
     event => {
+
         event.preventDefault();
+
     },
     {
         passive:false
@@ -3551,7 +3535,9 @@ document.addEventListener(
 document.addEventListener(
     "gesturechange",
     event => {
+
         event.preventDefault();
+
     },
     {
         passive:false
@@ -3561,7 +3547,9 @@ document.addEventListener(
 document.addEventListener(
     "gestureend",
     event => {
+
         event.preventDefault();
+
     },
     {
         passive:false
@@ -3571,6 +3559,7 @@ document.addEventListener(
 window.addEventListener(
     "contextmenu",
     event => {
+
         event.preventDefault();
     }
 );
@@ -3582,6 +3571,8 @@ window.addEventListener(
 resetGame();
 
 showMenu();
+
+resizeGame();
 
 </script>
 
