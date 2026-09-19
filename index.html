@@ -2,439 +2,551 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#05080b">
-<title>VOID SNAKE 3D</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07110d">
+<title>VOID SNAKE</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-    user-select:none;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
-html,body{
-    width:100%;
-    height:100%;
-    margin:0;
-    overflow:hidden;
-    background:#030507;
-    font-family:Arial,Helvetica,sans-serif;
-    color:#fff;
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #050908;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-body{
-    touch-action:none;
+body {
+    touch-action: none;
 }
 
-#game{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-    display:block;
-    background:#030507;
+button {
+    font: inherit;
+    cursor: pointer;
 }
 
-#vignette{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
+/* =========================================================
+   APP
+========================================================= */
+
+#app {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     background:
-        radial-gradient(circle at center,
-            transparent 25%,
-            rgba(0,0,0,.12) 55%,
-            rgba(0,0,0,.78) 100%);
-    z-index:5;
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(0, 255, 170, 0.055),
+            transparent 45%
+        ),
+        #050908;
 }
 
-#scanlines{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    opacity:.055;
-    z-index:6;
-    background:repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 3px,
-        #fff 4px
+/* =========================================================
+   MENU
+========================================================= */
+
+#menuScreen {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.menuCard {
+    width: min(460px, 94vw);
+    max-height: 94vh;
+    overflow-y: auto;
+    padding: 32px 24px 24px;
+    border: 1px solid rgba(0, 255, 190, 0.25);
+    border-radius: 24px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12, 24, 20, 0.98),
+            rgba(4, 10, 8, 0.98)
+        );
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.7),
+        inset 0 0 40px rgba(0, 255, 190, 0.025);
+    text-align: center;
+}
+
+.logo {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    line-height: 0.9;
+    font-size: clamp(34px, 10vw, 68px);
+    font-weight: 1000;
+    letter-spacing: 0.025em;
+    white-space: nowrap;
+    color: #ffffff;
+    text-shadow:
+        0 0 10px rgba(255,255,255,.18),
+        0 0 28px rgba(0,255,190,.14);
+}
+
+.logo span {
+    color: #00ffc3;
+}
+
+.logoSmall {
+    margin-top: 10px;
+    color: #76e7ca;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .5em;
+    padding-left: .5em;
+}
+
+.subtitle {
+    margin: 18px 0 25px;
+    color: #718b84;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.menuButtons {
+    display: grid;
+    gap: 10px;
+}
+
+.menuButton {
+    width: 100%;
+    min-height: 56px;
+    border-radius: 13px;
+    border: 1px solid rgba(0,255,190,.24);
+    background: linear-gradient(
+        180deg,
+        rgba(19,37,31,.96),
+        rgba(7,15,12,.96)
+    );
+    color: #d9fff3;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: .18em;
+    transition: transform .12s, border-color .12s, background .12s;
+}
+
+.menuButton:hover {
+    border-color: #00ffc3;
+    background: linear-gradient(
+        180deg,
+        rgba(17,57,45,.98),
+        rgba(6,25,19,.98)
     );
 }
 
-#menu{
-    position:fixed;
-    inset:0;
-    z-index:20;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:
-        radial-gradient(circle at 50% 35%,rgba(0,255,180,.08),transparent 38%),
-        rgba(1,4,7,.38);
+.menuButton:active {
+    transform: scale(.97);
 }
 
-.menu-card{
-    width:min(480px,94vw);
-    max-height:92vh;
-    overflow:auto;
-    padding:28px 24px 24px;
-    border:1px solid rgba(95,255,205,.34);
-    border-radius:24px;
-    background:
-        linear-gradient(145deg,rgba(11,20,23,.94),rgba(3,7,10,.97));
+.menuButton.primary {
+    color: #00120d;
+    background: #00ffc3;
+    border-color: #00ffc3;
+    box-shadow: 0 0 25px rgba(0,255,195,.14);
+}
+
+.menuButton.danger {
+    color: #ffbaba;
+    border-color: rgba(255,80,80,.22);
+}
+
+.instructions {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 13px;
+    background: rgba(255,255,255,.025);
+    color: #78908a;
+    font-size: 11px;
+    line-height: 1.75;
+}
+
+.instructions strong {
+    color: #c8eee2;
+}
+
+/* =========================================================
+   GAME
+========================================================= */
+
+#gameScreen {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: #050908;
+}
+
+#gameHeader {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 70px;
+    padding:
+        max(10px, env(safe-area-inset-top))
+        max(12px, env(safe-area-inset-right))
+        10px
+        max(12px, env(safe-area-inset-left));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: rgba(3,8,6,.94);
+    border-bottom: 1px solid rgba(0,255,190,.12);
+    z-index: 10;
+}
+
+.gameTitle {
+    color: #00ffc3;
+    font-size: 18px;
+    font-weight: 1000;
+    letter-spacing: .08em;
+    white-space: nowrap;
+}
+
+.stats {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.statBox {
+    min-width: 68px;
+    padding: 6px 9px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(0,255,190,.12);
+    text-align: center;
+}
+
+.statLabel {
+    color: #647d75;
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.statValue {
+    margin-top: 2px;
+    color: #e5fff7;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+#pauseButton {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,255,190,.22);
+    background: #0a1511;
+    color: #cffff0;
+    font-size: 17px;
+}
+
+#gameArea {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+#canvasWrap {
+    position: relative;
+    width: min(
+        calc(100vw - 20px),
+        calc(100vh - 125px),
+        720px
+    );
+    aspect-ratio: 1 / 1;
+    max-width: 100%;
+    max-height: 100%;
+    border: 2px solid rgba(0,255,190,.28);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #07100c;
     box-shadow:
-        0 30px 90px rgba(0,0,0,.7),
-        inset 0 0 40px rgba(0,255,180,.035),
-        0 0 35px rgba(0,255,180,.06);
-    text-align:center;
+        0 0 35px rgba(0,255,190,.07),
+        0 20px 50px rgba(0,0,0,.5);
 }
 
-.logo{
-    width:100%;
-    overflow:hidden;
-    text-align:center;
-    line-height:.88;
-    font-size:clamp(27px,9vw,62px);
-    font-weight:1000;
-    letter-spacing:.025em;
-    white-space:nowrap;
-    color:#fff;
-    text-shadow:
-        0 0 8px rgba(255,255,255,.28),
-        0 0 28px rgba(0,255,190,.18);
+#snakeCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
-.logo span{
-    color:#00ffc3;
+/* =========================================================
+   GAME OVER / PAUSE
+========================================================= */
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(2,7,5,.76);
+    backdrop-filter: blur(5px);
 }
 
-.logo-small{
-    margin-top:10px;
-    font-size:clamp(16px,4vw,24px);
-    letter-spacing:.55em;
-    padding-left:.55em;
-    color:#87ffe2;
+.overlayCard {
+    width: min(370px, 92vw);
+    padding: 28px 22px 22px;
+    border: 1px solid rgba(0,255,190,.24);
+    border-radius: 20px;
+    background: rgba(5,14,10,.98);
+    box-shadow: 0 25px 70px rgba(0,0,0,.65);
+    text-align: center;
 }
 
-.subtitle{
-    margin:16px auto 22px;
-    color:#89a6a3;
-    font-size:11px;
-    letter-spacing:.22em;
-    text-transform:uppercase;
+.overlayTitle {
+    color: #ffffff;
+    font-size: 27px;
+    font-weight: 1000;
+    letter-spacing: .08em;
 }
 
-.buttons{
-    display:grid;
-    gap:11px;
+.overlayText {
+    margin: 13px 0 21px;
+    color: #7d958e;
+    font-size: 12px;
+    line-height: 1.7;
 }
 
-button{
-    border:0;
-    outline:0;
-    cursor:pointer;
-    font:inherit;
+.overlayText b {
+    color: #00ffc3;
 }
 
-.menu-btn{
-    min-height:56px;
-    border:1px solid rgba(90,255,204,.3);
-    border-radius:13px;
-    color:#dffff5;
-    background:
-        linear-gradient(180deg,rgba(18,35,37,.95),rgba(7,15,18,.95));
-    font-size:15px;
-    font-weight:800;
-    letter-spacing:.18em;
-    transition:.15s;
+.overlayButtons {
+    display: grid;
+    gap: 9px;
 }
 
-.menu-btn:hover{
-    border-color:#00ffc3;
-    background:linear-gradient(180deg,rgba(15,55,49,.95),rgba(5,24,21,.95));
-    box-shadow:0 0 25px rgba(0,255,195,.12);
+/* =========================================================
+   TOUCH CONTROLS
+========================================================= */
+
+#touchControls {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    display: none;
 }
 
-.menu-btn:active{
-    transform:scale(.97);
+#touchPad {
+    position: absolute;
+    left: max(18px, env(safe-area-inset-left));
+    bottom: max(20px, env(safe-area-inset-bottom));
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,255,190,.25);
+    background: rgba(2,15,10,.56);
+    pointer-events: auto;
 }
 
-.menu-btn.primary{
-    color:#00130e;
-    background:#00ffc3;
-    border-color:#00ffc3;
-    box-shadow:0 0 28px rgba(0,255,195,.2);
+#touchPad::before,
+#touchPad::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border: 1px solid rgba(0,255,190,.10);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.menu-btn.danger{
-    color:#ffb8b8;
-    border-color:rgba(255,80,80,.25);
+#touchPad::before {
+    width: 72%;
+    height: 72%;
 }
 
-.help{
-    margin-top:20px;
-    padding:14px;
-    border-radius:13px;
-    background:rgba(255,255,255,.025);
-    color:#7d9492;
-    font-size:11px;
-    line-height:1.7;
+#touchPad::after {
+    width: 35%;
+    height: 35%;
 }
 
-.help b{
-    color:#cce9e4;
+#touchKnob {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 54px;
+    height: 54px;
+    margin: -27px;
+    border-radius: 50%;
+    background: rgba(0,255,190,.18);
+    border: 1px solid rgba(0,255,190,.5);
+    box-shadow: 0 0 20px rgba(0,255,190,.12);
 }
 
-#hud{
-    position:fixed;
-    inset:0;
-    z-index:10;
-    pointer-events:none;
-    display:none;
+.touchActions {
+    position: absolute;
+    right: max(18px, env(safe-area-inset-right));
+    bottom: max(20px, env(safe-area-inset-bottom));
+    display: flex;
+    gap: 9px;
+    pointer-events: auto;
 }
 
-.hud-top{
-    position:absolute;
-    top:max(14px,env(safe-area-inset-top));
-    left:14px;
-    right:14px;
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:10px;
+.touchButton {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    border: 1px solid rgba(0,255,190,.22);
+    background: rgba(2,15,10,.65);
+    color: #d5fff3;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .08em;
 }
 
-.stats{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
+.touchButton:active {
+    background: rgba(0,255,190,.16);
+    border-color: #00ffc3;
 }
 
-.stat{
-    min-width:82px;
-    padding:8px 12px;
-    border:1px solid rgba(110,255,215,.18);
-    border-radius:10px;
-    background:rgba(3,10,12,.68);
-    backdrop-filter:blur(8px);
+#touchPause {
+    position: absolute;
+    right: max(18px, env(safe-area-inset-right));
+    top: 15px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,255,190,.22);
+    background: rgba(2,15,10,.65);
+    color: #d5fff3;
+    pointer-events: auto;
 }
 
-.stat-label{
-    color:#6d8582;
-    font-size:8px;
-    letter-spacing:.15em;
-    text-transform:uppercase;
-}
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-.stat-value{
-    margin-top:2px;
-    color:#dffff6;
-    font-size:17px;
-    font-weight:900;
-}
-
-#pauseHud{
-    pointer-events:auto;
-    width:48px;
-    height:48px;
-    border-radius:13px;
-    border:1px solid rgba(110,255,215,.3);
-    color:#bfffee;
-    background:rgba(3,10,12,.75);
-    font-size:19px;
-}
-
-#message{
-    position:absolute;
-    left:50%;
-    top:18%;
-    transform:translateX(-50%);
-    color:#bffff0;
-    font-size:12px;
-    font-weight:800;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    opacity:0;
-    transition:.25s;
-    text-align:center;
-}
-
-#pauseScreen,
-#gameOver{
-    position:fixed;
-    inset:0;
-    z-index:30;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:rgba(0,3,5,.68);
-    backdrop-filter:blur(5px);
-}
-
-.overlay-card{
-    width:min(390px,92vw);
-    padding:28px;
-    border:1px solid rgba(90,255,204,.28);
-    border-radius:20px;
-    text-align:center;
-    background:rgba(5,13,16,.95);
-    box-shadow:0 30px 80px rgba(0,0,0,.7);
-}
-
-.overlay-title{
-    font-size:28px;
-    font-weight:1000;
-    letter-spacing:.08em;
-}
-
-.overlay-text{
-    margin:12px 0 22px;
-    color:#819995;
-    font-size:12px;
-    line-height:1.6;
-}
-
-.overlay-buttons{
-    display:grid;
-    gap:9px;
-}
-
-#touchControls{
-    position:fixed;
-    inset:0;
-    z-index:15;
-    display:none;
-    pointer-events:none;
-}
-
-#joystick{
-    position:absolute;
-    left:max(22px,env(safe-area-inset-left));
-    bottom:max(25px,env(safe-area-inset-bottom));
-    width:145px;
-    height:145px;
-    border-radius:50%;
-    border:1px solid rgba(120,255,220,.25);
-    background:rgba(3,15,16,.38);
-    box-shadow:
-        inset 0 0 30px rgba(0,255,195,.04),
-        0 0 20px rgba(0,0,0,.25);
-    pointer-events:auto;
-}
-
-#joystick::after{
-    content:"";
-    position:absolute;
-    inset:22%;
-    border:1px solid rgba(120,255,220,.12);
-    border-radius:50%;
-}
-
-#joystickKnob{
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:55px;
-    height:55px;
-    margin:-27.5px;
-    border-radius:50%;
-    background:rgba(0,255,195,.2);
-    border:1px solid rgba(110,255,220,.55);
-    box-shadow:0 0 20px rgba(0,255,195,.13);
-}
-
-.touch-actions{
-    position:absolute;
-    right:max(20px,env(safe-area-inset-right));
-    bottom:max(25px,env(safe-area-inset-bottom));
-    display:flex;
-    gap:10px;
-    pointer-events:auto;
-}
-
-.touch-btn{
-    width:64px;
-    height:64px;
-    border-radius:18px;
-    border:1px solid rgba(120,255,220,.25);
-    color:#bffff0;
-    background:rgba(3,15,16,.52);
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:.08em;
-}
-
-.touch-btn:active{
-    background:rgba(0,255,195,.18);
-    border-color:#00ffc3;
-}
-
-#touchPauseBtn{
-    position:absolute;
-    right:max(20px,env(safe-area-inset-right));
-    top:max(75px,calc(env(safe-area-inset-top) + 20px));
-    width:50px;
-    height:50px;
-    border-radius:14px;
-    border:1px solid rgba(120,255,220,.25);
-    color:#bffff0;
-    background:rgba(3,15,16,.55);
-    pointer-events:auto;
-}
-
-@media (pointer:coarse){
-    #touchControls{
-        display:block;
+@media (pointer: coarse) {
+    #touchControls {
+        display: block;
     }
 }
 
-@media (max-width:600px){
-    .menu-card{
-        padding:23px 17px 18px;
-        border-radius:20px;
+@media (max-width: 600px) {
+
+    #gameHeader {
+        min-height: 62px;
     }
 
-    .stat{
-        min-width:70px;
-        padding:7px 9px;
+    .gameTitle {
+        font-size: 14px;
     }
 
-    .stat-value{
-        font-size:14px;
+    .statBox {
+        min-width: 58px;
+        padding: 5px 6px;
     }
 
-    #joystick{
-        width:128px;
-        height:128px;
+    .statLabel {
+        font-size: 6px;
     }
 
-    #joystickKnob{
-        width:50px;
-        height:50px;
-        margin:-25px;
+    .statValue {
+        font-size: 13px;
+    }
+
+    #pauseButton {
+        width: 40px;
+        height: 40px;
+    }
+
+    #gameArea {
+        padding: 6px;
+    }
+
+    #canvasWrap {
+        width: min(
+            calc(100vw - 12px),
+            calc(100vh - 115px)
+        );
+    }
+
+    .menuCard {
+        padding: 25px 17px 18px;
+    }
+
+    .menuButton {
+        min-height: 52px;
+    }
+
+    #touchPad {
+        width: 125px;
+        height: 125px;
+    }
+
+    #touchKnob {
+        width: 48px;
+        height: 48px;
+        margin: -24px;
     }
 }
 
-@media (orientation:landscape) and (max-height:520px){
-    .menu-card{
-        max-height:96vh;
-        padding:15px 20px;
+@media (orientation: landscape) and (max-height: 550px) {
+
+    #gameHeader {
+        min-height: 52px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
-    .subtitle{
-        margin:8px auto 12px;
+    #canvasWrap {
+        width: min(
+            calc(100vh - 70px),
+            calc(100vw - 20px)
+        );
     }
 
-    .menu-btn{
-        min-height:42px;
+    .menuCard {
+        max-height: 96vh;
+        padding: 15px 20px;
     }
 
-    .help{
-        margin-top:10px;
-        padding:8px;
+    .subtitle {
+        margin: 8px 0 12px;
+    }
+
+    .menuButton {
+        min-height: 40px;
+    }
+
+    .instructions {
+        margin-top: 10px;
+        padding: 8px;
     }
 }
 </style>
@@ -442,2006 +554,2020 @@ button{
 
 <body>
 
-<canvas id="game"></canvas>
+<div id="app">
 
-<div id="vignette"></div>
-<div id="scanlines"></div>
+    <!-- =====================================================
+         MAIN MENU
+    ====================================================== -->
 
-<div id="menu">
-    <div class="menu-card">
+    <section id="menuScreen">
 
-        <div class="logo">
-            VOID<span>SNAKE</span>
-        </div>
+        <div class="menuCard">
 
-        <div class="logo-small">3D</div>
-
-        <div class="subtitle">
-            Neon wilderness survival
-        </div>
-
-        <div class="buttons">
-            <button class="menu-btn primary" id="playBtn">PLAY</button>
-            <button class="menu-btn" id="menuPauseBtn">PAUSE / RESUME</button>
-            <button class="menu-btn danger" id="exitBtn">EXIT</button>
-        </div>
-
-        <div class="help">
-            <b>KEYBOARD</b><br>
-            W / ↑ = FORWARD &nbsp; S / ↓ = BACK<br>
-            A / ← = LEFT &nbsp; D / → = RIGHT<br>
-            SHIFT = BOOST &nbsp; SPACE = PAUSE
-            <br><br>
-            <b>TOUCH</b><br>
-            Move the joystick to steer.
-            Use BOOST and PAUSE on screen.
-        </div>
-
-    </div>
-</div>
-
-<div id="hud">
-
-    <div class="hud-top">
-
-        <div class="stats">
-
-            <div class="stat">
-                <div class="stat-label">Score</div>
-                <div class="stat-value" id="score">0</div>
+            <div class="logo">
+                VOID<span>SNAKE</span>
             </div>
 
-            <div class="stat">
-                <div class="stat-label">Length</div>
-                <div class="stat-value" id="length">5</div>
+            <div class="logoSmall">
+                CLASSIC
             </div>
 
-            <div class="stat">
-                <div class="stat-label">Speed</div>
-                <div class="stat-value" id="speed">1.0x</div>
+            <div class="subtitle">
+                Classic Snake Game
+            </div>
+
+            <div class="menuButtons">
+
+                <button
+                    id="playButton"
+                    class="menuButton primary">
+                    PLAY
+                </button>
+
+                <button
+                    id="menuPauseButton"
+                    class="menuButton">
+                    PAUSE / RESUME
+                </button>
+
+                <button
+                    id="menuExitButton"
+                    class="menuButton danger">
+                    EXIT
+                </button>
+
+            </div>
+
+            <div class="instructions">
+
+                <strong>KEYBOARD</strong><br>
+
+                W / ↑ = UP / FORWARD<br>
+                S / ↓ = DOWN / BACK<br>
+                A / ← = LEFT<br>
+                D / → = RIGHT<br>
+                SPACE = PAUSE
+
+                <br><br>
+
+                <strong>TOUCHSCREEN</strong><br>
+
+                Use the joystick to move the snake.
+                Swipe on the game board to change direction.
+
             </div>
 
         </div>
 
-        <button id="pauseHud">Ⅱ</button>
+    </section>
 
-    </div>
 
-    <div id="message"></div>
+    <!-- =====================================================
+         GAME SCREEN
+    ====================================================== -->
+
+    <section id="gameScreen">
+
+        <header id="gameHeader">
+
+            <div class="gameTitle">
+                VOID SNAKE
+            </div>
+
+            <div class="stats">
+
+                <div class="statBox">
+                    <div class="statLabel">
+                        Score
+                    </div>
+                    <div
+                        id="scoreValue"
+                        class="statValue">
+                        0
+                    </div>
+                </div>
+
+                <div class="statBox">
+                    <div class="statLabel">
+                        Length
+                    </div>
+                    <div
+                        id="lengthValue"
+                        class="statValue">
+                        5
+                    </div>
+                </div>
+
+                <div class="statBox">
+                    <div class="statLabel">
+                        Level
+                    </div>
+                    <div
+                        id="levelValue"
+                        class="statValue">
+                        1
+                    </div>
+                </div>
+
+            </div>
+
+            <button id="pauseButton">
+                Ⅱ
+            </button>
+
+        </header>
+
+
+        <div id="gameArea">
+
+            <div id="canvasWrap">
+
+                <canvas id="snakeCanvas"></canvas>
+
+                <!-- PAUSE -->
+
+                <div
+                    id="pauseOverlay"
+                    class="overlay">
+
+                    <div class="overlayCard">
+
+                        <div class="overlayTitle">
+                            PAUSED
+                        </div>
+
+                        <div class="overlayText">
+                            The game is paused.
+                        </div>
+
+                        <div class="overlayButtons">
+
+                            <button
+                                id="resumeButton"
+                                class="menuButton primary">
+                                RESUME
+                            </button>
+
+                            <button
+                                id="pauseRestartButton"
+                                class="menuButton">
+                                RESTART
+                            </button>
+
+                            <button
+                                id="pauseExitButton"
+                                class="menuButton danger">
+                                EXIT
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GAME OVER -->
+
+                <div
+                    id="gameOverOverlay"
+                    class="overlay">
+
+                    <div class="overlayCard">
+
+                        <div class="overlayTitle">
+                            GAME OVER
+                        </div>
+
+                        <div class="overlayText">
+
+                            Score:
+                            <b id="finalScore">
+                                0
+                            </b>
+
+                            <br>
+
+                            Length:
+                            <b id="finalLength">
+                                5
+                            </b>
+
+                            <br>
+
+                            Level:
+                            <b id="finalLevel">
+                                1
+                            </b>
+
+                        </div>
+
+                        <div class="overlayButtons">
+
+                            <button
+                                id="restartButton"
+                                class="menuButton primary">
+                                RESTART
+                            </button>
+
+                            <button
+                                id="gameOverMenuButton"
+                                class="menuButton">
+                                MAIN MENU
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOUCH -->
+
+                <div id="touchControls">
+
+                    <div id="touchPad">
+                        <div id="touchKnob"></div>
+                    </div>
+
+                    <button id="touchPause">
+                        Ⅱ
+                    </button>
+
+                    <div class="touchActions">
+
+                        <button
+                            id="touchRestart"
+                            class="touchButton">
+                            RESTART
+                        </button>
+
+                        <button
+                            id="touchExit"
+                            class="touchButton">
+                            EXIT
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
 
-<div id="touchControls">
-
-    <div id="joystick">
-        <div id="joystickKnob"></div>
-    </div>
-
-    <button id="touchPauseBtn">Ⅱ</button>
-
-    <div class="touch-actions">
-        <button class="touch-btn" id="boostBtn">BOOST</button>
-        <button class="touch-btn" id="touchExitBtn">EXIT</button>
-    </div>
-
-</div>
-
-<div id="pauseScreen">
-    <div class="overlay-card">
-
-        <div class="overlay-title">PAUSED</div>
-
-        <div class="overlay-text">
-            The snake is waiting.<br>
-            Resume when you are ready.
-        </div>
-
-        <div class="overlay-buttons">
-            <button class="menu-btn primary" id="resumeBtn">RESUME</button>
-            <button class="menu-btn" id="restartPauseBtn">RESTART</button>
-            <button class="menu-btn danger" id="exitPauseBtn">EXIT</button>
-        </div>
-
-    </div>
-</div>
-
-<div id="gameOver">
-    <div class="overlay-card">
-
-        <div class="overlay-title">GAME OVER</div>
-
-        <div class="overlay-text">
-            Final score:
-            <b id="finalScore">0</b>
-            <br>
-            Final length:
-            <b id="finalLength">5</b>
-        </div>
-
-        <div class="overlay-buttons">
-            <button class="menu-btn primary" id="restartBtn">RESTART</button>
-            <button class="menu-btn" id="gameMenuBtn">MAIN MENU</button>
-        </div>
-
-    </div>
-</div>
 
 <script>
 "use strict";
 
 /* =========================================================
-   VOID SNAKE 3D
-   Self-contained Canvas 3D-style engine
-   No libraries
-   No CDN
-   No database
-   No localStorage
-   No sessionStorage
+   VOID SNAKE
+   CLASSIC 2D SNAKE GAME
+   Single-file version
 ========================================================= */
-
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d", {alpha:false});
-
-let W = 0;
-let H = 0;
-let DPR = 1;
-
-function resize(){
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-
-    W = window.innerWidth;
-    H = window.innerHeight;
-
-    canvas.width = Math.floor(W * DPR);
-    canvas.height = Math.floor(H * DPR);
-
-    canvas.style.width = W + "px";
-    canvas.style.height = H + "px";
-
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-}
-
-window.addEventListener("resize",resize);
-resize();
 
 /* =========================================================
-   DOM
+   ELEMENTS
 ========================================================= */
 
-const menu = document.getElementById("menu");
-const hud = document.getElementById("hud");
-const pauseScreen = document.getElementById("pauseScreen");
-const gameOver = document.getElementById("gameOver");
+const menuScreen =
+    document.getElementById("menuScreen");
 
-const scoreEl = document.getElementById("score");
-const lengthEl = document.getElementById("length");
-const speedEl = document.getElementById("speed");
-const finalScoreEl = document.getElementById("finalScore");
-const finalLengthEl = document.getElementById("finalLength");
-const messageEl = document.getElementById("message");
+const gameScreen =
+    document.getElementById("gameScreen");
 
-const playBtn = document.getElementById("playBtn");
-const menuPauseBtn = document.getElementById("menuPauseBtn");
-const exitBtn = document.getElementById("exitBtn");
+const playButton =
+    document.getElementById("playButton");
 
-const pauseHud = document.getElementById("pauseHud");
-const resumeBtn = document.getElementById("resumeBtn");
-const restartPauseBtn = document.getElementById("restartPauseBtn");
-const exitPauseBtn = document.getElementById("exitPauseBtn");
+const menuPauseButton =
+    document.getElementById("menuPauseButton");
 
-const restartBtn = document.getElementById("restartBtn");
-const gameMenuBtn = document.getElementById("gameMenuBtn");
+const menuExitButton =
+    document.getElementById("menuExitButton");
 
-const touchControls = document.getElementById("touchControls");
-const joystick = document.getElementById("joystick");
-const joystickKnob = document.getElementById("joystickKnob");
-const boostBtn = document.getElementById("boostBtn");
-const touchPauseBtn = document.getElementById("touchPauseBtn");
-const touchExitBtn = document.getElementById("touchExitBtn");
+const pauseButton =
+    document.getElementById("pauseButton");
+
+const pauseOverlay =
+    document.getElementById("pauseOverlay");
+
+const resumeButton =
+    document.getElementById("resumeButton");
+
+const pauseRestartButton =
+    document.getElementById("pauseRestartButton");
+
+const pauseExitButton =
+    document.getElementById("pauseExitButton");
+
+const gameOverOverlay =
+    document.getElementById("gameOverOverlay");
+
+const restartButton =
+    document.getElementById("restartButton");
+
+const gameOverMenuButton =
+    document.getElementById("gameOverMenuButton");
+
+const scoreValue =
+    document.getElementById("scoreValue");
+
+const lengthValue =
+    document.getElementById("lengthValue");
+
+const levelValue =
+    document.getElementById("levelValue");
+
+const finalScore =
+    document.getElementById("finalScore");
+
+const finalLength =
+    document.getElementById("finalLength");
+
+const finalLevel =
+    document.getElementById("finalLevel");
+
+const canvas =
+    document.getElementById("snakeCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+const touchControls =
+    document.getElementById("touchControls");
+
+const touchPad =
+    document.getElementById("touchPad");
+
+const touchKnob =
+    document.getElementById("touchKnob");
+
+const touchPause =
+    document.getElementById("touchPause");
+
+const touchRestart =
+    document.getElementById("touchRestart");
+
+const touchExit =
+    document.getElementById("touchExit");
+
 
 /* =========================================================
-   TOUCH DETECTION
+   GAME CONFIGURATION
 ========================================================= */
 
-const touchDevice =
-    navigator.maxTouchPoints > 0 ||
-    "ontouchstart" in window ||
-    "onmsgesturechange" in window;
-
-if(touchDevice){
-    touchControls.style.display = "block";
-}
-
-/* =========================================================
-   GAME SETTINGS
-========================================================= */
-
-const WORLD = 110;
+const GRID_SIZE = 28;
 
 const START_LENGTH = 5;
 
-const BASE_SPEED = 7.0;
+const START_INTERVAL = 145;
 
-const BOOST_MULTIPLIER = 1.8;
+const MIN_INTERVAL = 65;
 
-const SEGMENT_GAP = 2.15;
+const SPEED_INCREASE =
+    0.94;
 
-const CAMERA_HEIGHT = 27;
-
-const CAMERA_DISTANCE = 31;
 
 /* =========================================================
    GAME STATE
 ========================================================= */
 
-let running = false;
-let paused = false;
-let dead = false;
-let boosting = false;
+let snake = [];
 
-let score = 0;
-let snakeSegments = [];
-
-let food = null;
-
-let particles = [];
-
-let rocks = [];
-let trees = [];
-
-let lastTime = performance.now();
-
-let accumulator = 0;
-
-let spawnTimer = 0;
+let food = {
+    x: 0,
+    y: 0
+};
 
 let direction = {
-    x:0,
-    z:-1
+    x: 1,
+    y: 0
 };
 
-let targetDirection = {
-    x:0,
-    z:-1
+let nextDirection = {
+    x: 1,
+    y: 0
 };
 
-let cameraYaw = 0;
+let score = 0;
 
-let cameraX = 0;
-let cameraZ = 0;
+let level = 1;
 
-let messageTimer = 0;
+let gameInterval = START_INTERVAL;
 
-/* =========================================================
-   UTILITIES
-========================================================= */
+let gameTimer = null;
 
-function clamp(v,a,b){
-    return Math.max(a,Math.min(b,v));
-}
+let gameRunning = false;
 
-function lerp(a,b,t){
-    return a+(b-a)*t;
-}
+let gamePaused = false;
 
-function rand(a,b){
-    return a+Math.random()*(b-a);
-}
+let gameOver = false;
 
-function dist2(a,b){
-    const dx=a.x-b.x;
-    const dz=a.z-b.z;
-    return Math.sqrt(dx*dx+dz*dz);
-}
+let canvasSize = 0;
 
-function normalize(x,z){
-    const d=Math.sqrt(x*x+z*z)||1;
-    return {
-        x:x/d,
-        z:z/d
-    };
-}
+let cellSize = 0;
 
-function showMessage(text,duration=1.5){
-    messageEl.textContent=text;
-    messageEl.style.opacity="1";
-    messageTimer=duration;
-}
-
-function hideMessage(){
-    messageEl.style.opacity="0";
-}
 
 /* =========================================================
-   COLORS
+   RESPONSIVE CANVAS
 ========================================================= */
 
-const COLORS = {
-    skyTop:[4,8,12],
-    skyBottom:[12,24,25],
-    ground:[7,15,15],
-    grid:[20,80,72],
-    snake:[0,255,181],
-    snakeDark:[0,95,72],
-    food:[255,55,105],
-    rock:[70,86,86],
-    tree:[23,85,62],
-    treeDark:[8,35,28],
-    white:[220,255,248]
-};
-
-function rgb(c,a=1){
-    return `rgba(${c[0]},${c[1]},${c[2]},${a})`;
-}
-
-/* =========================================================
-   3D CAMERA / PROJECTION
-========================================================= */
-
-function getCamera(){
-    const head = snakeSegments[0] || {x:0,z:0};
-
-    const forward = normalize(direction.x,direction.z);
-
-    const desiredX =
-        head.x - forward.x * CAMERA_DISTANCE;
-
-    const desiredZ =
-        head.z - forward.z * CAMERA_DISTANCE;
-
-    cameraX = lerp(cameraX,desiredX,.09);
-    cameraZ = lerp(cameraZ,desiredZ,.09);
-
-    return {
-        x:cameraX,
-        y:CAMERA_HEIGHT,
-        z:cameraZ
-    };
-}
-
-function project(x,y,z){
-    const cam=getCamera();
-
-    let dx=x-cam.x;
-    let dy=y-cam.y;
-    let dz=z-cam.z;
-
-    const yaw=Math.atan2(
-        direction.x,
-        direction.z
-    );
-
-    const cos=Math.cos(-yaw);
-    const sin=Math.sin(-yaw);
-
-    const rx=dx*cos-dz*sin;
-    const rz=dx*sin+dz*cos;
-
-    const focal=Math.min(W,H)*1.22;
-
-    const depth=rz+55;
-
-    if(depth<=1){
-        return {
-            visible:false,
-            x:0,
-            y:0,
-            scale:0,
-            depth
-        };
-    }
-
-    const scale=focal/depth;
-
-    return {
-        visible:true,
-        x:W/2+rx*scale,
-        y:H*.48-dy*scale,
-        scale,
-        depth
-    };
-}
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-function drawSky(){
-    const gradient=ctx.createLinearGradient(
-        0,0,0,H
-    );
-
-    gradient.addColorStop(
-        0,
-        rgb(COLORS.skyTop)
-    );
-
-    gradient.addColorStop(
-        .55,
-        rgb(COLORS.skyBottom)
-    );
-
-    gradient.addColorStop(
-        1,
-        "#050a0b"
-    );
-
-    ctx.fillStyle=gradient;
-    ctx.fillRect(0,0,W,H);
-}
-
-function drawMoon(){
-    const x=W*.78;
-    const y=H*.18;
-    const r=Math.min(W,H)*.055;
-
-    const glow=ctx.createRadialGradient(
-        x,y,0,
-        x,y,r*3
-    );
-
-    glow.addColorStop(0,"rgba(170,255,235,.13)");
-    glow.addColorStop(.35,"rgba(90,255,215,.04)");
-    glow.addColorStop(1,"rgba(0,0,0,0)");
-
-    ctx.fillStyle=glow;
-    ctx.beginPath();
-    ctx.arc(x,y,r*3,0,Math.PI*2);
-    ctx.fill();
-
-    ctx.fillStyle="rgba(205,255,242,.7)";
-    ctx.beginPath();
-    ctx.arc(x,y,r,0,Math.PI*2);
-    ctx.fill();
-}
-
-/* =========================================================
-   GROUND
-========================================================= */
-
-function drawGround(){
-    const p1=project(-WORLD,0,-WORLD);
-    const p2=project(WORLD,0,-WORLD);
-    const p3=project(WORLD,0,WORLD);
-    const p4=project(-WORLD,0,WORLD);
-
-    if(
-        p1.visible ||
-        p2.visible ||
-        p3.visible ||
-        p4.visible
-    ){
-        ctx.fillStyle=rgb(COLORS.ground);
-
-        ctx.beginPath();
-
-        if(p1.visible)ctx.lineTo(p1.x,p1.y);
-        if(p2.visible)ctx.lineTo(p2.x,p2.y);
-        if(p3.visible)ctx.lineTo(p3.x,p3.y);
-        if(p4.visible)ctx.lineTo(p4.x,p4.y);
-
-        ctx.closePath();
-        ctx.fill();
-    }
-
-    drawGrid();
-}
-
-function drawGrid(){
-    const step=5;
-
-    ctx.lineWidth=1;
-
-    for(let x=-WORLD;x<=WORLD;x+=step){
-
-        const a=project(x,0,-WORLD);
-        const b=project(x,0,WORLD);
-
-        if(!a.visible && !b.visible)continue;
-
-        const alpha=.08;
-
-        ctx.strokeStyle=`rgba(20,130,112,${alpha})`;
-
-        ctx.beginPath();
-
-        if(a.visible)ctx.moveTo(a.x,a.y);
-        if(b.visible)ctx.lineTo(b.x,b.y);
-
-        ctx.stroke();
-    }
-
-    for(let z=-WORLD;z<=WORLD;z+=step){
-
-        const a=project(-WORLD,0,z);
-        const b=project(WORLD,0,z);
-
-        if(!a.visible && !b.visible)continue;
-
-        ctx.strokeStyle="rgba(20,130,112,.07)";
-
-        ctx.beginPath();
-
-        if(a.visible)ctx.moveTo(a.x,a.y);
-        if(b.visible)ctx.lineTo(b.x,b.y);
-
-        ctx.stroke();
-    }
-}
-
-/* =========================================================
-   WORLD OBJECTS
-========================================================= */
-
-function createWorld(){
-
-    rocks=[];
-    trees=[];
-
-    for(let i=0;i<70;i++){
-
-        rocks.push({
-            x:rand(-WORLD+5,WORLD-5),
-            z:rand(-WORLD+5,WORLD-5),
-            size:rand(.5,2.5),
-            rot:rand(0,Math.PI*2)
-        });
-    }
-
-    for(let i=0;i<45;i++){
-
-        trees.push({
-            x:rand(-WORLD+5,WORLD-5),
-            z:rand(-WORLD+5,WORLD-5),
-            size:rand(1.5,3.4)
-        });
-    }
-}
-
-function drawRock(r){
-
-    const base=project(r.x,0,r.z);
-    const top=project(
-        r.x,
-        r.size,
-        r.z
-    );
-
-    if(!base.visible || !top.visible)return;
-
-    const s=base.scale*r.size;
-
-    if(s<1)return;
-
-    ctx.save();
-
-    ctx.translate(base.x,base.y);
-
-    ctx.rotate(r.rot);
-
-    ctx.fillStyle="rgba(0,0,0,.35)";
-    ctx.beginPath();
-    ctx.ellipse(
-        0,
-        3*s,
-        1.8*s,
-        .55*s,
-        0,
-        0,
-        Math.PI*2
-    );
-    ctx.fill();
-
-    const grad=ctx.createLinearGradient(
-        -s,-s,
-        s,s
-    );
-
-    grad.addColorStop(
-        0,
-        "rgba(105,125,124,.9)"
-    );
-
-    grad.addColorStop(
-        1,
-        "rgba(30,43,43,.95)"
-    );
-
-    ctx.fillStyle=grad;
-
-    ctx.beginPath();
-    ctx.moveTo(-1.4*s,0);
-    ctx.lineTo(-.8*s,-1.5*s);
-    ctx.lineTo(.3*s,-2*s);
-    ctx.lineTo(1.5*s,-.8*s);
-    ctx.lineTo(1.1*s,.2*s);
-    ctx.lineTo(-.7*s,.5*s);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.restore();
-}
-
-function drawTree(t){
-
-    const base=project(t.x,0,t.z);
-    const top=project(
-        t.x,
-        t.size*4,
-        t.z
-    );
-
-    if(!base.visible || !top.visible)return;
-
-    const s=base.scale*t.size;
-
-    if(s<1)return;
-
-    ctx.save();
-
-    ctx.translate(base.x,base.y);
-
-    ctx.fillStyle="rgba(0,0,0,.32)";
-    ctx.beginPath();
-    ctx.ellipse(
-        0,
-        2*s,
-        2*s,
-        .6*s,
-        0,
-        0,
-        Math.PI*2
-    );
-    ctx.fill();
-
-    ctx.fillStyle="#3d3024";
-    ctx.fillRect(
-        -.28*s,
-        -5*s,
-        .56*s,
-        5*s
-    );
-
-    ctx.fillStyle=rgb(COLORS.treeDark);
-
-    ctx.beginPath();
-    ctx.moveTo(0,-9*s);
-    ctx.lineTo(-3*s,-3*s);
-    ctx.lineTo(-1.8*s,-3*s);
-    ctx.lineTo(-4*s,0);
-    ctx.lineTo(4*s,0);
-    ctx.lineTo(1.8*s,-3*s);
-    ctx.lineTo(3*s,-3*s);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.fillStyle=rgb(COLORS.tree);
-
-    ctx.beginPath();
-    ctx.moveTo(0,-10*s);
-    ctx.lineTo(-2.3*s,-4*s);
-    ctx.lineTo(-1.2*s,-4*s);
-    ctx.lineTo(-3.1*s,-1*s);
-    ctx.lineTo(3.1*s,-1*s);
-    ctx.lineTo(1.2*s,-4*s);
-    ctx.lineTo(2.3*s,-4*s);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.restore();
-}
-
-function drawWorldObjects(){
-
-    const objects=[];
-
-    for(const r of rocks){
-
-        const d=dist2(
-            {
-                x:cameraX,
-                z:cameraZ
-            },
-            r
+function resizeCanvas() {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const size =
+        Math.min(
+            rect.width,
+            rect.height
         );
 
-        objects.push({
-            d,
-            type:"rock",
-            item:r
-        });
-    }
-
-    for(const t of trees){
-
-        const d=dist2(
-            {
-                x:cameraX,
-                z:cameraZ
-            },
-            t
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
         );
 
-        objects.push({
-            d,
-            type:"tree",
-            item:t
+    canvas.width =
+        Math.floor(size * dpr);
+
+    canvas.height =
+        Math.floor(size * dpr);
+
+    canvasSize = size;
+
+    cellSize =
+        size / GRID_SIZE;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+    draw();
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+/* =========================================================
+   INITIAL SNAKE
+========================================================= */
+
+function createInitialSnake() {
+
+    snake = [];
+
+    const startX =
+        Math.floor(GRID_SIZE / 2);
+
+    const startY =
+        Math.floor(GRID_SIZE / 2);
+
+    for (
+        let i = 0;
+        i < START_LENGTH;
+        i++
+    ) {
+
+        snake.push({
+            x: startX - i,
+            y: startY
         });
-    }
 
-    objects.sort((a,b)=>b.d-a.d);
-
-    for(const o of objects){
-
-        if(o.type==="rock"){
-            drawRock(o.item);
-        }else{
-            drawTree(o.item);
-        }
     }
 }
+
 
 /* =========================================================
    FOOD
 ========================================================= */
 
-function spawnFood(){
+function placeFood() {
 
-    let attempts=0;
+    let valid = false;
 
-    while(attempts<200){
+    while (!valid) {
 
-        attempts++;
-
-        const f={
-            x:Math.round(
-                rand(-WORLD+8,WORLD-8)
+        food = {
+            x: Math.floor(
+                Math.random() *
+                GRID_SIZE
             ),
-            z:Math.round(
-                rand(-WORLD+8,WORLD-8)
-            ),
-            pulse:Math.random()*Math.PI*2
+
+            y: Math.floor(
+                Math.random() *
+                GRID_SIZE
+            )
         };
 
-        let okay=true;
+        valid = true;
 
-        for(const s of snakeSegments){
+        for (const part of snake) {
 
-            if(dist2(f,s)<7){
+            if (
+                part.x === food.x &&
+                part.y === food.y
+            ) {
 
-                okay=false;
+                valid = false;
                 break;
             }
-        }
 
-        if(okay){
-
-            food=f;
-            return;
         }
     }
-
-    food={
-        x:0,
-        z:0,
-        pulse:0
-    };
 }
 
-function drawFood(time){
-
-    if(!food)return;
-
-    const bob=
-        Math.sin(time*.005+food.pulse)*.3+.8;
-
-    const p=project(
-        food.x,
-        bob,
-        food.z
-    );
-
-    if(!p.visible)return;
-
-    const r=Math.max(
-        4,
-        p.scale*1.25
-    );
-
-    const glow=ctx.createRadialGradient(
-        p.x,p.y,0,
-        p.x,p.y,r*5
-    );
-
-    glow.addColorStop(
-        0,
-        "rgba(255,50,120,.45)"
-    );
-
-    glow.addColorStop(
-        .3,
-        "rgba(255,30,100,.16)"
-    );
-
-    glow.addColorStop(
-        1,
-        "rgba(255,30,100,0)"
-    );
-
-    ctx.fillStyle=glow;
-
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,r*5,0,Math.PI*2);
-    ctx.fill();
-
-    ctx.fillStyle="#ff367a";
-
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,r,0,Math.PI*2);
-    ctx.fill();
-
-    ctx.fillStyle="#fff";
-
-    ctx.beginPath();
-    ctx.arc(
-        p.x-r*.3,
-        p.y-r*.3,
-        r*.25,
-        0,
-        Math.PI*2
-    );
-    ctx.fill();
-}
 
 /* =========================================================
-   SNAKE
+   START GAME
 ========================================================= */
 
-function resetSnake(){
+function startGame() {
 
-    for(const s of snakeSegments){
-        if(s.mesh)delete s.mesh;
-    }
+    stopTimer();
 
-    snakeSegments=[];
+    createInitialSnake();
 
-    const startX=0;
-    const startZ=0;
-
-    direction={
-        x:0,
-        z:-1
+    direction = {
+        x: 1,
+        y: 0
     };
 
-    targetDirection={
-        x:0,
-        z:-1
+    nextDirection = {
+        x: 1,
+        y: 0
     };
 
-    for(let i=0;i<START_LENGTH;i++){
+    score = 0;
 
-        snakeSegments.push({
-            x:startX,
-            z:startZ+i*SEGMENT_GAP,
-            oldX:startX,
-            oldZ:startZ+i*SEGMENT_GAP
-        });
-    }
+    level = 1;
 
-    cameraX=startX;
-    cameraZ=startZ+CAMERA_DISTANCE;
+    gameInterval = START_INTERVAL;
 
-    score=0;
+    gameRunning = true;
+
+    gamePaused = false;
+
+    gameOver = false;
+
+    pauseOverlay.style.display = "none";
+
+    gameOverOverlay.style.display = "none";
+
+    menuScreen.style.display = "none";
+
+    gameScreen.style.display = "flex";
+
+    placeFood();
+
+    updateStats();
+
+    resizeCanvas();
+
+    startTimer();
+
+    draw();
 }
 
-function drawSnake(){
-
-    for(let i=snakeSegments.length-1;i>=0;i--){
-
-        const s=snakeSegments[i];
-
-        const p=project(
-            s.x,
-            i===0 ? 1.15 : .8,
-            s.z
-        );
-
-        if(!p.visible)continue;
-
-        const radius=
-            Math.max(
-                3,
-                p.scale*(i===0 ? 1.1 : .85)
-            );
-
-        if(i!==0){
-
-            const shadow=project(
-                s.x,
-                0,
-                s.z
-            );
-
-            if(shadow.visible){
-
-                ctx.fillStyle="rgba(0,0,0,.32)";
-
-                ctx.beginPath();
-
-                ctx.ellipse(
-                    shadow.x,
-                    shadow.y+radius*.4,
-                    radius*1.3,
-                    radius*.4,
-                    0,
-                    0,
-                    Math.PI*2
-                );
-
-                ctx.fill();
-            }
-        }
-
-        const grad=ctx.createRadialGradient(
-            p.x-radius*.35,
-            p.y-radius*.45,
-            radius*.1,
-            p.x,
-            p.y,
-            radius*1.5
-        );
-
-        if(i===0){
-
-            grad.addColorStop(
-                0,
-                "#dffff7"
-            );
-
-            grad.addColorStop(
-                .22,
-                "#42ffd0"
-            );
-
-            grad.addColorStop(
-                .65,
-                "#00bd8c"
-            );
-
-            grad.addColorStop(
-                1,
-                "#005f49"
-            );
-
-        }else{
-
-            grad.addColorStop(
-                0,
-                "#65ffdb"
-            );
-
-            grad.addColorStop(
-                .35,
-                "#00e5a9"
-            );
-
-            grad.addColorStop(
-                1,
-                "#006b51"
-            );
-        }
-
-        ctx.fillStyle=grad;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            p.x,
-            p.y,
-            radius,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-        if(i===0){
-
-            const eyeOffsetX=
-                -direction.z*radius*.38;
-
-            const eyeOffsetY=
-                direction.x*radius*.38;
-
-            const eye1x=
-                p.x+
-                direction.x*radius*.25+
-                eyeOffsetX;
-
-            const eye1y=
-                p.y+
-                direction.z*radius*.25+
-                eyeOffsetY;
-
-            const eye2x=
-                p.x+
-                direction.x*radius*.25-
-                eyeOffsetX;
-
-            const eye2y=
-                p.y+
-                direction.z*radius*.25-
-                eyeOffsetY;
-
-            ctx.fillStyle="#03100d";
-
-            ctx.beginPath();
-            ctx.arc(
-                eye1x,
-                eye1y,
-                radius*.15,
-                0,
-                Math.PI*2
-            );
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(
-                eye2x,
-                eye2y,
-                radius*.15,
-                0,
-                Math.PI*2
-            );
-            ctx.fill();
-
-            ctx.fillStyle="#fff";
-
-            ctx.beginPath();
-            ctx.arc(
-                eye1x-radius*.03,
-                eye1y-radius*.04,
-                radius*.045,
-                0,
-                Math.PI*2
-            );
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.arc(
-                eye2x-radius*.03,
-                eye2y-radius*.04,
-                radius*.045,
-                0,
-                Math.PI*2
-            );
-            ctx.fill();
-        }
-    }
-}
 
 /* =========================================================
-   PARTICLES
+   TIMER
 ========================================================= */
 
-function spawnParticles(x,z){
+function startTimer() {
 
-    for(let i=0;i<22;i++){
+    stopTimer();
 
-        const a=Math.random()*Math.PI*2;
-        const speed=rand(2,7);
+    if (
+        !gameRunning ||
+        gamePaused ||
+        gameOver
+    ) {
+        return;
+    }
 
-        particles.push({
-            x,
-            y:rand(.5,1.5),
-            z,
-            vx:Math.cos(a)*speed,
-            vy:rand(2,6),
-            vz:Math.sin(a)*speed,
-            life:1,
-            size:rand(.12,.35)
-        });
+    gameTimer =
+        setInterval(
+            gameStep,
+            gameInterval
+        );
+}
+
+
+function stopTimer() {
+
+    if (gameTimer !== null) {
+
+        clearInterval(gameTimer);
+
+        gameTimer = null;
     }
 }
 
-function updateParticles(dt){
-
-    for(let i=particles.length-1;i>=0;i--){
-
-        const p=particles[i];
-
-        p.life-=dt;
-
-        if(p.life<=0){
-
-            particles.splice(i,1);
-
-            continue;
-        }
-
-        p.x+=p.vx*dt;
-        p.y+=p.vy*dt;
-        p.z+=p.vz*dt;
-
-        p.vy-=8*dt;
-    }
-}
-
-function drawParticles(){
-
-    for(const p of particles){
-
-        const q=project(
-            p.x,
-            p.y,
-            p.z
-        );
-
-        if(!q.visible)continue;
-
-        const r=Math.max(
-            1,
-            q.scale*p.size
-        );
-
-        ctx.fillStyle=
-            `rgba(0,255,190,${p.life})`;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            q.x,
-            q.y,
-            r,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-    }
-}
 
 /* =========================================================
-   MOVEMENT
+   GAME STEP
 ========================================================= */
 
-function setDirection(x,z){
+function gameStep() {
 
-    const n=normalize(x,z);
-
-    targetDirection={
-        x:n.x,
-        z:n.z
-    };
-
-    /*
-       Deliberately no reverse-direction blocking.
-       S / DOWN therefore always works as BACK.
-    */
-}
-
-function moveSnake(dt){
-
-    const speed=
-        BASE_SPEED*
-        (boosting ? BOOST_MULTIPLIER : 1);
-
-    const step=speed*dt;
-
-    direction.x=lerp(
-        direction.x,
-        targetDirection.x,
-        Math.min(1,dt*12)
-    );
-
-    direction.z=lerp(
-        direction.z,
-        targetDirection.z,
-        Math.min(1,dt*12)
-    );
-
-    direction=normalize(
-        direction.x,
-        direction.z
-    );
-
-    const head=snakeSegments[0];
-
-    head.oldX=head.x;
-    head.oldZ=head.z;
-
-    head.x+=direction.x*step;
-    head.z+=direction.z*step;
-
-    for(let i=1;i<snakeSegments.length;i++){
-
-        const current=snakeSegments[i];
-        const previous=snakeSegments[i-1];
-
-        current.oldX=current.x;
-        current.oldZ=current.z;
-
-        const dx=previous.x-current.x;
-        const dz=previous.z-current.z;
-
-        const d=Math.sqrt(dx*dx+dz*dz);
-
-        if(d>SEGMENT_GAP){
-
-            const ratio=
-                (d-SEGMENT_GAP)/d;
-
-            current.x+=dx*ratio;
-            current.z+=dz*ratio;
-        }
+    if (
+        !gameRunning ||
+        gamePaused ||
+        gameOver
+    ) {
+        return;
     }
 
-    if(
-        Math.abs(head.x)>WORLD ||
-        Math.abs(head.z)>WORLD
-    ){
+    direction = {
+        x: nextDirection.x,
+        y: nextDirection.y
+    };
 
-        die();
+    const head = snake[0];
+
+    const newHead = {
+        x: head.x + direction.x,
+        y: head.y + direction.y
+    };
+
+
+    /* WALL COLLISION */
+
+    if (
+        newHead.x < 0 ||
+        newHead.x >= GRID_SIZE ||
+        newHead.y < 0 ||
+        newHead.y >= GRID_SIZE
+    ) {
+
+        endGame();
 
         return;
     }
 
-    checkFood();
 
-    checkSelfCollision();
-}
+    /* SELF COLLISION */
 
-function checkFood(){
-
-    if(!food)return;
-
-    const head=snakeSegments[0];
-
-    if(dist2(head,food)<2.8){
-
-        score+=10;
-
-        const tail=
-            snakeSegments[snakeSegments.length-1];
-
-        for(let i=0;i<3;i++){
-
-            snakeSegments.push({
-                x:tail.x,
-                z:tail.z,
-                oldX:tail.x,
-                oldZ:tail.z
-            });
-        }
-
-        spawnParticles(
-            food.x,
-            food.z
-        );
-
-        spawnFood();
-
-        showMessage(
-            "+10  GROW",
-            .7
-        );
-
-        updateHUD();
-    }
-}
-
-function checkSelfCollision(){
-
-    const head=snakeSegments[0];
-
-    for(
-        let i=8;
-        i<snakeSegments.length;
+    for (
+        let i = 0;
+        i < snake.length;
         i++
-    ){
+    ) {
 
-        if(
-            dist2(head,snakeSegments[i])<
-            1.15
-        ){
+        const part = snake[i];
 
-            die();
+        if (
+            newHead.x === part.x &&
+            newHead.y === part.y
+        ) {
+
+            endGame();
 
             return;
         }
     }
+
+
+    snake.unshift(newHead);
+
+
+    /* FOOD */
+
+    if (
+        newHead.x === food.x &&
+        newHead.y === food.y
+    ) {
+
+        score += 10;
+
+        level =
+            Math.floor(score / 50) + 1;
+
+        gameInterval =
+            Math.max(
+                MIN_INTERVAL,
+                START_INTERVAL *
+                Math.pow(
+                    SPEED_INCREASE,
+                    level - 1
+                )
+            );
+
+        placeFood();
+
+        updateStats();
+
+        restartTimer();
+
+    } else {
+
+        snake.pop();
+    }
+
+    draw();
 }
+
 
 /* =========================================================
-   GAME FLOW
+   TIMER RESTART AFTER LEVEL UP
 ========================================================= */
 
-function startGame(){
+function restartTimer() {
 
-    running=true;
-    paused=false;
-    dead=false;
-    boosting=false;
+    if (
+        gameRunning &&
+        !gamePaused &&
+        !gameOver
+    ) {
 
-    score=0;
-
-    resetSnake();
-
-    createWorld();
-
-    spawnFood();
-
-    particles=[];
-
-    menu.style.display="none";
-    pauseScreen.style.display="none";
-    gameOver.style.display="none";
-    hud.style.display="block";
-
-    updateHUD();
-
-    showMessage(
-        "SURVIVE",
-        1.5
-    );
+        startTimer();
+    }
 }
 
-function restartGame(){
 
-    startGame();
+/* =========================================================
+   CHANGE DIRECTION
+========================================================= */
+
+function setDirection(x, y) {
+
+    if (
+        !gameRunning ||
+        gamePaused ||
+        gameOver
+    ) {
+        return;
+    }
+
+
+    /*
+       Prevent an immediate 180-degree turn.
+       This is the classic Snake rule.
+    */
+
+    if (
+        x === -direction.x &&
+        y === -direction.y
+    ) {
+        return;
+    }
+
+
+    nextDirection = {
+        x: x,
+        y: y
+    };
 }
 
-function pauseGame(){
 
-    if(!running || dead)return;
+/* =========================================================
+   PAUSE
+========================================================= */
 
-    paused=true;
-    boosting=false;
+function pauseGame() {
 
-    pauseScreen.style.display="flex";
+    if (
+        !gameRunning ||
+        gameOver
+    ) {
+        return;
+    }
+
+    gamePaused = true;
+
+    stopTimer();
+
+    pauseOverlay.style.display = "flex";
 }
 
-function resumeGame(){
 
-    if(!running || dead)return;
+function resumeGame() {
 
-    paused=false;
+    if (
+        !gameRunning ||
+        gameOver
+    ) {
+        return;
+    }
 
-    pauseScreen.style.display="none";
+    gamePaused = false;
 
-    lastTime=performance.now();
+    pauseOverlay.style.display = "none";
+
+    startTimer();
 }
 
-function togglePause(){
 
-    if(!running || dead)return;
+function togglePause() {
 
-    if(paused){
+    if (gamePaused) {
+
         resumeGame();
-    }else{
+
+    } else {
+
         pauseGame();
     }
 }
 
-function die(){
 
-    if(dead)return;
+/* =========================================================
+   END GAME
+========================================================= */
 
-    dead=true;
-    running=false;
-    boosting=false;
+function endGame() {
 
-    finalScoreEl.textContent=score;
-    finalLengthEl.textContent=snakeSegments.length;
+    gameOver = true;
 
-    gameOver.style.display="flex";
+    gameRunning = false;
 
-    spawnParticles(
-        snakeSegments[0].x,
-        snakeSegments[0].z
+    gamePaused = false;
+
+    stopTimer();
+
+    finalScore.textContent =
+        score;
+
+    finalLength.textContent =
+        snake.length;
+
+    finalLevel.textContent =
+        level;
+
+    gameOverOverlay.style.display =
+        "flex";
+
+    draw();
+}
+
+
+/* =========================================================
+   MAIN MENU
+========================================================= */
+
+function showMainMenu() {
+
+    stopTimer();
+
+    gameRunning = false;
+
+    gamePaused = false;
+
+    gameOver = false;
+
+    pauseOverlay.style.display =
+        "none";
+
+    gameOverOverlay.style.display =
+        "none";
+
+    gameScreen.style.display =
+        "none";
+
+    menuScreen.style.display =
+        "flex";
+}
+
+
+/* =========================================================
+   EXIT
+========================================================= */
+
+function exitGame() {
+
+    /*
+       A browser normally cannot close a tab
+       that was not opened by JavaScript.
+
+       Therefore EXIT returns to the main menu.
+    */
+
+    showMainMenu();
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats() {
+
+    scoreValue.textContent =
+        score;
+
+    lengthValue.textContent =
+        snake.length;
+
+    levelValue.textContent =
+        level;
+}
+
+
+/* =========================================================
+   DRAW BACKGROUND
+========================================================= */
+
+function drawBackground() {
+
+    ctx.fillStyle =
+        "#07100c";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvasSize,
+        canvasSize
+    );
+
+
+    /* OUTER GLOW */
+
+    const glow =
+        ctx.createRadialGradient(
+            canvasSize / 2,
+            canvasSize / 2,
+            0,
+            canvasSize / 2,
+            canvasSize / 2,
+            canvasSize * .75
+        );
+
+    glow.addColorStop(
+        0,
+        "rgba(0,255,180,.035)"
+    );
+
+    glow.addColorStop(
+        1,
+        "rgba(0,0,0,.22)"
+    );
+
+    ctx.fillStyle = glow;
+
+    ctx.fillRect(
+        0,
+        0,
+        canvasSize,
+        canvasSize
     );
 }
 
-function returnToMenu(){
-
-    running=false;
-    paused=false;
-    dead=false;
-    boosting=false;
-
-    pauseScreen.style.display="none";
-    gameOver.style.display="none";
-    hud.style.display="none";
-
-    menu.style.display="flex";
-}
-
-function exitGame(){
-
-    /*
-      Browsers normally block scripts from closing
-      a normal tab. Therefore EXIT safely returns
-      to the main menu.
-    */
-
-    returnToMenu();
-}
 
 /* =========================================================
-   HUD
+   DRAW GRID
 ========================================================= */
 
-function updateHUD(){
+function drawGrid() {
 
-    scoreEl.textContent=score;
-    lengthEl.textContent=snakeSegments.length;
+    ctx.lineWidth = 1;
 
-    const speed=
-        boosting ?
-        BOOST_MULTIPLIER :
-        1;
+    for (
+        let i = 0;
+        i <= GRID_SIZE;
+        i++
+    ) {
 
-    speedEl.textContent=
-        speed.toFixed(1)+"x";
+        const p =
+            i * cellSize;
+
+        ctx.strokeStyle =
+            "rgba(0,255,180,.055)";
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            p,
+            0
+        );
+
+        ctx.lineTo(
+            p,
+            canvasSize
+        );
+
+        ctx.stroke();
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            p
+        );
+
+        ctx.lineTo(
+            canvasSize,
+            p
+        );
+
+        ctx.stroke();
+    }
+
+
+    /* BORDER */
+
+    ctx.strokeStyle =
+        "rgba(0,255,190,.20)";
+
+    ctx.lineWidth = 2;
+
+    ctx.strokeRect(
+        1,
+        1,
+        canvasSize - 2,
+        canvasSize - 2
+    );
 }
 
+
 /* =========================================================
-   INPUT - KEYBOARD
+   DRAW FOOD
+========================================================= */
+
+function drawFood() {
+
+    const x =
+        food.x * cellSize +
+        cellSize / 2;
+
+    const y =
+        food.y * cellSize +
+        cellSize / 2;
+
+    const radius =
+        cellSize * .32;
+
+
+    /* GLOW */
+
+    const glow =
+        ctx.createRadialGradient(
+            x,
+            y,
+            0,
+            x,
+            y,
+            radius * 3
+        );
+
+    glow.addColorStop(
+        0,
+        "rgba(255,45,100,.38)"
+    );
+
+    glow.addColorStop(
+        .35,
+        "rgba(255,45,100,.12)"
+    );
+
+    glow.addColorStop(
+        1,
+        "rgba(255,45,100,0)"
+    );
+
+    ctx.fillStyle = glow;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        radius * 3,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* FOOD */
+
+    ctx.fillStyle =
+        "#ff3b78";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        radius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* HIGHLIGHT */
+
+    ctx.fillStyle =
+        "#ffffff";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x - radius * .3,
+        y - radius * .3,
+        radius * .23,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+}
+
+
+/* =========================================================
+   DRAW SNAKE
+========================================================= */
+
+function drawSnake() {
+
+    for (
+        let i = snake.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const part =
+            snake[i];
+
+        const x =
+            part.x * cellSize;
+
+        const y =
+            part.y * cellSize;
+
+        const padding =
+            Math.max(
+                1,
+                cellSize * .08
+            );
+
+        const size =
+            cellSize - padding * 2;
+
+        const radius =
+            Math.min(
+                7,
+                cellSize * .22
+            );
+
+
+        /* SHADOW */
+
+        ctx.fillStyle =
+            "rgba(0,0,0,.35)";
+
+        roundRect(
+            x + padding + 1,
+            y + padding + 2,
+            size,
+            size,
+            radius
+        );
+
+        ctx.fill();
+
+
+        /* BODY */
+
+        if (i === 0) {
+
+            const gradient =
+                ctx.createLinearGradient(
+                    x,
+                    y,
+                    x + cellSize,
+                    y + cellSize
+                );
+
+            gradient.addColorStop(
+                0,
+                "#d8fff2"
+            );
+
+            gradient.addColorStop(
+                .22,
+                "#3effc8"
+            );
+
+            gradient.addColorStop(
+                .65,
+                "#00d89e"
+            );
+
+            gradient.addColorStop(
+                1,
+                "#008a68"
+            );
+
+            ctx.fillStyle =
+                gradient;
+
+        } else {
+
+            const gradient =
+                ctx.createLinearGradient(
+                    x,
+                    y,
+                    x + cellSize,
+                    y + cellSize
+                );
+
+            gradient.addColorStop(
+                0,
+                "#6affd9"
+            );
+
+            gradient.addColorStop(
+                .45,
+                "#00d89e"
+            );
+
+            gradient.addColorStop(
+                1,
+                "#007956"
+            );
+
+            ctx.fillStyle =
+                gradient;
+        }
+
+
+        roundRect(
+            x + padding,
+            y + padding,
+            size,
+            size,
+            radius
+        );
+
+        ctx.fill();
+
+
+        /* BODY HIGHLIGHT */
+
+        if (i !== 0) {
+
+            ctx.fillStyle =
+                "rgba(255,255,255,.10)";
+
+            roundRect(
+                x + padding + 2,
+                y + padding + 2,
+                size * .75,
+                Math.max(
+                    2,
+                    size * .18
+                ),
+                radius
+            );
+
+            ctx.fill();
+        }
+
+
+        /* HEAD */
+
+        if (i === 0) {
+
+            drawHeadEyes(
+                x,
+                y
+            );
+        }
+    }
+}
+
+
+/* =========================================================
+   DRAW HEAD / EYES
+========================================================= */
+
+function drawHeadEyes(x, y) {
+
+    const centerX =
+        x + cellSize / 2;
+
+    const centerY =
+        y + cellSize / 2;
+
+    const eyeRadius =
+        Math.max(
+            1.5,
+            cellSize * .09
+        );
+
+    const offset =
+        cellSize * .17;
+
+    let e1x =
+        centerX;
+
+    let e1y =
+        centerY;
+
+    let e2x =
+        centerX;
+
+    let e2y =
+        centerY;
+
+
+    if (direction.x === 1) {
+
+        e1x =
+            centerX + offset;
+
+        e1y =
+            centerY - offset;
+
+        e2x =
+            centerX + offset;
+
+        e2y =
+            centerY + offset;
+
+    } else if (direction.x === -1) {
+
+        e1x =
+            centerX - offset;
+
+        e1y =
+            centerY - offset;
+
+        e2x =
+            centerX - offset;
+
+        e2y =
+            centerY + offset;
+
+    } else if (direction.y === -1) {
+
+        e1x =
+            centerX - offset;
+
+        e1y =
+            centerY - offset;
+
+        e2x =
+            centerX + offset;
+
+        e2y =
+            centerY - offset;
+
+    } else {
+
+        e1x =
+            centerX - offset;
+
+        e1y =
+            centerY + offset;
+
+        e2x =
+            centerX + offset;
+
+        e2y =
+            centerY + offset;
+    }
+
+
+    ctx.fillStyle =
+        "#02110c";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        e1x,
+        e1y,
+        eyeRadius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.arc(
+        e2x,
+        e2y,
+        eyeRadius,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    ctx.fillStyle =
+        "#ffffff";
+
+    const shine =
+        Math.max(
+            1,
+            eyeRadius * .35
+        );
+
+    ctx.beginPath();
+
+    ctx.arc(
+        e1x - eyeRadius * .2,
+        e1y - eyeRadius * .25,
+        shine,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.arc(
+        e2x - eyeRadius * .2,
+        e2y - eyeRadius * .25,
+        shine,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+}
+
+
+/* =========================================================
+   ROUNDED RECTANGLE
+========================================================= */
+
+function roundRect(
+    x,
+    y,
+    width,
+    height,
+    radius
+) {
+
+    const r =
+        Math.min(
+            radius,
+            width / 2,
+            height / 2
+        );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x + r,
+        y
+    );
+
+    ctx.arcTo(
+        x + width,
+        y,
+        x + width,
+        y + height,
+        r
+    );
+
+    ctx.arcTo(
+        x + width,
+        y + height,
+        x,
+        y + height,
+        r
+    );
+
+    ctx.arcTo(
+        x,
+        y + height,
+        x,
+        y,
+        r
+    );
+
+    ctx.arcTo(
+        x,
+        y,
+        x + width,
+        y,
+        r
+    );
+
+    ctx.closePath();
+}
+
+
+/* =========================================================
+   DRAW
+========================================================= */
+
+function draw() {
+
+    if (
+        canvasSize <= 0 ||
+        cellSize <= 0
+    ) {
+        return;
+    }
+
+    drawBackground();
+
+    drawGrid();
+
+    drawFood();
+
+    drawSnake();
+}
+
+
+/* =========================================================
+   KEYBOARD CONTROLS
 ========================================================= */
 
 window.addEventListener(
     "keydown",
-    function(e){
+    function(event) {
 
-        const key=e.key.toLowerCase();
+        const key =
+            event.key.toLowerCase();
 
-        if([
-            "arrowup",
-            "arrowdown",
-            "arrowleft",
-            "arrowright",
-            " ",
-            "w",
-            "a",
-            "s",
-            "d",
-            "shift",
-            "escape"
-        ].includes(key)){
+        if (
+            [
+                "arrowup",
+                "arrowdown",
+                "arrowleft",
+                "arrowright",
+                "w",
+                "a",
+                "s",
+                "d",
+                " ",
+                "escape"
+            ].includes(key)
+        ) {
 
-            e.preventDefault();
+            event.preventDefault();
         }
 
-        /*
-           W / UP = FORWARD
-           S / DOWN = BACK
-           A / LEFT = LEFT
-           D / RIGHT = RIGHT
-        */
 
-        if(
-            key==="w" ||
-            key==="arrowup"
-        ){
+        /* FORWARD / UP */
 
-            setDirection(0,-1);
+        if (
+            key === "w" ||
+            key === "arrowup"
+        ) {
 
-        }else if(
-            key==="s" ||
-            key==="arrowdown"
-        ){
+            setDirection(0, -1);
 
-            setDirection(0,1);
+            return;
+        }
 
-        }else if(
-            key==="a" ||
-            key==="arrowleft"
-        ){
 
-            setDirection(-1,0);
+        /* BACK / DOWN */
 
-        }else if(
-            key==="d" ||
-            key==="arrowright"
-        ){
+        if (
+            key === "s" ||
+            key === "arrowdown"
+        ) {
 
-            setDirection(1,0);
+            setDirection(0, 1);
 
-        }else if(key==="shift"){
+            return;
+        }
 
-            boosting=true;
 
-            updateHUD();
+        /* LEFT */
 
-        }else if(
-            key===" " ||
-            key==="escape"
-        ){
+        if (
+            key === "a" ||
+            key === "arrowleft"
+        ) {
 
-            togglePause();
+            setDirection(-1, 0);
+
+            return;
+        }
+
+
+        /* RIGHT */
+
+        if (
+            key === "d" ||
+            key === "arrowright"
+        ) {
+
+            setDirection(1, 0);
+
+            return;
+        }
+
+
+        /* PAUSE */
+
+        if (
+            key === " " ||
+            key === "escape"
+        ) {
+
+            if (gameRunning) {
+                togglePause();
+            }
+
+            return;
         }
     },
-    {passive:false}
-);
-
-window.addEventListener(
-    "keyup",
-    function(e){
-
-        if(e.key.toLowerCase()==="shift"){
-
-            boosting=false;
-
-            updateHUD();
-        }
+    {
+        passive: false
     }
 );
+
 
 /* =========================================================
-   MOUSE CONTROL
+   SWIPE CONTROLS
 ========================================================= */
 
-let mouseActive=false;
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swipeActive = false;
 
 canvas.addEventListener(
-    "mousemove",
-    function(e){
+    "touchstart",
+    function(event) {
 
-        if(!running || paused || dead)return;
-
-        mouseActive=true;
-
-        const cx=W/2;
-        const cy=H/2;
-
-        const dx=e.clientX-cx;
-        const dy=e.clientY-cy;
-
-        const distance=
-            Math.sqrt(dx*dx+dy*dy);
-
-        if(distance<35)return;
-
-        if(
-            Math.abs(dx)>
-            Math.abs(dy)
-        ){
-
-            if(dx>0){
-                setDirection(1,0);
-            }else{
-                setDirection(-1,0);
-            }
-
-        }else{
-
-            if(dy>0){
-                setDirection(0,1);
-            }else{
-                setDirection(0,-1);
-            }
+        if (
+            event.touches.length !== 1
+        ) {
+            return;
         }
+
+        const touch =
+            event.touches[0];
+
+        swipeStartX =
+            touch.clientX;
+
+        swipeStartY =
+            touch.clientY;
+
+        swipeActive = true;
+
+    },
+    {
+        passive: true
     }
 );
 
-/* =========================================================
-   MOUSE BOOST
-========================================================= */
 
 canvas.addEventListener(
-    "mousedown",
-    function(e){
+    "touchend",
+    function(event) {
 
-        if(e.button===0){
-
-            boosting=true;
-
-            updateHUD();
+        if (!swipeActive) {
+            return;
         }
+
+        swipeActive = false;
+
+        const touch =
+            event.changedTouches[0];
+
+        const dx =
+            touch.clientX -
+            swipeStartX;
+
+        const dy =
+            touch.clientY -
+            swipeStartY;
+
+        const absX =
+            Math.abs(dx);
+
+        const absY =
+            Math.abs(dy);
+
+        if (
+            Math.max(
+                absX,
+                absY
+            ) < 25
+        ) {
+            return;
+        }
+
+
+        if (absX > absY) {
+
+            if (dx > 0) {
+
+                setDirection(1, 0);
+
+            } else {
+
+                setDirection(-1, 0);
+            }
+
+        } else {
+
+            if (dy > 0) {
+
+                setDirection(0, 1);
+
+            } else {
+
+                setDirection(0, -1);
+            }
+        }
+
+    },
+    {
+        passive: true
     }
 );
 
-window.addEventListener(
-    "mouseup",
-    function(){
-
-        boosting=false;
-
-        updateHUD();
-    }
-);
 
 /* =========================================================
    TOUCH JOYSTICK
 ========================================================= */
 
-let joystickPointer=null;
+let joystickPointerId = null;
 
-function joystickMove(clientX,clientY){
+function updateJoystick(
+    clientX,
+    clientY
+) {
 
-    const rect=
-        joystick.getBoundingClientRect();
+    const rect =
+        touchPad.getBoundingClientRect();
 
-    const cx=
-        rect.left+rect.width/2;
+    const centerX =
+        rect.left +
+        rect.width / 2;
 
-    const cy=
-        rect.top+rect.height/2;
+    const centerY =
+        rect.top +
+        rect.height / 2;
 
-    let dx=clientX-cx;
-    let dy=clientY-cy;
+    let dx =
+        clientX - centerX;
 
-    const max=rect.width*.35;
+    let dy =
+        clientY - centerY;
 
-    const d=
-        Math.sqrt(dx*dx+dy*dy);
+    const maxDistance =
+        rect.width * .32;
 
-    if(d>max){
+    const distance =
+        Math.sqrt(
+            dx * dx +
+            dy * dy
+        );
 
-        dx=dx/d*max;
-        dy=dy/d*max;
+    if (
+        distance > maxDistance
+    ) {
+
+        dx =
+            dx / distance *
+            maxDistance;
+
+        dy =
+            dy / distance *
+            maxDistance;
     }
 
-    joystickKnob.style.transform=
-        `translate(${dx}px,${dy}px)`;
+    touchKnob.style.transform =
+        `translate(${dx}px, ${dy}px)`;
 
-    if(d<10)return;
 
-    if(Math.abs(dx)>Math.abs(dy)){
+    if (
+        distance < 12
+    ) {
+        return;
+    }
 
-        if(dx>0){
-            setDirection(1,0);
-        }else{
-            setDirection(-1,0);
+
+    if (
+        Math.abs(dx) >
+        Math.abs(dy)
+    ) {
+
+        if (dx > 0) {
+
+            setDirection(1, 0);
+
+        } else {
+
+            setDirection(-1, 0);
         }
 
-    }else{
+    } else {
 
-        if(dy>0){
-            setDirection(0,1);
-        }else{
-            setDirection(0,-1);
+        if (dy > 0) {
+
+            setDirection(0, 1);
+
+        } else {
+
+            setDirection(0, -1);
         }
     }
 }
 
-function joystickReset(){
 
-    joystickKnob.style.transform=
-        "translate(0,0)";
+function resetJoystick() {
 
-    joystickPointer=null;
+    touchKnob.style.transform =
+        "translate(0, 0)";
+
+    joystickPointerId = null;
 }
 
-joystick.addEventListener(
+
+touchPad.addEventListener(
     "pointerdown",
-    function(e){
+    function(event) {
 
-        joystickPointer=e.pointerId;
+        event.preventDefault();
 
-        joystick.setPointerCapture(e.pointerId);
+        joystickPointerId =
+            event.pointerId;
 
-        joystickMove(
-            e.clientX,
-            e.clientY
+        touchPad.setPointerCapture(
+            event.pointerId
+        );
+
+        updateJoystick(
+            event.clientX,
+            event.clientY
         );
     }
 );
 
-joystick.addEventListener(
+
+touchPad.addEventListener(
     "pointermove",
-    function(e){
+    function(event) {
 
-        if(
-            joystickPointer===
-            e.pointerId
-        ){
-
-            joystickMove(
-                e.clientX,
-                e.clientY
-            );
+        if (
+            event.pointerId !==
+            joystickPointerId
+        ) {
+            return;
         }
+
+        event.preventDefault();
+
+        updateJoystick(
+            event.clientX,
+            event.clientY
+        );
     }
 );
 
-joystick.addEventListener(
+
+touchPad.addEventListener(
     "pointerup",
-    function(e){
+    function(event) {
 
-        if(
-            joystickPointer===
-            e.pointerId
-        ){
+        if (
+            event.pointerId ===
+            joystickPointerId
+        ) {
 
-            joystickReset();
+            resetJoystick();
         }
     }
 );
 
-joystick.addEventListener(
+
+touchPad.addEventListener(
     "pointercancel",
-    joystickReset
+    function() {
+
+        resetJoystick();
+    }
 );
+
 
 /* =========================================================
-   TOUCH BUTTONS
+   BUTTON EVENTS
 ========================================================= */
 
-boostBtn.addEventListener(
-    "pointerdown",
-    function(e){
-
-        e.preventDefault();
-
-        boosting=true;
-
-        updateHUD();
-    }
-);
-
-boostBtn.addEventListener(
-    "pointerup",
-    function(e){
-
-        e.preventDefault();
-
-        boosting=false;
-
-        updateHUD();
-    }
-);
-
-boostBtn.addEventListener(
-    "pointercancel",
-    function(){
-
-        boosting=false;
-
-        updateHUD();
-    }
-);
-
-touchPauseBtn.addEventListener(
-    "click",
-    function(){
-
-        togglePause();
-    }
-);
-
-touchExitBtn.addEventListener(
-    "click",
-    function(){
-
-        exitGame();
-    }
-);
-
-/* =========================================================
-   SWIPE CONTROL
-========================================================= */
-
-let swipeStartX=0;
-let swipeStartY=0;
-let swipeActive=false;
-
-canvas.addEventListener(
-    "touchstart",
-    function(e){
-
-        if(e.touches.length!==1)return;
-
-        const t=e.touches[0];
-
-        swipeStartX=t.clientX;
-        swipeStartY=t.clientY;
-        swipeActive=true;
-    },
-    {passive:true}
-);
-
-canvas.addEventListener(
-    "touchend",
-    function(e){
-
-        if(!swipeActive)return;
-
-        swipeActive=false;
-
-        const t=e.changedTouches[0];
-
-        const dx=t.clientX-swipeStartX;
-        const dy=t.clientY-swipeStartY;
-
-        const ax=Math.abs(dx);
-        const ay=Math.abs(dy);
-
-        if(
-            Math.max(ax,ay)<30
-        )return;
-
-        if(ax>ay){
-
-            if(dx>0){
-                setDirection(1,0);
-            }else{
-                setDirection(-1,0);
-            }
-
-        }else{
-
-            if(dy>0){
-                setDirection(0,1);
-            }else{
-                setDirection(0,-1);
-            }
-        }
-    },
-    {passive:true}
-);
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-playBtn.addEventListener(
+playButton.addEventListener(
     "click",
     startGame
 );
 
-menuPauseBtn.addEventListener(
-    "click",
-    function(){
 
-        if(!running){
+menuPauseButton.addEventListener(
+    "click",
+    function() {
+
+        /*
+           If the game hasn't started,
+           start it and immediately pause.
+        */
+
+        if (!gameRunning) {
 
             startGame();
 
             pauseGame();
 
-        }else{
+        } else {
 
             togglePause();
         }
     }
 );
 
-exitBtn.addEventListener(
+
+menuExitButton.addEventListener(
     "click",
     exitGame
 );
 
-pauseHud.addEventListener(
+
+pauseButton.addEventListener(
     "click",
     togglePause
 );
 
-resumeBtn.addEventListener(
+
+touchPause.addEventListener(
+    "click",
+    togglePause
+);
+
+
+resumeButton.addEventListener(
     "click",
     resumeGame
 );
 
-restartPauseBtn.addEventListener(
+
+pauseRestartButton.addEventListener(
     "click",
-    restartGame
+    startGame
 );
 
-exitPauseBtn.addEventListener(
+
+pauseExitButton.addEventListener(
     "click",
     exitGame
 );
 
-restartBtn.addEventListener(
+
+restartButton.addEventListener(
     "click",
-    restartGame
+    startGame
 );
 
-gameMenuBtn.addEventListener(
+
+gameOverMenuButton.addEventListener(
     "click",
-    returnToMenu
+    showMainMenu
 );
 
-/* =========================================================
-   RENDER
-========================================================= */
 
-function render(time){
+touchRestart.addEventListener(
+    "click",
+    startGame
+);
 
-    drawSky();
 
-    drawMoon();
+touchExit.addEventListener(
+    "click",
+    exitGame
+);
 
-    if(running){
-
-        drawGround();
-
-        drawWorldObjects();
-
-        drawFood(time);
-
-        drawParticles();
-
-        drawSnake();
-
-    }else{
-
-        /*
-          Draw a subtle background scene
-          behind the menu.
-        */
-
-        drawGround();
-
-        drawWorldObjects();
-
-        if(food){
-            drawFood(time);
-        }
-
-        if(snakeSegments.length){
-            drawSnake();
-        }
-    }
-
-    if(messageTimer>0){
-
-        messageTimer-=1/60;
-
-        if(messageTimer<=0){
-            hideMessage();
-        }
-    }
-}
 
 /* =========================================================
-   MAIN LOOP
+   INITIALIZE
 ========================================================= */
 
-function loop(time){
+createInitialSnake();
 
-    const dt=Math.min(
-        .05,
-        (time-lastTime)/1000
-    );
+placeFood();
 
-    lastTime=time;
+resizeCanvas();
 
-    if(
-        running &&
-        !paused &&
-        !dead
-    ){
-
-        moveSnake(dt);
-
-        updateParticles(dt);
-
-        updateHUD();
-    }else{
-
-        updateParticles(dt);
-    }
-
-    render(time);
-
-    requestAnimationFrame(loop);
-}
-
-/* =========================================================
-   INITIAL SCENE
-========================================================= */
-
-createWorld();
-
-resetSnake();
-
-spawnFood();
-
-menu.style.display="flex";
-hud.style.display="none";
-
-requestAnimationFrame(loop);
+draw();
 
 </script>
 
