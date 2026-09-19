@@ -5,24 +5,18 @@
 
 <meta
     name="viewport"
-    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
 >
-
-<meta name="theme-color" content="#020507">
 
 <title>VOID SNAKE 3D</title>
 
 <style>
-/* =========================================================
-   RESET
-========================================================= */
 
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
     -webkit-tap-highlight-color:transparent;
-    -webkit-touch-callout:none;
 }
 
 html,
@@ -32,14 +26,15 @@ body{
     overflow:hidden;
     background:#020507;
     touch-action:none;
-    overscroll-behavior:none;
 }
 
 body{
-    position:fixed;
-    inset:0;
-    color:#fff;
     font-family:Arial,Helvetica,sans-serif;
+    color:#fff;
+}
+
+button{
+    font-family:inherit;
 }
 
 /* =========================================================
@@ -49,10 +44,14 @@ body{
 #gameCanvas{
     position:fixed;
     inset:0;
+
     width:100%;
     height:100%;
+
     display:block;
+
     z-index:1;
+
     touch-action:none;
 }
 
@@ -63,13 +62,15 @@ body{
 #vignette{
     position:fixed;
     inset:0;
+
     z-index:2;
+
     pointer-events:none;
 
     background:
         radial-gradient(
             circle at center,
-            transparent 35%,
+            transparent 30%,
             rgba(0,0,0,.18) 65%,
             rgba(0,0,0,.72) 100%
         );
@@ -82,25 +83,22 @@ body{
 .screen{
     position:fixed;
     inset:0;
-    z-index:50;
+
+    z-index:100;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    padding:
-        max(14px,env(safe-area-inset-top))
-        max(14px,env(safe-area-inset-right))
-        max(14px,env(safe-area-inset-bottom))
-        max(14px,env(safe-area-inset-left));
+    padding:18px;
 
     background:
         radial-gradient(
             circle at center,
             rgba(0,255,170,.08),
-            transparent 48%
+            transparent 55%
         ),
-        rgba(0,0,0,.30);
+        rgba(0,0,0,.35);
 }
 
 .hidden{
@@ -108,37 +106,34 @@ body{
 }
 
 /* =========================================================
-   MENU CARD
+   MENU
 ========================================================= */
 
 .menu-card{
     width:min(500px,calc(100vw - 28px));
+
     max-height:calc(100vh - 28px);
 
     overflow:auto;
 
-    padding:
-        clamp(20px,5vw,34px)
-        clamp(16px,5vw,28px);
+    padding:30px 24px;
 
     border:
         1px solid
         rgba(255,255,255,.15);
 
-    border-radius:28px;
+    border-radius:26px;
 
     background:
-        rgba(4,9,13,.90);
-
-    backdrop-filter:blur(20px);
+        rgba(4,9,13,.94);
 
     box-shadow:
-        0 30px 100px rgba(0,0,0,.65),
-        inset 0 1px 0 rgba(255,255,255,.08);
+        0 30px 100px rgba(0,0,0,.7),
+        inset 0 1px 0 rgba(255,255,255,.06);
 
     text-align:center;
 
-    scrollbar-width:none;
+    backdrop-filter:blur(20px);
 }
 
 .menu-card::-webkit-scrollbar{
@@ -151,27 +146,25 @@ body{
 
 .logo{
     width:100%;
-    max-width:100%;
 
     overflow:hidden;
 
-    font-size:
-        clamp(30px,9vw,64px);
+    text-align:center;
 
-    line-height:.95;
+    line-height:.9;
+
+    font-size:
+        clamp(27px,9vw,62px);
 
     font-weight:1000;
 
-    letter-spacing:
-        clamp(.025em,1.2vw,.07em);
+    letter-spacing:.025em;
 
     white-space:nowrap;
 
-    text-align:center;
-
     text-shadow:
-        0 0 12px rgba(0,255,170,.75),
-        0 0 40px rgba(0,255,170,.28);
+        0 0 12px rgba(0,255,170,.8),
+        0 0 40px rgba(0,255,170,.3);
 }
 
 .logo span{
@@ -179,16 +172,14 @@ body{
 }
 
 .logo-small{
-    margin-top:8px;
+    margin-top:9px;
 
     font-size:
-        clamp(18px,4.5vw,30px);
-
-    line-height:1;
+        clamp(17px,4vw,28px);
 
     letter-spacing:.28em;
 
-    color:#91fff0;
+    color:#8ffff0;
 }
 
 /* =========================================================
@@ -196,16 +187,15 @@ body{
 ========================================================= */
 
 .subtitle{
-    margin:18px 0 23px;
+    margin:18px 0 22px;
 
-    color:#81949e;
+    color:#81939c;
 
     font-size:10px;
 
-    font-weight:700;
+    font-weight:bold;
 
-    letter-spacing:
-        clamp(.12em,2vw,.25em);
+    letter-spacing:.22em;
 }
 
 /* =========================================================
@@ -220,46 +210,30 @@ body{
 .menu-btn{
     width:100%;
 
-    min-height:56px;
+    min-height:55px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.13);
 
-    border-radius:16px;
+    border-radius:15px;
 
     background:
         linear-gradient(
             180deg,
-            rgba(255,255,255,.09),
+            rgba(255,255,255,.08),
             rgba(255,255,255,.025)
         );
 
     color:#fff;
 
     font-size:14px;
+
     font-weight:900;
 
-    letter-spacing:.10em;
+    letter-spacing:.1em;
 
     cursor:pointer;
 
     touch-action:manipulation;
-
-    transition:
-        transform .12s ease,
-        border-color .12s ease,
-        box-shadow .12s ease;
-}
-
-.menu-btn:hover{
-    border-color:#00ffaa88;
-
-    box-shadow:
-        0 10px 35px
-        rgba(0,255,170,.12);
-
-    transform:translateY(-2px);
 }
 
 .menu-btn:active{
@@ -267,9 +241,9 @@ body{
 }
 
 .menu-btn.primary{
-    color:#00130d;
-
     border:none;
+
+    color:#00150e;
 
     background:
         linear-gradient(
@@ -280,15 +254,15 @@ body{
 }
 
 .menu-btn.danger{
-    color:#ff7b7b;
+    color:#ff7272;
 }
 
 /* =========================================================
-   CONTROL INFO
+   INFO
 ========================================================= */
 
 .control-info{
-    margin-top:17px;
+    margin-top:16px;
 
     padding:12px;
 
@@ -296,34 +270,20 @@ body{
         1px solid
         rgba(255,255,255,.08);
 
-    border-radius:14px;
+    border-radius:13px;
 
     background:
         rgba(255,255,255,.025);
 
-    color:#74858e;
+    color:#71838d;
 
     font-size:10px;
 
-    line-height:1.7;
+    line-height:1.75;
 }
 
 .control-info strong{
-    color:#a8babf;
-}
-
-/* =========================================================
-   VERSION
-========================================================= */
-
-.version{
-    margin-top:17px;
-
-    color:#53636b;
-
-    font-size:9px;
-
-    letter-spacing:.13em;
+    color:#b0c0c5;
 }
 
 /* =========================================================
@@ -332,17 +292,18 @@ body{
 
 #hud{
     position:fixed;
+
     top:0;
     left:0;
     right:0;
 
-    z-index:20;
+    z-index:30;
 
     padding:
         max(12px,env(safe-area-inset-top))
-        max(12px,env(safe-area-inset-right))
+        12px
         0
-        max(12px,env(safe-area-inset-left));
+        12px;
 
     pointer-events:none;
 }
@@ -351,15 +312,16 @@ body{
     display:flex;
 
     justify-content:space-between;
-    align-items:flex-start;
 
-    gap:10px;
+    align-items:flex-start;
 }
 
 .stats{
     display:flex;
-    flex-wrap:wrap;
+
     gap:7px;
+
+    flex-wrap:wrap;
 }
 
 .stat{
@@ -369,38 +331,35 @@ body{
 
     border:
         1px solid
-        rgba(255,255,255,.11);
+        rgba(255,255,255,.12);
 
-    border-radius:13px;
+    border-radius:12px;
 
     background:
-        rgba(2,7,10,.68);
+        rgba(0,0,0,.55);
 
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(12px);
 }
 
 .stat-label{
     display:block;
 
-    margin-bottom:3px;
-
-    color:#6d7d86;
+    color:#71828a;
 
     font-size:7px;
 
-    font-weight:900;
+    font-weight:bold;
 
     letter-spacing:.14em;
 }
 
 .stat-value{
     font-size:15px;
+
     font-weight:1000;
 }
 
-.hud-pause{
-    pointer-events:auto;
-
+#pauseHudBtn{
     width:46px;
     height:46px;
 
@@ -408,10 +367,10 @@ body{
         1px solid
         rgba(255,255,255,.15);
 
-    border-radius:14px;
+    border-radius:13px;
 
     background:
-        rgba(2,7,10,.72);
+        rgba(0,0,0,.55);
 
     color:#fff;
 
@@ -419,9 +378,7 @@ body{
 
     cursor:pointer;
 
-    touch-action:manipulation;
-
-    backdrop-filter:blur(12px);
+    pointer-events:auto;
 }
 
 /* =========================================================
@@ -432,9 +389,13 @@ body{
     position:fixed;
     inset:0;
 
-    z-index:15;
+    z-index:25;
 
     pointer-events:none;
+}
+
+body.non-touch #touchControls{
+    display:none !important;
 }
 
 #joystick{
@@ -452,38 +413,25 @@ body{
             env(safe-area-inset-bottom)
         );
 
-    width:
-        clamp(
-            105px,
-            24vw,
-            145px
-        );
-
-    height:
-        clamp(
-            105px,
-            24vw,
-            145px
-        );
-
-    border-radius:50%;
+    width:125px;
+    height:125px;
 
     border:
         1px solid
-        rgba(255,255,255,.17);
+        rgba(255,255,255,.18);
+
+    border-radius:50%;
 
     background:
         radial-gradient(
             circle,
-            rgba(0,255,170,.10),
-            rgba(0,0,0,.32)
+            rgba(0,255,170,.12),
+            rgba(0,0,0,.42)
         );
 
     box-shadow:
         inset 0 0 30px
-        rgba(0,255,170,.06);
-
-    backdrop-filter:blur(10px);
+        rgba(0,255,170,.08);
 
     pointer-events:auto;
 
@@ -492,7 +440,7 @@ body{
 
 #joystick-ring{
     position:absolute;
-    inset:12%;
+    inset:13%;
 
     border:
         1px solid
@@ -506,22 +454,11 @@ body{
 #joystick-knob{
     position:absolute;
 
-    width:
-        clamp(
-            46px,
-            10vw,
-            62px
-        );
-
-    height:
-        clamp(
-            46px,
-            10vw,
-            62px
-        );
-
     left:50%;
     top:50%;
+
+    width:54px;
+    height:54px;
 
     transform:
         translate(-50%,-50%);
@@ -530,10 +467,10 @@ body{
 
     background:
         radial-gradient(
-            circle at 35% 28%,
-            #8affea,
-            #00d99b 58%,
-            #00775c
+            circle at 35% 30%,
+            #9affed,
+            #00d99b 60%,
+            #00765a
         );
 
     box-shadow:
@@ -543,7 +480,7 @@ body{
     pointer-events:none;
 }
 
-.joystick-label{
+.joystick-text{
     position:absolute;
 
     left:50%;
@@ -552,22 +489,18 @@ body{
     transform:
         translate(-50%,-50%);
 
-    color:#ffffff66;
+    color:#ffffff55;
 
     font-size:9px;
 
     font-weight:900;
 
-    letter-spacing:.15em;
+    letter-spacing:.12em;
 
     pointer-events:none;
 }
 
-/* =========================================================
-   TOUCH ACTION BUTTONS
-========================================================= */
-
-#actionControls{
+#touchActions{
     position:absolute;
 
     right:
@@ -586,36 +519,23 @@ body{
 
     flex-direction:column;
 
-    align-items:flex-end;
-
-    gap:11px;
+    gap:12px;
 
     pointer-events:auto;
 }
 
-.touch-btn{
-    width:
-        clamp(
-            58px,
-            14vw,
-            76px
-        );
-
-    height:
-        clamp(
-            58px,
-            14vw,
-            76px
-        );
-
-    border-radius:50%;
+.touch-button{
+    width:70px;
+    height:70px;
 
     border:
         1px solid
         rgba(255,255,255,.16);
 
+    border-radius:50%;
+
     background:
-        rgba(0,0,0,.40);
+        rgba(0,0,0,.45);
 
     color:#fff;
 
@@ -623,41 +543,33 @@ body{
 
     font-weight:1000;
 
-    letter-spacing:.05em;
-
-    backdrop-filter:blur(10px);
-
-    pointer-events:auto;
+    cursor:pointer;
 
     touch-action:none;
+
+    backdrop-filter:blur(10px);
 }
 
-.touch-btn.boost{
+.touch-button:active{
+    transform:scale(.92);
+}
+
+#boostBtn{
     border-color:
         rgba(0,255,170,.4);
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(0,255,170,.15),
-            rgba(0,0,0,.4)
-        );
-}
-
-.touch-btn.active{
-    transform:scale(.92);
-
-    box-shadow:
-        0 0 25px
-        rgba(0,255,170,.28);
+    color:#00ffaa;
 }
 
 /* =========================================================
-   PAUSE / GAME OVER
+   OVERLAY CARD
 ========================================================= */
 
 .overlay-card{
-    width:min(440px,calc(100vw - 28px));
+    width:min(
+        430px,
+        calc(100vw - 28px)
+    );
 
     padding:28px 22px;
 
@@ -665,18 +577,18 @@ body{
         1px solid
         rgba(255,255,255,.14);
 
-    border-radius:24px;
+    border-radius:23px;
 
     background:
-        rgba(4,8,12,.91);
-
-    backdrop-filter:blur(20px);
+        rgba(4,8,12,.95);
 
     box-shadow:
         0 30px 100px
-        rgba(0,0,0,.68);
+        rgba(0,0,0,.7);
 
     text-align:center;
+
+    backdrop-filter:blur(20px);
 }
 
 .overlay-title{
@@ -686,8 +598,6 @@ body{
         clamp(28px,7vw,42px);
 
     font-weight:1000;
-
-    letter-spacing:.04em;
 }
 
 .overlay-text{
@@ -700,108 +610,106 @@ body{
 
 .overlay-buttons{
     display:grid;
+
     gap:10px;
 }
 
 /* =========================================================
-   DESKTOP CONTROL INDICATOR
+   DESKTOP INFO
 ========================================================= */
 
-#desktopControls{
+#desktopInfo{
     position:fixed;
 
     left:50%;
-    bottom:14px;
+    bottom:12px;
 
     transform:translateX(-50%);
 
-    z-index:16;
+    z-index:20;
 
-    padding:7px 12px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:999px;
-
-    background:
-        rgba(0,0,0,.34);
-
-    color:#73848d;
+    color:#6f8089;
 
     font-size:9px;
 
     letter-spacing:.07em;
 
-    backdrop-filter:blur(8px);
-
     pointer-events:none;
+
+    padding:7px 12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:20px;
+
+    background:
+        rgba(0,0,0,.3);
+}
+
+body.touch-device #desktopInfo{
+    display:none;
 }
 
 /* =========================================================
-   RESPONSIVE
+   SMALL DEVICES
 ========================================================= */
 
-@media(max-width:800px){
-
-    #desktopControls{
-        display:none;
-    }
-}
-
-@media(max-width:600px){
+@media(max-width:380px){
 
     .menu-card{
-        border-radius:22px;
-    }
-
-    .menu-btn{
-        min-height:52px;
-    }
-
-    .stat{
-        min-width:64px;
-        padding:6px 8px;
-    }
-
-    .stat-value{
-        font-size:14px;
-    }
-
-    .hud-pause{
-        width:43px;
-        height:43px;
-    }
-}
-
-/* =========================================================
-   SMALL LANDSCAPE
-========================================================= */
-
-@media(
-    max-height:520px
-) and (
-    orientation:landscape
-){
-
-    .menu-card{
-        max-height:94vh;
-        padding:15px 18px;
+        padding:23px 16px;
     }
 
     .logo{
-        font-size:
-            clamp(28px,8vh,42px);
+        font-size:28px;
     }
 
     .logo-small{
         font-size:16px;
+    }
+
+    .menu-btn{
+        min-height:50px;
+    }
+
+    .stat{
+        min-width:60px;
+    }
+
+    .stat-value{
+        font-size:13px;
+    }
+}
+
+/* =========================================================
+   LANDSCAPE
+========================================================= */
+
+@media(
+    orientation:landscape
+) and (
+    max-height:520px
+){
+
+    .menu-card{
+        max-height:94vh;
+
+        padding:15px 18px;
+    }
+
+    .logo{
+        font-size:34px;
+    }
+
+    .logo-small{
         margin-top:4px;
+        font-size:15px;
     }
 
     .subtitle{
-        margin:7px 0 10px;
+        margin:8px 0 10px;
     }
 
     .menu-buttons{
@@ -810,7 +718,7 @@ body{
     }
 
     .menu-btn{
-        min-height:43px;
+        min-height:42px;
         font-size:11px;
     }
 
@@ -819,8 +727,8 @@ body{
     }
 
     #joystick{
-        width:94px;
-        height:94px;
+        width:95px;
+        height:95px;
     }
 
     #joystick-knob{
@@ -828,69 +736,16 @@ body{
         height:42px;
     }
 
-    .touch-btn{
-        width:54px;
-        height:54px;
+    .touch-button{
+        width:55px;
+        height:55px;
     }
 }
 
-/* =========================================================
-   VERY SMALL DEVICES
-========================================================= */
-
-@media(max-width:360px){
-
-    .logo{
-        font-size:29px;
-        letter-spacing:.02em;
-    }
-
-    .logo-small{
-        font-size:17px;
-    }
-
-    .stat{
-        min-width:59px;
-    }
-
-    .stat-label{
-        font-size:6px;
-    }
-
-    .stat-value{
-        font-size:12px;
-    }
-}
-
-/* =========================================================
-   TOUCH DEVICE CLASS
-========================================================= */
-
-body.touch-device #desktopControls{
-    display:none;
-}
-
-/* Hide touch controls when not a touch device */
-body.non-touch-device #touchControls{
-    display:none !important;
-}
 </style>
-
-<!-- =========================================================
-     THREE.JS
-========================================================= -->
-
-<script type="importmap">
-{
-    "imports":{
-        "three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-    }
-}
-</script>
-
 </head>
 
-<body>
+<body class="non-touch">
 
 <canvas id="gameCanvas"></canvas>
 
@@ -900,7 +755,7 @@ body.non-touch-device #touchControls{
      MAIN MENU
 ========================================================= -->
 
-<section id="mainMenu" class="screen">
+<div id="mainMenu" class="screen">
 
     <div class="menu-card">
 
@@ -918,15 +773,27 @@ body.non-touch-device #touchControls{
 
         <div class="menu-buttons">
 
-            <button id="playBtn" class="menu-btn primary">
+            <button
+                type="button"
+                id="playBtn"
+                class="menu-btn primary"
+            >
                 ▶ PLAY
             </button>
 
-            <button id="menuPauseBtn" class="menu-btn">
+            <button
+                type="button"
+                id="menuPauseBtn"
+                class="menu-btn"
+            >
                 ⏸ PAUSE / RESUME
             </button>
 
-            <button id="exitBtn" class="menu-btn danger">
+            <button
+                type="button"
+                id="exitBtn"
+                class="menu-btn danger"
+            >
                 ✕ EXIT
             </button>
 
@@ -934,36 +801,44 @@ body.non-touch-device #touchControls{
 
         <div class="control-info">
 
-            <strong>MOVE:</strong>
-            W / ↑ Forward &nbsp; • &nbsp;
-            S / ↓ Backward
+            <strong>W / ↑</strong>
+            = FORWARD
+
+            &nbsp; • &nbsp;
+
+            <strong>S / ↓</strong>
+            = BACK
+
             <br>
 
-            <strong>TURN:</strong>
-            A / ← Left &nbsp; • &nbsp;
-            D / → Right
+            <strong>A / ←</strong>
+            = LEFT
+
+            &nbsp; • &nbsp;
+
+            <strong>D / →</strong>
+            = RIGHT
+
             <br>
 
-            <strong>BOOST:</strong>
-            Shift / BOOST Button
+            <strong>SHIFT</strong>
+            = BOOST
+
+            &nbsp; • &nbsp;
+
+            <strong>SPACE</strong>
+            = PAUSE
+
             <br>
 
-            <strong>TOUCH:</strong>
-            Joystick / Swipe
-            <br>
+            TOUCHSCREEN:
+            JOYSTICK + SWIPE
 
-            <strong>CONTROLLER:</strong>
-            Left Stick
-
-        </div>
-
-        <div class="version">
-            VOID SNAKE 3D • THREE.JS
         </div>
 
     </div>
 
-</section>
+</div>
 
 <!-- =========================================================
      HUD
@@ -980,7 +855,10 @@ body.non-touch-device #touchControls{
                     SCORE
                 </span>
 
-                <span id="scoreValue" class="stat-value">
+                <span
+                    id="scoreValue"
+                    class="stat-value"
+                >
                     0
                 </span>
             </div>
@@ -990,7 +868,10 @@ body.non-touch-device #touchControls{
                     LENGTH
                 </span>
 
-                <span id="lengthValue" class="stat-value">
+                <span
+                    id="lengthValue"
+                    class="stat-value"
+                >
                     8
                 </span>
             </div>
@@ -1000,14 +881,20 @@ body.non-touch-device #touchControls{
                     SPEED
                 </span>
 
-                <span id="speedValue" class="stat-value">
+                <span
+                    id="speedValue"
+                    class="stat-value"
+                >
                     5.2
                 </span>
             </div>
 
         </div>
 
-        <button id="pauseHudBtn" class="hud-pause">
+        <button
+            type="button"
+            id="pauseHudBtn"
+        >
             Ⅱ
         </button>
 
@@ -1019,7 +906,7 @@ body.non-touch-device #touchControls{
      TOUCH CONTROLS
 ========================================================= -->
 
-<div id="touchControls" class="hidden">
+<div id="touchControls">
 
     <div id="joystick">
 
@@ -1027,19 +914,27 @@ body.non-touch-device #touchControls{
 
         <div id="joystick-knob"></div>
 
-        <div class="joystick-label">
+        <div class="joystick-text">
             MOVE
         </div>
 
     </div>
 
-    <div id="actionControls">
+    <div id="touchActions">
 
-        <button id="boostBtn" class="touch-btn boost">
+        <button
+            type="button"
+            id="boostBtn"
+            class="touch-button"
+        >
             BOOST
         </button>
 
-        <button id="touchPauseBtn" class="touch-btn">
+        <button
+            type="button"
+            id="touchPauseBtn"
+            class="touch-button"
+        >
             Ⅱ
         </button>
 
@@ -1047,7 +942,7 @@ body.non-touch-device #touchControls{
 
 </div>
 
-<div id="desktopControls">
+<div id="desktopInfo">
     W / ↑ FORWARD • S / ↓ BACK • A / ← LEFT • D / → RIGHT • SHIFT BOOST • SPACE PAUSE
 </div>
 
@@ -1055,29 +950,44 @@ body.non-touch-device #touchControls{
      PAUSE
 ========================================================= -->
 
-<section id="pauseScreen" class="screen hidden">
+<div
+    id="pauseScreen"
+    class="screen hidden"
+>
 
     <div class="overlay-card">
 
-        <h1 class="overlay-title">
+        <div class="overlay-title">
             PAUSED
-        </h1>
+        </div>
 
-        <p class="overlay-text">
-            The snake is waiting.
-        </p>
+        <div class="overlay-text">
+            Game paused.
+        </div>
 
         <div class="overlay-buttons">
 
-            <button id="resumeBtn" class="menu-btn primary">
+            <button
+                type="button"
+                id="resumeBtn"
+                class="menu-btn primary"
+            >
                 ▶ RESUME
             </button>
 
-            <button id="restartBtn" class="menu-btn">
+            <button
+                type="button"
+                id="restartBtn"
+                class="menu-btn"
+            >
                 ↻ RESTART
             </button>
 
-            <button id="pauseExitBtn" class="menu-btn danger">
+            <button
+                type="button"
+                id="pauseExitBtn"
+                class="menu-btn danger"
+            >
                 ✕ EXIT
             </button>
 
@@ -1085,33 +995,36 @@ body.non-touch-device #touchControls{
 
     </div>
 
-</section>
+</div>
 
 <!-- =========================================================
      GAME OVER
 ========================================================= -->
 
-<section id="gameOverScreen" class="screen hidden">
+<div
+    id="gameOverScreen"
+    class="screen hidden"
+>
 
     <div class="overlay-card">
 
-        <h1 class="overlay-title">
+        <div class="overlay-title">
             GAME OVER
-        </h1>
+        </div>
 
-        <p class="overlay-text">
-            Your snake could not survive.
-        </p>
+        <div class="overlay-text">
+            Your snake crashed.
+        </div>
 
         <div
             style="
-                margin:-8px 0 22px;
-                font-size:28px;
+                margin-bottom:20px;
+                font-size:27px;
                 font-weight:1000;
                 color:#00ffaa;
             "
         >
-            SCORE
+            SCORE:
             <span id="finalScore">
                 0
             </span>
@@ -1119,11 +1032,19 @@ body.non-touch-device #touchControls{
 
         <div class="overlay-buttons">
 
-            <button id="playAgainBtn" class="menu-btn primary">
+            <button
+                type="button"
+                id="playAgainBtn"
+                class="menu-btn primary"
+            >
                 ▶ PLAY AGAIN
             </button>
 
-            <button id="gameOverExitBtn" class="menu-btn danger">
+            <button
+                type="button"
+                id="gameOverExitBtn"
+                class="menu-btn danger"
+            >
                 ✕ EXIT
             </button>
 
@@ -1131,90 +1052,161 @@ body.non-touch-device #touchControls{
 
     </div>
 
-</section>
+</div>
 
-<script type="module">
+<!-- =========================================================
+     IMPORTANT:
+     CLASSIC THREE.JS SCRIPT
+========================================================= -->
 
-import * as THREE from "three";
+<script src="https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.min.js"></script>
+
+<script>
 
 /* =========================================================
-   DEVICE DETECTION
+   CHECK THREE.JS
 ========================================================= */
 
-const hasTouch =
-    (
-        "ontouchstart" in window
-    ) ||
-    (
-        navigator.maxTouchPoints > 0
-    ) ||
-    (
-        navigator.msMaxTouchPoints > 0
+if(typeof THREE === "undefined"){
+
+    document.body.innerHTML = `
+        <div style="
+            position:fixed;
+            inset:0;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#020507;
+            color:white;
+            font-family:Arial;
+            text-align:center;
+            padding:30px;
+        ">
+            <div>
+                <h1 style="color:#00ffaa">
+                    VOID SNAKE 3D
+                </h1>
+
+                <p style="margin-top:15px;color:#aaa">
+                    Three.js could not be loaded.
+                </p>
+
+                <p style="margin-top:8px;color:#777">
+                    Check your internet connection and reload the page.
+                </p>
+            </div>
+        </div>
+    `;
+
+    throw new Error(
+        "Three.js failed to load."
     );
-
-document.body.classList.toggle(
-    "touch-device",
-    hasTouch
-);
-
-document.body.classList.toggle(
-    "non-touch-device",
-    !hasTouch
-);
+}
 
 /* =========================================================
    DOM
 ========================================================= */
 
 const canvas =
-    document.getElementById("gameCanvas");
+    document.getElementById(
+        "gameCanvas"
+    );
 
 const mainMenu =
-    document.getElementById("mainMenu");
+    document.getElementById(
+        "mainMenu"
+    );
 
 const hud =
-    document.getElementById("hud");
+    document.getElementById(
+        "hud"
+    );
 
 const touchControls =
-    document.getElementById("touchControls");
+    document.getElementById(
+        "touchControls"
+    );
 
 const pauseScreen =
-    document.getElementById("pauseScreen");
+    document.getElementById(
+        "pauseScreen"
+    );
 
 const gameOverScreen =
-    document.getElementById("gameOverScreen");
+    document.getElementById(
+        "gameOverScreen"
+    );
 
 const scoreValue =
-    document.getElementById("scoreValue");
+    document.getElementById(
+        "scoreValue"
+    );
 
 const lengthValue =
-    document.getElementById("lengthValue");
+    document.getElementById(
+        "lengthValue"
+    );
 
 const speedValue =
-    document.getElementById("speedValue");
+    document.getElementById(
+        "speedValue"
+    );
 
 const finalScore =
-    document.getElementById("finalScore");
+    document.getElementById(
+        "finalScore"
+    );
 
 const joystick =
-    document.getElementById("joystick");
+    document.getElementById(
+        "joystick"
+    );
 
 const joystickKnob =
-    document.getElementById("joystick-knob");
+    document.getElementById(
+        "joystick-knob"
+    );
 
 const boostBtn =
-    document.getElementById("boostBtn");
+    document.getElementById(
+        "boostBtn"
+    );
 
 /* =========================================================
-   THREE.JS
+   TOUCH DETECTION
+========================================================= */
+
+const touchDevice =
+    navigator.maxTouchPoints > 0 ||
+    "ontouchstart" in window ||
+    "onmsgesturechange" in window;
+
+document.body.classList.toggle(
+    "touch-device",
+    touchDevice
+);
+
+document.body.classList.toggle(
+    "non-touch",
+    !touchDevice
+);
+
+/* =========================================================
+   THREE RENDERER
 ========================================================= */
 
 const renderer =
     new THREE.WebGLRenderer({
-        canvas,
+        canvas:canvas,
         antialias:true,
         powerPreference:"high-performance"
     });
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight,
+    false
+);
 
 renderer.setPixelRatio(
     Math.min(
@@ -1223,24 +1215,10 @@ renderer.setPixelRatio(
     )
 );
 
-renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-);
-
-renderer.shadowMap.enabled = true;
-
-renderer.shadowMap.type =
-    THREE.PCFSoftShadowMap;
-
 renderer.outputColorSpace =
     THREE.SRGBColorSpace;
 
-renderer.toneMapping =
-    THREE.ACESFilmicToneMapping;
-
-renderer.toneMappingExposure =
-    1.1;
+renderer.shadowMap.enabled = true;
 
 /* =========================================================
    SCENE
@@ -1250,13 +1228,19 @@ const scene =
     new THREE.Scene();
 
 scene.background =
-    new THREE.Color(0x061017);
+    new THREE.Color(
+        0x061017
+    );
 
 scene.fog =
     new THREE.FogExp2(
         0x061017,
-        .018
+        .017
     );
+
+/* =========================================================
+   CAMERA
+========================================================= */
 
 const camera =
     new THREE.PerspectiveCamera(
@@ -1274,12 +1258,12 @@ camera.position.set(
 );
 
 /* =========================================================
-   LIGHTS
+   LIGHT
 ========================================================= */
 
 scene.add(
     new THREE.HemisphereLight(
-        0x9eeaff,
+        0xb8f5ff,
         0x07100c,
         1.7
     )
@@ -1299,8 +1283,8 @@ sun.position.set(
 
 sun.castShadow = true;
 
-sun.shadow.mapSize.width = 2048;
-sun.shadow.mapSize.height = 2048;
+sun.shadow.mapSize.width = 1024;
+sun.shadow.mapSize.height = 1024;
 
 sun.shadow.camera.left = -100;
 sun.shadow.camera.right = 100;
@@ -1309,38 +1293,36 @@ sun.shadow.camera.bottom = -100;
 
 scene.add(sun);
 
-const glowLight =
+const glow =
     new THREE.PointLight(
         0x00ffaa,
         8,
-        80
+        90
     );
 
-glowLight.position.set(
+glow.position.set(
     -20,
-    12,
+    10,
     -20
 );
 
-scene.add(glowLight);
+scene.add(glow);
 
 /* =========================================================
    WORLD
 ========================================================= */
 
-const WORLD_SIZE = 180;
+const WORLD_SIZE = 160;
 
 const ground =
     new THREE.Mesh(
         new THREE.PlaneGeometry(
             WORLD_SIZE,
-            WORLD_SIZE,
-            40,
-            40
+            WORLD_SIZE
         ),
         new THREE.MeshStandardMaterial({
             color:0x10251d,
-            roughness:.92
+            roughness:.95
         })
     );
 
@@ -1354,12 +1336,13 @@ scene.add(ground);
 const grid =
     new THREE.GridHelper(
         WORLD_SIZE,
-        45,
-        0x16493d,
-        0x0d2b25
+        40,
+        0x174b40,
+        0x0d2c26
     );
 
-grid.position.y = .015;
+grid.position.y =
+    .01;
 
 scene.add(grid);
 
@@ -1367,11 +1350,11 @@ scene.add(grid);
    ROCKS
 ========================================================= */
 
-function createRock(
-    x,
-    z,
-    scale
-){
+function addRock(){
+
+    const scale =
+        .4 +
+        Math.random() * 1.4;
 
     const rock =
         new THREE.Mesh(
@@ -1380,23 +1363,25 @@ function createRock(
                 1
             ),
             new THREE.MeshStandardMaterial({
-                color:0x26352f,
-                roughness:.95
+                color:0x263630,
+                roughness:1
             })
         );
 
     rock.position.set(
-        x,
-        scale * .5,
-        z
+        (Math.random()-.5) *
+        (WORLD_SIZE-12),
+
+        scale*.5,
+
+        (Math.random()-.5) *
+        (WORLD_SIZE-12)
     );
 
     rock.scale.set(
         scale,
-        scale * (
-            .6 +
-            Math.random() * .5
-        ),
+        scale *
+        (.6 + Math.random()*.5),
         scale
     );
 
@@ -1407,33 +1392,23 @@ function createRock(
     );
 
     rock.castShadow = true;
-    rock.receiveShadow = true;
 
     scene.add(rock);
 }
 
-for(let i=0;i<85;i++){
-
-    createRock(
-        (Math.random()-.5) *
-        (WORLD_SIZE-15),
-
-        (Math.random()-.5) *
-        (WORLD_SIZE-15),
-
-        .35 +
-        Math.random()*1.8
-    );
+for(
+    let i=0;
+    i<60;
+    i++
+){
+    addRock();
 }
 
 /* =========================================================
    TREES
 ========================================================= */
 
-function createTree(
-    x,
-    z
-){
+function addTree(){
 
     const group =
         new THREE.Group();
@@ -1442,17 +1417,17 @@ function createTree(
         new THREE.Mesh(
             new THREE.CylinderGeometry(
                 .18,
-                .3,
+                .28,
                 2.4,
                 7
             ),
             new THREE.MeshStandardMaterial({
-                color:0x3b2416,
-                roughness:1
+                color:0x402819
             })
         );
 
-    trunk.position.y = 1.2;
+    trunk.position.y =
+        1.2;
 
     trunk.castShadow = true;
 
@@ -1461,40 +1436,41 @@ function createTree(
     const leaves =
         new THREE.Mesh(
             new THREE.ConeGeometry(
-                1.25,
+                1.2,
                 3.2,
                 8
             ),
             new THREE.MeshStandardMaterial({
-                color:0x0c4c31,
-                roughness:.9
+                color:0x0d4b30
             })
         );
 
-    leaves.position.y = 3.1;
+    leaves.position.y =
+        3;
 
     leaves.castShadow = true;
 
     group.add(leaves);
 
     group.position.set(
-        x,
+        (Math.random()-.5) *
+        (WORLD_SIZE-15),
+
         0,
-        z
+
+        (Math.random()-.5) *
+        (WORLD_SIZE-15)
     );
 
     scene.add(group);
 }
 
-for(let i=0;i<55;i++){
-
-    createTree(
-        (Math.random()-.5) *
-        (WORLD_SIZE-20),
-
-        (Math.random()-.5) *
-        (WORLD_SIZE-20)
-    );
+for(
+    let i=0;
+    i<35;
+    i++
+){
+    addTree();
 }
 
 /* =========================================================
@@ -1504,23 +1480,27 @@ for(let i=0;i<55;i++){
 const snakeGroup =
     new THREE.Group();
 
-scene.add(snakeGroup);
+scene.add(
+    snakeGroup
+);
 
-const snakeSegments = [];
-
-const START_LENGTH = 8;
-
-let snakeLength =
-    START_LENGTH;
-
-const bodySpacing = .72;
-
-const snakeHead =
+const snakeHeadPosition =
     new THREE.Vector3(
         0,
         .65,
         0
     );
+
+/*
+   IMPORTANT:
+
+   Direction is WORLD direction.
+
+   UP/W    = z -1
+   DOWN/S  = z +1
+   LEFT/A  = x -1
+   RIGHT/D = x +1
+*/
 
 const direction =
     new THREE.Vector3(
@@ -1529,12 +1509,19 @@ const direction =
         -1
     );
 
-const desiredDirection =
-    new THREE.Vector3(
-        0,
-        0,
-        -1
-    );
+/*
+   No reverse-direction blocking.
+   This makes S/Down actually work.
+*/
+
+const snakeSegments = [];
+
+const START_LENGTH = 8;
+
+let snakeLength =
+    START_LENGTH;
+
+const BODY_GAP = .72;
 
 /* =========================================================
    HEAD
@@ -1551,21 +1538,22 @@ const head =
             16
         ),
         new THREE.MeshStandardMaterial({
-            color:0x00b87a,
-            roughness:.42,
-            metalness:.1
+            color:0x00b879,
+            roughness:.4
         })
     );
 
 head.scale.set(
     1,
-    .78,
-    1.18
+    .8,
+    1.2
 );
 
 head.castShadow = true;
 
-headGroup.add(head);
+headGroup.add(
+    head
+);
 
 /* =========================================================
    EYES
@@ -1573,8 +1561,7 @@ headGroup.add(head);
 
 const eyeMaterial =
     new THREE.MeshStandardMaterial({
-        color:0x020202,
-        roughness:.15
+        color:0x000000
     });
 
 const eyeGeometry =
@@ -1584,78 +1571,33 @@ const eyeGeometry =
         8
     );
 
-const eyeL =
+const eyeLeft =
     new THREE.Mesh(
         eyeGeometry,
         eyeMaterial
     );
 
-const eyeR =
+const eyeRight =
     new THREE.Mesh(
         eyeGeometry,
         eyeMaterial
     );
 
-eyeL.position.set(
+eyeLeft.position.set(
     -.34,
-    .17,
-    -.46
+    .18,
+    -.47
 );
 
-eyeR.position.set(
+eyeRight.position.set(
     .34,
-    .17,
-    -.46
+    .18,
+    -.47
 );
 
 headGroup.add(
-    eyeL,
-    eyeR
-);
-
-/* =========================================================
-   EYE GLOW
-========================================================= */
-
-const eyeGlowMaterial =
-    new THREE.MeshBasicMaterial({
-        color:0x8affdd
-    });
-
-const eyeGlowGeometry =
-    new THREE.SphereGeometry(
-        .045,
-        8,
-        8
-    );
-
-const eyeGlowL =
-    new THREE.Mesh(
-        eyeGlowGeometry,
-        eyeGlowMaterial
-    );
-
-const eyeGlowR =
-    new THREE.Mesh(
-        eyeGlowGeometry,
-        eyeGlowMaterial
-    );
-
-eyeGlowL.position.set(
-    -.34,
-    .19,
-    -.57
-);
-
-eyeGlowR.position.set(
-    .34,
-    .19,
-    -.57
-);
-
-headGroup.add(
-    eyeGlowL,
-    eyeGlowR
+    eyeLeft,
+    eyeRight
 );
 
 /* =========================================================
@@ -1667,7 +1609,7 @@ const tongue =
         new THREE.CylinderGeometry(
             .018,
             .018,
-            .75,
+            .7,
             6
         ),
         new THREE.MeshBasicMaterial({
@@ -1680,23 +1622,25 @@ tongue.rotation.x =
 
 tongue.position.set(
     0,
-    -.03,
-    -.75
+    -.04,
+    -.78
 );
 
-headGroup.add(tongue);
+headGroup.add(
+    tongue
+);
 
-snakeGroup.add(headGroup);
+snakeGroup.add(
+    headGroup
+);
 
 /* =========================================================
    BODY
 ========================================================= */
 
-function createBodySegment(
-    index
-){
+function createBody(){
 
-    const segment =
+    const mesh =
         new THREE.Mesh(
             new THREE.SphereGeometry(
                 .56,
@@ -1705,23 +1649,23 @@ function createBodySegment(
             ),
             new THREE.MeshStandardMaterial({
                 color:
-                    index % 2 === 0
-                    ? 0x00a96f
-                    : 0x00885c,
-                roughness:.48,
-                metalness:.08
+                    snakeSegments.length % 2
+                    ? 0x008e60
+                    : 0x00a96f,
+
+                roughness:.45
             })
         );
 
-    segment.scale.set(
+    mesh.scale.set(
         1,
         .82,
         1.05
     );
 
-    segment.castShadow = true;
+    mesh.castShadow = true;
 
-    return segment;
+    return mesh;
 }
 
 for(
@@ -1730,23 +1674,27 @@ for(
     i++
 ){
 
-    const position =
+    const pos =
         new THREE.Vector3(
             0,
             .58,
-            i * bodySpacing
+            i * BODY_GAP
         );
 
     const mesh =
-        createBodySegment(i);
+        createBody();
 
-    mesh.position.copy(position);
+    mesh.position.copy(
+        pos
+    );
 
-    snakeGroup.add(mesh);
+    snakeGroup.add(
+        mesh
+    );
 
     snakeSegments.push({
-        mesh,
-        position
+        mesh:mesh,
+        position:pos
     });
 }
 
@@ -1756,17 +1704,19 @@ for(
 
 let food = null;
 
-function createFood(){
+function spawnFood(){
 
     if(food){
 
-        scene.remove(food);
+        scene.remove(
+            food
+        );
     }
 
     const group =
         new THREE.Group();
 
-    const core =
+    const mesh =
         new THREE.Mesh(
             new THREE.IcosahedronGeometry(
                 .38,
@@ -1774,54 +1724,41 @@ function createFood(){
             ),
             new THREE.MeshStandardMaterial({
                 color:0xffc400,
-                emissive:0xff7a00,
-                emissiveIntensity:2,
-                roughness:.22
+                emissive:0xff7200,
+                emissiveIntensity:2
             })
         );
 
-    group.add(core);
+    group.add(
+        mesh
+    );
 
     group.add(
         new THREE.PointLight(
-            0xffaa00,
+            0xffa000,
             5,
             8
         )
     );
 
-    let x;
-    let z;
-
-    do{
-
-        x =
-            (Math.random()-.5) *
-            (WORLD_SIZE-20);
-
-        z =
-            (Math.random()-.5) *
-            (WORLD_SIZE-20);
-
-    }while(
-        Math.hypot(
-            x-snakeHead.x,
-            z-snakeHead.z
-        ) < 10
-    );
-
     group.position.set(
-        x,
+        (Math.random()-.5) *
+        (WORLD_SIZE-20),
+
         .7,
-        z
+
+        (Math.random()-.5) *
+        (WORLD_SIZE-20)
     );
 
-    scene.add(group);
+    scene.add(
+        group
+    );
 
     food = group;
 }
 
-createFood();
+spawnFood();
 
 /* =========================================================
    PARTICLES
@@ -1829,13 +1766,17 @@ createFood();
 
 const particles = [];
 
-function pickupEffect(
+function createParticles(
     position
 ){
 
-    for(let i=0;i<18;i++){
+    for(
+        let i=0;
+        i<15;
+        i++
+    ){
 
-        const particle =
+        const p =
             new THREE.Mesh(
                 new THREE.SphereGeometry(
                     .06,
@@ -1850,20 +1791,22 @@ function pickupEffect(
                 })
             );
 
-        particle.position.copy(position);
+        p.position.copy(
+            position
+        );
 
-        particle.userData.velocity =
+        p.userData.velocity =
             new THREE.Vector3(
                 (Math.random()-.5)*4,
                 Math.random()*4,
                 (Math.random()-.5)*4
             );
 
-        particle.userData.life = 1;
+        p.userData.life = 1;
 
-        scene.add(particle);
+        scene.add(p);
 
-        particles.push(particle);
+        particles.push(p);
     }
 }
 
@@ -1878,7 +1821,8 @@ function updateParticles(dt){
         const p =
             particles[i];
 
-        p.userData.life -= dt;
+        p.userData.life -=
+            dt;
 
         p.position.addScaledVector(
             p.userData.velocity,
@@ -1901,7 +1845,10 @@ function updateParticles(dt){
 
             scene.remove(p);
 
-            particles.splice(i,1);
+            particles.splice(
+                i,
+                1
+            );
         }
     }
 }
@@ -1911,17 +1858,16 @@ function updateParticles(dt){
 ========================================================= */
 
 let running = false;
+
 let paused = false;
+
 let dead = false;
 
 let score = 0;
 
-let baseSpeed = 5.2;
+let speed = 5.2;
 
 let boosting = false;
-
-const clock =
-    new THREE.Clock();
 
 /* =========================================================
    HUD
@@ -1937,44 +1883,13 @@ function updateHUD(){
 
     speedValue.textContent =
         (
-            baseSpeed *
-            (boosting ? 1.7 : 1)
+            speed *
+            (
+                boosting
+                ? 1.7
+                : 1
+            )
         ).toFixed(1);
-}
-
-/* =========================================================
-   SCREEN STATE
-========================================================= */
-
-function showGame(){
-
-    mainMenu.classList.add("hidden");
-
-    hud.classList.remove("hidden");
-
-    if(hasTouch){
-
-        touchControls.classList.remove(
-            "hidden"
-        );
-    }
-
-    pauseScreen.classList.add("hidden");
-
-    gameOverScreen.classList.add("hidden");
-}
-
-function showMenu(){
-
-    mainMenu.classList.remove("hidden");
-
-    hud.classList.add("hidden");
-
-    touchControls.classList.add("hidden");
-
-    pauseScreen.classList.add("hidden");
-
-    gameOverScreen.classList.add("hidden");
 }
 
 /* =========================================================
@@ -1983,16 +1898,22 @@ function showMenu(){
 
 function resetGame(){
 
+    running = false;
+
+    paused = false;
+
+    dead = false;
+
     score = 0;
 
     snakeLength =
         START_LENGTH;
 
-    baseSpeed = 5.2;
+    speed = 5.2;
 
     boosting = false;
 
-    snakeHead.set(
+    snakeHeadPosition.set(
         0,
         .65,
         0
@@ -2004,20 +1925,9 @@ function resetGame(){
         -1
     );
 
-    desiredDirection.set(
-        0,
-        0,
-        -1
-    );
-
-    headGroup.position.copy(
-        snakeHead
-    );
-
-    headGroup.rotation.y = 0;
-
     /*
-       Remove extra grown segments.
+       Remove any extra grown
+       body segments.
     */
 
     while(
@@ -2039,40 +1949,34 @@ function resetGame(){
         i++
     ){
 
-        const p =
+        const pos =
             new THREE.Vector3(
                 0,
                 .58,
-                i * bodySpacing
+                i * BODY_GAP
             );
 
         snakeSegments[i]
             .position
-            .copy(p);
+            .copy(pos);
 
         snakeSegments[i]
             .mesh
             .position
-            .copy(p);
+            .copy(pos);
     }
 
-    createFood();
-
-    updateHUD();
-
-    camera.position.set(
-        0,
-        8,
-        12
+    headGroup.position.copy(
+        snakeHeadPosition
     );
 
-    camera.lookAt(
-        0,
-        0,
-        0
-    );
+    headGroup.rotation.y = 0;
+
+    spawnFood();
 
     resetJoystick();
+
+    updateHUD();
 }
 
 /* =========================================================
@@ -2084,10 +1988,35 @@ function startGame(){
     resetGame();
 
     running = true;
+
     paused = false;
+
     dead = false;
 
-    showGame();
+    mainMenu.classList.add(
+        "hidden"
+    );
+
+    pauseScreen.classList.add(
+        "hidden"
+    );
+
+    gameOverScreen.classList.add(
+        "hidden"
+    );
+
+    hud.classList.remove(
+        "hidden"
+    );
+
+    if(touchDevice){
+
+        touchControls.classList.remove(
+            "hidden"
+        );
+    }
+
+    updateHUD();
 }
 
 /* =========================================================
@@ -2131,7 +2060,10 @@ function resumeGame(){
 
 function togglePause(){
 
-    if(!running || dead){
+    if(
+        !running ||
+        dead
+    ){
         return;
     }
 
@@ -2159,58 +2091,74 @@ function exitGame(){
 
     boosting = false;
 
-    resetGame();
+    hud.classList.add(
+        "hidden"
+    );
 
-    showMenu();
+    touchControls.classList.add(
+        "hidden"
+    );
+
+    pauseScreen.classList.add(
+        "hidden"
+    );
+
+    gameOverScreen.classList.add(
+        "hidden"
+    );
+
+    mainMenu.classList.remove(
+        "hidden"
+    );
+
+    resetGame();
 }
 
 /* =========================================================
-   MOVEMENT CONTROL
+   DIRECTION
 ========================================================= */
-
-/*
-    CONTROL MAP:
-
-    W / UP       = FORWARD
-    S / DOWN     = BACKWARD
-    A / LEFT     = LEFT
-    D / RIGHT    = RIGHT
-
-    Forward is always the snake's
-    current forward direction.
-*/
 
 function setDirection(
     x,
     z
 ){
 
-    if(
-        Math.abs(x)+Math.abs(z)
-        < .01
-    ){
-        return;
-    }
-
-    const next =
-        new THREE.Vector3(
-            x,
-            0,
-            z
-        ).normalize();
-
     /*
-       Prevent direct 180-degree turn.
+       THIS FUNCTION DOES NOT
+       BLOCK REVERSE.
+
+       Therefore:
+
+       S / DOWN -> BACK
+       W / UP   -> FORWARD
+       A / LEFT -> LEFT
+       D / RIGHT-> RIGHT
     */
 
     if(
-        next.dot(direction)
-        < -.82
+        Math.abs(x) <
+        .01 &&
+        Math.abs(z) <
+        .01
     ){
         return;
     }
 
-    desiredDirection.copy(next);
+    direction.set(
+        x,
+        0,
+        z
+    );
+
+    /*
+       Immediately rotate head.
+    */
+
+    headGroup.rotation.y =
+        Math.atan2(
+            -direction.x,
+            -direction.z
+        );
 }
 
 /* =========================================================
@@ -2219,36 +2167,31 @@ function setDirection(
 
 window.addEventListener(
     "keydown",
-    event => {
+    function(event){
 
         const key =
             event.key.toLowerCase();
 
-        const controlKeys = [
-            "w",
-            "a",
-            "s",
-            "d",
-            "arrowup",
-            "arrowdown",
-            "arrowleft",
-            "arrowright",
-            "shift",
-            " ",
-            "escape"
-        ];
-
         if(
-            controlKeys.includes(key)
+            [
+                "w",
+                "a",
+                "s",
+                "d",
+                "arrowup",
+                "arrowdown",
+                "arrowleft",
+                "arrowright",
+                "shift",
+                " ",
+                "escape"
+            ].includes(key)
         ){
 
             event.preventDefault();
         }
 
-        /*
-           FORWARD
-           W / UP
-        */
+        /* W / UP */
 
         if(
             key === "w" ||
@@ -2263,10 +2206,7 @@ window.addEventListener(
             return;
         }
 
-        /*
-           BACKWARD
-           S / DOWN
-        */
+        /* S / DOWN */
 
         if(
             key === "s" ||
@@ -2281,10 +2221,7 @@ window.addEventListener(
             return;
         }
 
-        /*
-           LEFT
-           A / LEFT
-        */
+        /* A / LEFT */
 
         if(
             key === "a" ||
@@ -2299,10 +2236,7 @@ window.addEventListener(
             return;
         }
 
-        /*
-           RIGHT
-           D / RIGHT
-        */
+        /* D / RIGHT */
 
         if(
             key === "d" ||
@@ -2317,27 +2251,43 @@ window.addEventListener(
             return;
         }
 
-        /*
-           PAUSE
-        */
+        /* SPACE */
 
         if(
-            key === " " ||
-            key === "escape"
+            key === " "
         ){
 
-            togglePause();
+            if(!event.repeat){
+
+                togglePause();
+            }
 
             return;
         }
 
-        /*
-           BOOST
-        */
+        /* ESCAPE */
 
-        if(key === "shift"){
+        if(
+            key === "escape"
+        ){
 
-            setBoost(true);
+            if(!event.repeat){
+
+                togglePause();
+            }
+
+            return;
+        }
+
+        /* SHIFT */
+
+        if(
+            key === "shift"
+        ){
+
+            boosting = true;
+
+            updateHUD();
         }
 
     },
@@ -2348,27 +2298,29 @@ window.addEventListener(
 
 window.addEventListener(
     "keyup",
-    event => {
+    function(event){
 
         if(
             event.key.toLowerCase()
             === "shift"
         ){
 
-            setBoost(false);
+            boosting = false;
+
+            updateHUD();
         }
     }
 );
 
 /* =========================================================
-   MOUSE CONTROL
+   MOUSE
 ========================================================= */
 
-let mouseDown = false;
+let mouseActive = false;
 
-function mouseDirection(
-    clientX,
-    clientY
+function mouseControl(
+    x,
+    y
 ){
 
     const centerX =
@@ -2378,13 +2330,13 @@ function mouseDirection(
         window.innerHeight / 2;
 
     const dx =
-        clientX - centerX;
+        x - centerX;
 
     const dy =
-        clientY - centerY;
+        y - centerY;
 
     if(
-        Math.hypot(dx,dy) < 45
+        Math.hypot(dx,dy) < 35
     ){
         return;
     }
@@ -2408,101 +2360,15 @@ function mouseDirection(
     }
 }
 
-/*
-   Mouse is ONLY used when
-   pointerType is mouse.
-*/
-
 canvas.addEventListener(
     "pointerdown",
-    event => {
+    function(event){
 
         if(
             event.pointerType !== "mouse"
         ){
             return;
         }
-
-        mouseDown = true;
-
-        canvas.setPointerCapture(
-            event.pointerId
-        );
-
-        mouseDirection(
-            event.clientX,
-            event.clientY
-        );
-    }
-);
-
-canvas.addEventListener(
-    "pointermove",
-    event => {
-
-        if(
-            !mouseDown ||
-            event.pointerType !== "mouse"
-        ){
-            return;
-        }
-
-        mouseDirection(
-            event.clientX,
-            event.clientY
-        );
-    }
-);
-
-canvas.addEventListener(
-    "pointerup",
-    event => {
-
-        if(
-            event.pointerType === "mouse"
-        ){
-
-            mouseDown = false;
-        }
-    }
-);
-
-canvas.addEventListener(
-    "pointercancel",
-    event => {
-
-        if(
-            event.pointerType === "mouse"
-        ){
-
-            mouseDown = false;
-        }
-    }
-);
-
-/* =========================================================
-   TOUCH SWIPE
-========================================================= */
-
-let swipeActive = false;
-
-let swipeStartX = 0;
-let swipeStartY = 0;
-
-canvas.addEventListener(
-    "pointerdown",
-    event => {
-
-        if(
-            event.pointerType !== "touch"
-        ){
-            return;
-        }
-
-        /*
-           Ignore touch if the game
-           is not running.
-        */
 
         if(
             !running ||
@@ -2512,17 +2378,79 @@ canvas.addEventListener(
             return;
         }
 
-        swipeActive = true;
+        mouseActive = true;
 
-        swipeStartX =
+        mouseControl(
+            event.clientX,
+            event.clientY
+        );
+    }
+);
+
+canvas.addEventListener(
+    "pointermove",
+    function(event){
+
+        if(
+            event.pointerType !== "mouse" ||
+            !mouseActive
+        ){
+            return;
+        }
+
+        mouseControl(
+            event.clientX,
+            event.clientY
+        );
+    }
+);
+
+window.addEventListener(
+    "pointerup",
+    function(event){
+
+        if(
+            event.pointerType === "mouse"
+        ){
+
+            mouseActive = false;
+        }
+    }
+);
+
+/* =========================================================
+   TOUCH SWIPE
+========================================================= */
+
+let swipeX = 0;
+let swipeY = 0;
+let swiping = false;
+
+canvas.addEventListener(
+    "pointerdown",
+    function(event){
+
+        if(
+            event.pointerType !== "touch"
+        ){
+            return;
+        }
+
+        if(
+            !running ||
+            paused ||
+            dead
+        ){
+            return;
+        }
+
+        swipeX =
             event.clientX;
 
-        swipeStartY =
+        swipeY =
             event.clientY;
 
-        canvas.setPointerCapture(
-            event.pointerId
-        );
+        swiping = true;
     },
     {
         passive:false
@@ -2531,11 +2459,11 @@ canvas.addEventListener(
 
 canvas.addEventListener(
     "pointermove",
-    event => {
+    function(event){
 
         if(
             event.pointerType !== "touch" ||
-            !swipeActive
+            !swiping
         ){
             return;
         }
@@ -2544,14 +2472,14 @@ canvas.addEventListener(
 
         const dx =
             event.clientX -
-            swipeStartX;
+            swipeX;
 
         const dy =
             event.clientY -
-            swipeStartY;
+            swipeY;
 
         if(
-            Math.hypot(dx,dy) < 35
+            Math.hypot(dx,dy) < 30
         ){
             return;
         }
@@ -2561,72 +2489,59 @@ canvas.addEventListener(
             Math.abs(dy)
         ){
 
-            if(dx > 0){
-
-                setDirection(
-                    1,
-                    0
-                );
-
-            }else{
-
-                setDirection(
-                    -1,
-                    0
-                );
-            }
+            setDirection(
+                dx > 0 ? 1 : -1,
+                0
+            );
 
         }else{
 
-            if(dy > 0){
-
-                setDirection(
-                    0,
-                    1
-                );
-
-            }else{
-
-                setDirection(
-                    0,
-                    -1
-                );
-            }
+            setDirection(
+                0,
+                dy > 0 ? 1 : -1
+            );
         }
 
-        swipeStartX =
+        swipeX =
             event.clientX;
 
-        swipeStartY =
+        swipeY =
             event.clientY;
+
     },
     {
         passive:false
     }
 );
 
-function stopSwipe(){
-
-    swipeActive = false;
-}
-
-canvas.addEventListener(
+window.addEventListener(
     "pointerup",
-    stopSwipe
-);
+    function(event){
 
-canvas.addEventListener(
-    "pointercancel",
-    stopSwipe
+        if(
+            event.pointerType === "touch"
+        ){
+
+            swiping = false;
+        }
+    }
 );
 
 /* =========================================================
-   TOUCH JOYSTICK
+   JOYSTICK
 ========================================================= */
 
 let joystickActive = false;
 
-function updateJoystick(
+function resetJoystick(){
+
+    joystickActive = false;
+
+    joystickKnob.style.transform =
+        "translate(-50%,-50%)";
+}
+
+function joystickMove(
     clientX,
     clientY
 ){
@@ -2634,27 +2549,29 @@ function updateJoystick(
     const rect =
         joystick.getBoundingClientRect();
 
-    const cx =
+    const centerX =
         rect.left +
         rect.width / 2;
 
-    const cy =
+    const centerY =
         rect.top +
         rect.height / 2;
 
     let dx =
-        clientX - cx;
+        clientX - centerX;
 
     let dy =
-        clientY - cy;
+        clientY - centerY;
 
     const max =
-        rect.width * .34;
+        rect.width * .33;
 
     const distance =
         Math.hypot(dx,dy);
 
-    if(distance > max){
+    if(
+        distance > max
+    ){
 
         dx =
             dx / distance * max;
@@ -2664,25 +2581,17 @@ function updateJoystick(
     }
 
     joystickKnob.style.transform =
-        `translate(
-            calc(-50% + ${dx}px),
-            calc(-50% + ${dy}px)
-        )`;
+        "translate(calc(-50% + " +
+        dx +
+        "px),calc(-50% + " +
+        dy +
+        "px))";
 
     if(
-        Math.hypot(dx,dy) < 12
+        Math.hypot(dx,dy) < 10
     ){
         return;
     }
-
-    /*
-       JOYSTICK:
-
-       UP    = FORWARD
-       DOWN  = BACKWARD
-       LEFT  = LEFT
-       RIGHT = RIGHT
-    */
 
     if(
         Math.abs(dx) >
@@ -2703,17 +2612,9 @@ function updateJoystick(
     }
 }
 
-function resetJoystick(){
-
-    joystickActive = false;
-
-    joystickKnob.style.transform =
-        "translate(-50%,-50%)";
-}
-
 joystick.addEventListener(
     "pointerdown",
-    event => {
+    function(event){
 
         if(
             event.pointerType !== "touch"
@@ -2725,11 +2626,7 @@ joystick.addEventListener(
 
         joystickActive = true;
 
-        joystick.setPointerCapture(
-            event.pointerId
-        );
-
-        updateJoystick(
+        joystickMove(
             event.clientX,
             event.clientY
         );
@@ -2741,7 +2638,7 @@ joystick.addEventListener(
 
 joystick.addEventListener(
     "pointermove",
-    event => {
+    function(event){
 
         if(
             !joystickActive ||
@@ -2752,7 +2649,7 @@ joystick.addEventListener(
 
         event.preventDefault();
 
-        updateJoystick(
+        joystickMove(
             event.clientX,
             event.clientY
         );
@@ -2773,26 +2670,12 @@ joystick.addEventListener(
 );
 
 /* =========================================================
-   BOOST
+   BOOST TOUCH
 ========================================================= */
-
-function setBoost(
-    value
-){
-
-    boosting = value;
-
-    boostBtn.classList.toggle(
-        "active",
-        value
-    );
-
-    updateHUD();
-}
 
 boostBtn.addEventListener(
     "pointerdown",
-    event => {
+    function(event){
 
         if(
             event.pointerType !== "touch"
@@ -2802,11 +2685,12 @@ boostBtn.addEventListener(
 
         event.preventDefault();
 
-        setBoost(true);
+        boosting = true;
 
-        boostBtn.setPointerCapture(
-            event.pointerId
-        );
+        boostBtn.style.transform =
+            "scale(.92)";
+
+        updateHUD();
     },
     {
         passive:false
@@ -2815,249 +2699,59 @@ boostBtn.addEventListener(
 
 boostBtn.addEventListener(
     "pointerup",
-    () => {
+    function(){
 
-        setBoost(false);
+        boosting = false;
+
+        boostBtn.style.transform =
+            "";
+
+        updateHUD();
     }
 );
 
 boostBtn.addEventListener(
     "pointercancel",
-    () => {
+    function(){
 
-        setBoost(false);
-    }
-);
+        boosting = false;
 
-boostBtn.addEventListener(
-    "pointerleave",
-    event => {
+        boostBtn.style.transform =
+            "";
 
-        if(
-            event.pointerType === "mouse"
-        ){
-            setBoost(false);
-        }
+        updateHUD();
     }
 );
 
 /* =========================================================
-   GAMEPAD
-========================================================= */
-
-let gamepadIndex = null;
-
-let gamepadStartWasDown = false;
-let gamepadAWasDown = false;
-
-window.addEventListener(
-    "gamepadconnected",
-    event => {
-
-        gamepadIndex =
-            event.gamepad.index;
-    }
-);
-
-window.addEventListener(
-    "gamepaddisconnected",
-    event => {
-
-        if(
-            gamepadIndex ===
-            event.gamepad.index
-        ){
-
-            gamepadIndex = null;
-        }
-    }
-);
-
-function updateGamepad(){
-
-    if(
-        !navigator.getGamepads
-    ){
-        return;
-    }
-
-    const pads =
-        navigator.getGamepads();
-
-    let pad = null;
-
-    if(
-        gamepadIndex !== null
-    ){
-
-        pad =
-            pads[
-                gamepadIndex
-            ];
-    }
-
-    if(!pad){
-
-        for(
-            let i=0;
-            i<pads.length;
-            i++
-        ){
-
-            if(pads[i]){
-
-                pad = pads[i];
-
-                gamepadIndex = i;
-
-                break;
-            }
-        }
-    }
-
-    if(!pad){
-        return;
-    }
-
-    const x =
-        pad.axes[0] || 0;
-
-    const y =
-        pad.axes[1] || 0;
-
-    if(
-        Math.hypot(x,y) > .35
-    ){
-
-        if(
-            Math.abs(x) >
-            Math.abs(y)
-        ){
-
-            setDirection(
-                x > 0 ? 1 : -1,
-                0
-            );
-
-        }else{
-
-            setDirection(
-                0,
-                y > 0 ? 1 : -1
-            );
-        }
-    }
-
-    const aDown =
-        !!(
-            pad.buttons[0] &&
-            pad.buttons[0].pressed
-        );
-
-    const startDown =
-        !!(
-            pad.buttons[9] &&
-            pad.buttons[9].pressed
-        );
-
-    /*
-       A:
-       Menu -> Start
-       Pause -> Resume
-       Game Over -> Play Again
-    */
-
-    if(
-        aDown &&
-        !gamepadAWasDown
-    ){
-
-        if(!running){
-
-            startGame();
-
-        }else if(paused){
-
-            resumeGame();
-        }
-    }
-
-    /*
-       START:
-       Pause / Resume
-    */
-
-    if(
-        startDown &&
-        !gamepadStartWasDown
-    ){
-
-        if(running){
-
-            togglePause();
-        }
-    }
-
-    gamepadAWasDown =
-        aDown;
-
-    gamepadStartWasDown =
-        startDown;
-
-    const boostPressed =
-        (
-            pad.buttons[4] &&
-            pad.buttons[4].pressed
-        ) ||
-        (
-            pad.buttons[5] &&
-            pad.buttons[5].pressed
-        );
-
-    setBoost(
-        boostPressed
-    );
-}
-
-/* =========================================================
-   SNAKE MOVEMENT
+   MOVE SNAKE
 ========================================================= */
 
 function moveSnake(dt){
 
-    /*
-       Smooth direction.
-    */
-
-    direction.lerp(
-        desiredDirection,
-        Math.min(
-            1,
-            dt * 10
-        )
-    );
-
-    direction.normalize();
-
-    const speed =
-        baseSpeed *
+    const actualSpeed =
+        speed *
         (
             boosting
             ? 1.7
             : 1
         );
 
-    snakeHead.addScaledVector(
+    snakeHeadPosition.addScaledVector(
         direction,
-        speed * dt
+        actualSpeed * dt
     );
 
     const limit =
-        WORLD_SIZE / 2 - 5;
+        WORLD_SIZE / 2 - 4;
 
     if(
-        Math.abs(snakeHead.x) > limit ||
-        Math.abs(snakeHead.z) > limit
+        Math.abs(
+            snakeHeadPosition.x
+        ) > limit ||
+        Math.abs(
+            snakeHeadPosition.z
+        ) > limit
     ){
 
         endGame();
@@ -3065,12 +2759,16 @@ function moveSnake(dt){
         return;
     }
 
+    headGroup.position.copy(
+        snakeHeadPosition
+    );
+
     /*
-       Body follows head.
+       Body follows previous segment.
     */
 
     let previous =
-        snakeHead.clone();
+        snakeHeadPosition.clone();
 
     for(
         let i=0;
@@ -3093,7 +2791,7 @@ function moveSnake(dt){
             difference.length();
 
         if(
-            distance > bodySpacing
+            distance > BODY_GAP
         ){
 
             segment.position.add(
@@ -3101,7 +2799,7 @@ function moveSnake(dt){
                     .normalize()
                     .multiplyScalar(
                         distance -
-                        bodySpacing
+                        BODY_GAP
                     )
             );
         }
@@ -3113,30 +2811,39 @@ function moveSnake(dt){
         previous =
             segment.position.clone();
     }
-
-    headGroup.position.copy(
-        snakeHead
-    );
-
-    const angle =
-        Math.atan2(
-            -direction.x,
-            -direction.z
-        );
-
-    headGroup.rotation.y =
-        THREE.MathUtils.lerp(
-            headGroup.rotation.y,
-            angle,
-            Math.min(
-                1,
-                dt * 12
-            )
-        );
 }
 
 /* =========================================================
-   FOOD
+   GROW
+========================================================= */
+
+function growSnake(){
+
+    const mesh =
+        createBody();
+
+    const last =
+        snakeSegments[
+            snakeSegments.length - 1
+        ];
+
+    mesh.position.copy(
+        last.position
+    );
+
+    snakeGroup.add(
+        mesh
+    );
+
+    snakeSegments.push({
+        mesh:mesh,
+        position:
+            last.position.clone()
+    });
+}
+
+/* =========================================================
+   FOOD COLLISION
 ========================================================= */
 
 function checkFood(){
@@ -3145,9 +2852,18 @@ function checkFood(){
         return;
     }
 
+    const dx =
+        snakeHeadPosition.x -
+        food.position.x;
+
+    const dz =
+        snakeHeadPosition.z -
+        food.position.z;
+
     const distance =
-        snakeHead.distanceTo(
-            food.position
+        Math.hypot(
+            dx,
+            dz
         );
 
     if(
@@ -3158,50 +2874,23 @@ function checkFood(){
 
         snakeLength++;
 
-        baseSpeed =
+        speed =
             Math.min(
                 12,
                 5.2 +
-                snakeLength * .11
+                snakeLength * .12
             );
 
         growSnake();
 
-        pickupEffect(
+        createParticles(
             food.position.clone()
         );
 
-        createFood();
+        spawnFood();
 
         updateHUD();
     }
-}
-
-/* =========================================================
-   GROW
-========================================================= */
-
-function growSnake(){
-
-    const index =
-        snakeSegments.length;
-
-    const mesh =
-        createBodySegment(index);
-
-    const last =
-        snakeSegments[
-            snakeSegments.length - 1
-        ].position;
-
-    mesh.position.copy(last);
-
-    scene.add(mesh);
-
-    snakeSegments.push({
-        mesh,
-        position:last.clone()
-    });
 }
 
 /* =========================================================
@@ -3222,10 +2911,22 @@ function checkSelfCollision(){
         i++
     ){
 
+        const segment =
+            snakeSegments[i];
+
+        const dx =
+            snakeHeadPosition.x -
+            segment.position.x;
+
+        const dz =
+            snakeHeadPosition.z -
+            segment.position.z;
+
         if(
-            snakeHead.distanceTo(
-                snakeSegments[i].position
-            ) < .65
+            Math.hypot(
+                dx,
+                dz
+            ) < .7
         ){
 
             endGame();
@@ -3256,15 +2957,15 @@ function endGame(){
     finalScore.textContent =
         score;
 
-    gameOverScreen.classList.remove(
-        "hidden"
-    );
-
     hud.classList.add(
         "hidden"
     );
 
     touchControls.classList.add(
+        "hidden"
+    );
+
+    gameOverScreen.classList.remove(
         "hidden"
     );
 }
@@ -3273,55 +2974,51 @@ function endGame(){
    CAMERA
 ========================================================= */
 
-const cameraTarget =
-    new THREE.Vector3();
-
 function updateCamera(dt){
 
     const behind =
         direction.clone()
         .multiplyScalar(-10);
 
-    const desired =
-        snakeHead.clone()
-        .add(behind);
+    const targetPosition =
+        snakeHeadPosition.clone();
 
-    desired.y = 7.5;
+    targetPosition.add(
+        behind
+    );
+
+    targetPosition.y =
+        7.5;
 
     camera.position.lerp(
-        desired,
+        targetPosition,
         Math.min(
             1,
-            dt * 3.5
+            dt * 3
         )
     );
 
-    cameraTarget.lerp(
-        snakeHead,
-        Math.min(
-            1,
-            dt * 5
-        )
-    );
+    const look =
+        snakeHeadPosition.clone();
 
-    cameraTarget.y = 0;
+    look.y = 0;
 
     camera.lookAt(
-        cameraTarget
+        look
     );
 }
 
 /* =========================================================
-   WORLD ANIMATION
+   ANIMATION
 ========================================================= */
 
 function animateWorld(time){
 
     if(food){
 
-        food.rotation.y += .008;
+        food.rotation.y += .01;
 
-        food.rotation.x += .003;
+        food.rotation.x += .004;
 
         food.position.y =
             .7 +
@@ -3330,165 +3027,94 @@ function animateWorld(time){
             ) * .18;
     }
 
-    const breathing =
+    tongue.scale.y =
         1 +
         Math.sin(
-            time * .006
-        ) * .025;
-
-    head.scale.set(
-        breathing,
-        breathing * .78,
-        breathing * 1.18
-    );
+            time * .012
+        ) * .15;
 }
 
 /* =========================================================
-   MAIN LOOP
-========================================================= */
-
-function animate(time){
-
-    requestAnimationFrame(
-        animate
-    );
-
-    const dt =
-        Math.min(
-            clock.getDelta(),
-            .05
-        );
-
-    if(
-        running &&
-        !paused &&
-        !dead
-    ){
-
-        updateGamepad();
-
-        moveSnake(dt);
-
-        checkFood();
-
-        checkSelfCollision();
-
-        updateCamera(dt);
-    }
-
-    updateParticles(dt);
-
-    animateWorld(time);
-
-    renderer.render(
-        scene,
-        camera
-    );
-}
-
-requestAnimationFrame(
-    animate
-);
-
-/* =========================================================
-   BUTTON EVENTS
+   BUTTONS
 ========================================================= */
 
 document.getElementById(
     "playBtn"
-).addEventListener(
-    "click",
-    startGame
-);
+).onclick =
+    startGame;
 
 document.getElementById(
     "menuPauseBtn"
-).addEventListener(
-    "click",
-    () => {
+).onclick =
+    function(){
 
-        startGame();
+        if(!running){
 
-        pauseGame();
-    }
-);
+            startGame();
+
+            pauseGame();
+
+        }else{
+
+            togglePause();
+        }
+    };
 
 document.getElementById(
     "exitBtn"
-).addEventListener(
-    "click",
-    exitGame
-);
+).onclick =
+    exitGame;
 
 document.getElementById(
     "pauseHudBtn"
-).addEventListener(
-    "click",
-    togglePause
-);
+).onclick =
+    togglePause;
 
 document.getElementById(
     "touchPauseBtn"
-).addEventListener(
-    "click",
-    togglePause
-);
+).onclick =
+    togglePause;
 
 document.getElementById(
     "resumeBtn"
-).addEventListener(
-    "click",
-    resumeGame
-);
+).onclick =
+    resumeGame;
 
 document.getElementById(
     "restartBtn"
-).addEventListener(
-    "click",
-    startGame
-);
+).onclick =
+    startGame;
 
 document.getElementById(
     "pauseExitBtn"
-).addEventListener(
-    "click",
-    exitGame
-);
+).onclick =
+    exitGame;
 
 document.getElementById(
     "playAgainBtn"
-).addEventListener(
-    "click",
-    startGame
-);
+).onclick =
+    startGame;
 
 document.getElementById(
     "gameOverExitBtn"
-).addEventListener(
-    "click",
-    exitGame
-);
+).onclick =
+    exitGame;
 
 /* =========================================================
    RESIZE
 ========================================================= */
 
-function resizeGame(){
-
-    const width =
-        window.innerWidth;
-
-    const height =
-        window.innerHeight;
+function resize(){
 
     camera.aspect =
-        width / height;
+        window.innerWidth /
+        window.innerHeight;
 
     camera.updateProjectionMatrix();
 
     renderer.setSize(
-        width,
-        height,
+        window.innerWidth,
+        window.innerHeight,
         false
     );
 
@@ -3502,77 +3128,88 @@ function resizeGame(){
 
 window.addEventListener(
     "resize",
-    resizeGame
+    resize
 );
 
 window.addEventListener(
     "orientationchange",
-    () => {
+    function(){
 
         setTimeout(
-            resizeGame,
-            250
+            resize,
+            300
         );
     }
 );
 
 /* =========================================================
-   PREVENT BROWSER GESTURES
+   GAME LOOP
 ========================================================= */
 
-document.addEventListener(
-    "gesturestart",
-    event => {
+let previousTime =
+    performance.now();
 
-        event.preventDefault();
+function gameLoop(
+    currentTime
+){
 
-    },
-    {
-        passive:false
+    requestAnimationFrame(
+        gameLoop
+    );
+
+    let dt =
+        (
+            currentTime -
+            previousTime
+        ) / 1000;
+
+    previousTime =
+        currentTime;
+
+    dt =
+        Math.min(
+            dt,
+            .05
+        );
+
+    if(
+        running &&
+        !paused &&
+        !dead
+    ){
+
+        moveSnake(dt);
+
+        checkFood();
+
+        checkSelfCollision();
+
+        updateCamera(dt);
     }
-);
 
-document.addEventListener(
-    "gesturechange",
-    event => {
+    updateParticles(dt);
 
-        event.preventDefault();
+    animateWorld(
+        currentTime
+    );
 
-    },
-    {
-        passive:false
-    }
-);
-
-document.addEventListener(
-    "gestureend",
-    event => {
-
-        event.preventDefault();
-
-    },
-    {
-        passive:false
-    }
-);
-
-window.addEventListener(
-    "contextmenu",
-    event => {
-
-        event.preventDefault();
-    }
-);
+    renderer.render(
+        scene,
+        camera
+    );
+}
 
 /* =========================================================
-   INITIALIZE
+   START ENGINE
 ========================================================= */
 
 resetGame();
 
-showMenu();
+resize();
 
-resizeGame();
+gameLoop(
+    performance.now()
+);
 
 </script>
 
