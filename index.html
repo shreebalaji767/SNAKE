@@ -2,551 +2,406 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#07110d">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>VOID SNAKE</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #050908;
-    color: #ffffff;
-    font-family: Arial, Helvetica, sans-serif;
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#07100c;
+    font-family:Arial,Helvetica,sans-serif;
+    color:white;
 }
 
-body {
-    touch-action: none;
+body{
+    touch-action:none;
 }
 
-button {
-    font: inherit;
-    cursor: pointer;
+button{
+    font-family:inherit;
+    border:0;
+    cursor:pointer;
 }
 
-/* =========================================================
-   APP
-========================================================= */
+/* =========================
+   MENU
+========================= */
 
-#app {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+#menu{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
     background:
         radial-gradient(
-            circle at 50% 35%,
-            rgba(0, 255, 170, 0.055),
-            transparent 45%
-        ),
-        #050908;
-}
-
-/* =========================================================
-   MENU
-========================================================= */
-
-#menuScreen {
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.menuCard {
-    width: min(460px, 94vw);
-    max-height: 94vh;
-    overflow-y: auto;
-    padding: 32px 24px 24px;
-    border: 1px solid rgba(0, 255, 190, 0.25);
-    border-radius: 24px;
-    background:
-        linear-gradient(
-            145deg,
-            rgba(12, 24, 20, 0.98),
-            rgba(4, 10, 8, 0.98)
+            circle at center,
+            #123329 0%,
+            #07100c 55%,
+            #030705 100%
         );
+}
+
+.menuBox{
+    width:min(440px,94vw);
+    padding:32px 24px 24px;
+    border:1px solid #1b604b;
+    border-radius:20px;
+    background:#08140f;
     box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.7),
-        inset 0 0 40px rgba(0, 255, 190, 0.025);
-    text-align: center;
+        0 25px 70px #000,
+        0 0 30px rgba(0,255,180,.06);
+    text-align:center;
 }
 
-.logo {
-    width: 100%;
-    overflow: hidden;
-    text-align: center;
-    line-height: 0.9;
-    font-size: clamp(34px, 10vw, 68px);
-    font-weight: 1000;
-    letter-spacing: 0.025em;
-    white-space: nowrap;
-    color: #ffffff;
-    text-shadow:
-        0 0 10px rgba(255,255,255,.18),
-        0 0 28px rgba(0,255,190,.14);
+.logo{
+    font-size:clamp(38px,11vw,68px);
+    line-height:.9;
+    font-weight:900;
+    white-space:nowrap;
+    overflow:hidden;
 }
 
-.logo span {
-    color: #00ffc3;
+.logo span{
+    color:#00ffb3;
 }
 
-.logoSmall {
-    margin-top: 10px;
-    color: #76e7ca;
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: .5em;
-    padding-left: .5em;
+.logoSub{
+    margin-top:12px;
+    color:#62bca0;
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:5px;
 }
 
-.subtitle {
-    margin: 18px 0 25px;
-    color: #718b84;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
+.description{
+    margin:20px 0;
+    color:#779087;
+    font-size:12px;
 }
 
-.menuButtons {
-    display: grid;
-    gap: 10px;
+.menuButtons{
+    display:grid;
+    gap:10px;
 }
 
-.menuButton {
-    width: 100%;
-    min-height: 56px;
-    border-radius: 13px;
-    border: 1px solid rgba(0,255,190,.24);
-    background: linear-gradient(
-        180deg,
-        rgba(19,37,31,.96),
-        rgba(7,15,12,.96)
-    );
-    color: #d9fff3;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: .18em;
-    transition: transform .12s, border-color .12s, background .12s;
+.menuBtn{
+    width:100%;
+    min-height:54px;
+    border-radius:10px;
+    border:1px solid #205d49;
+    background:#0d2119;
+    color:#dffff4;
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:2px;
 }
 
-.menuButton:hover {
-    border-color: #00ffc3;
-    background: linear-gradient(
-        180deg,
-        rgba(17,57,45,.98),
-        rgba(6,25,19,.98)
-    );
+.menuBtn:active{
+    transform:scale(.97);
 }
 
-.menuButton:active {
-    transform: scale(.97);
+.menuBtn.primary{
+    background:#00e6a2;
+    border-color:#00e6a2;
+    color:#00150e;
 }
 
-.menuButton.primary {
-    color: #00120d;
-    background: #00ffc3;
-    border-color: #00ffc3;
-    box-shadow: 0 0 25px rgba(0,255,195,.14);
+.menuBtn.danger{
+    color:#ffaaaa;
 }
 
-.menuButton.danger {
-    color: #ffbaba;
-    border-color: rgba(255,80,80,.22);
+.controlsInfo{
+    margin-top:18px;
+    padding:13px;
+    border-radius:10px;
+    background:#0b1b15;
+    color:#6f8980;
+    font-size:11px;
+    line-height:1.7;
 }
 
-.instructions {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 13px;
-    background: rgba(255,255,255,.025);
-    color: #78908a;
-    font-size: 11px;
-    line-height: 1.75;
+.controlsInfo b{
+    color:#b9eee0;
 }
 
-.instructions strong {
-    color: #c8eee2;
-}
-
-/* =========================================================
+/* =========================
    GAME
-========================================================= */
+========================= */
 
-#gameScreen {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    background: #050908;
+#game{
+    position:fixed;
+    inset:0;
+    display:none;
+    flex-direction:column;
+    background:#07100c;
 }
 
-#gameHeader {
-    flex: 0 0 auto;
-    width: 100%;
-    min-height: 70px;
-    padding:
-        max(10px, env(safe-area-inset-top))
-        max(12px, env(safe-area-inset-right))
-        10px
-        max(12px, env(safe-area-inset-left));
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    background: rgba(3,8,6,.94);
-    border-bottom: 1px solid rgba(0,255,190,.12);
-    z-index: 10;
+#topbar{
+    height:64px;
+    flex:0 0 64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:8px 12px;
+    background:#050b08;
+    border-bottom:1px solid #15382c;
 }
 
-.gameTitle {
-    color: #00ffc3;
-    font-size: 18px;
-    font-weight: 1000;
-    letter-spacing: .08em;
-    white-space: nowrap;
+.title{
+    color:#00ffb3;
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:1px;
 }
 
-.stats {
-    display: flex;
-    gap: 7px;
-    align-items: center;
+.stats{
+    display:flex;
+    gap:6px;
 }
 
-.statBox {
-    min-width: 68px;
-    padding: 6px 9px;
-    border-radius: 8px;
-    background: rgba(255,255,255,.035);
-    border: 1px solid rgba(0,255,190,.12);
-    text-align: center;
+.stat{
+    min-width:62px;
+    padding:5px 7px;
+    text-align:center;
+    background:#0b1913;
+    border:1px solid #153d2e;
+    border-radius:7px;
 }
 
-.statLabel {
-    color: #647d75;
-    font-size: 7px;
-    font-weight: 800;
-    letter-spacing: .13em;
-    text-transform: uppercase;
+.statLabel{
+    color:#5f776e;
+    font-size:7px;
+    font-weight:bold;
 }
 
-.statValue {
-    margin-top: 2px;
-    color: #e5fff7;
-    font-size: 15px;
-    font-weight: 900;
+.statValue{
+    margin-top:2px;
+    color:#e4fff7;
+    font-size:14px;
+    font-weight:bold;
 }
 
-#pauseButton {
-    flex: 0 0 auto;
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    border: 1px solid rgba(0,255,190,.22);
-    background: #0a1511;
-    color: #cffff0;
-    font-size: 17px;
+#pause{
+    width:42px;
+    height:42px;
+    border-radius:8px;
+    background:#0d2119;
+    border:1px solid #205d49;
+    color:#dffff4;
+    font-size:17px;
 }
 
-#gameArea {
-    position: relative;
-    flex: 1 1 auto;
-    width: 100%;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
+#boardArea{
+    flex:1;
+    min-height:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px;
 }
 
-#canvasWrap {
-    position: relative;
-    width: min(
-        calc(100vw - 20px),
-        calc(100vh - 125px),
+#board{
+    display:block;
+    width:min(
+        calc(100vw - 16px),
+        calc(100vh - 90px),
         720px
     );
-    aspect-ratio: 1 / 1;
-    max-width: 100%;
-    max-height: 100%;
-    border: 2px solid rgba(0,255,190,.28);
-    border-radius: 12px;
-    overflow: hidden;
-    background: #07100c;
+    height:min(
+        calc(100vw - 16px),
+        calc(100vh - 90px),
+        720px
+    );
+    max-width:100%;
+    max-height:100%;
+    background:#08130e;
+    border:2px solid #1b604b;
+    border-radius:8px;
     box-shadow:
-        0 0 35px rgba(0,255,190,.07),
-        0 20px 50px rgba(0,0,0,.5);
+        0 0 25px rgba(0,255,180,.08),
+        0 15px 50px #000;
 }
 
-#snakeCanvas {
-    display: block;
-    width: 100%;
-    height: 100%;
+/* =========================
+   OVERLAYS
+========================= */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.72);
+    z-index:20;
 }
 
-/* =========================================================
-   GAME OVER / PAUSE
-========================================================= */
-
-.overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 50;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(2,7,5,.76);
-    backdrop-filter: blur(5px);
+.overlayBox{
+    width:min(350px,90vw);
+    padding:28px 20px;
+    text-align:center;
+    background:#09150f;
+    border:1px solid #1d634c;
+    border-radius:16px;
+    box-shadow:0 25px 70px #000;
 }
 
-.overlayCard {
-    width: min(370px, 92vw);
-    padding: 28px 22px 22px;
-    border: 1px solid rgba(0,255,190,.24);
-    border-radius: 20px;
-    background: rgba(5,14,10,.98);
-    box-shadow: 0 25px 70px rgba(0,0,0,.65);
-    text-align: center;
+.overlayTitle{
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:2px;
 }
 
-.overlayTitle {
-    color: #ffffff;
-    font-size: 27px;
-    font-weight: 1000;
-    letter-spacing: .08em;
+.overlayText{
+    margin:12px 0 20px;
+    color:#82978f;
+    font-size:13px;
+    line-height:1.7;
 }
 
-.overlayText {
-    margin: 13px 0 21px;
-    color: #7d958e;
-    font-size: 12px;
-    line-height: 1.7;
+.overlayText b{
+    color:#00ffb3;
 }
 
-.overlayText b {
-    color: #00ffc3;
+.overlayButtons{
+    display:grid;
+    gap:9px;
 }
 
-.overlayButtons {
-    display: grid;
-    gap: 9px;
-}
-
-/* =========================================================
+/* =========================
    TOUCH CONTROLS
-========================================================= */
+========================= */
 
-#touchControls {
-    position: absolute;
-    inset: 0;
-    z-index: 40;
-    pointer-events: none;
-    display: none;
+#touch{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    display:none;
+    justify-content:space-between;
+    align-items:flex-end;
+    padding:15px;
+    pointer-events:none;
+    z-index:15;
 }
 
-#touchPad {
-    position: absolute;
-    left: max(18px, env(safe-area-inset-left));
-    bottom: max(20px, env(safe-area-inset-bottom));
-    width: 145px;
-    height: 145px;
-    border-radius: 50%;
-    border: 1px solid rgba(0,255,190,.25);
-    background: rgba(2,15,10,.56);
-    pointer-events: auto;
+.dpad{
+    width:145px;
+    height:145px;
+    position:relative;
+    pointer-events:auto;
 }
 
-#touchPad::before,
-#touchPad::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    border: 1px solid rgba(0,255,190,.10);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
+.dpad button{
+    position:absolute;
+    width:48px;
+    height:48px;
+    border-radius:9px;
+    background:#0b2018;
+    border:1px solid #21604b;
+    color:#dffff4;
+    font-size:20px;
 }
 
-#touchPad::before {
-    width: 72%;
-    height: 72%;
+.dpad button:active{
+    background:#00a879;
 }
 
-#touchPad::after {
-    width: 35%;
-    height: 35%;
+#up{
+    left:48px;
+    top:0;
 }
 
-#touchKnob {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 54px;
-    height: 54px;
-    margin: -27px;
-    border-radius: 50%;
-    background: rgba(0,255,190,.18);
-    border: 1px solid rgba(0,255,190,.5);
-    box-shadow: 0 0 20px rgba(0,255,190,.12);
+#down{
+    left:48px;
+    bottom:0;
 }
 
-.touchActions {
-    position: absolute;
-    right: max(18px, env(safe-area-inset-right));
-    bottom: max(20px, env(safe-area-inset-bottom));
-    display: flex;
-    gap: 9px;
-    pointer-events: auto;
+#left{
+    left:0;
+    top:48px;
 }
 
-.touchButton {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
-    border: 1px solid rgba(0,255,190,.22);
-    background: rgba(2,15,10,.65);
-    color: #d5fff3;
-    font-size: 9px;
-    font-weight: 900;
-    letter-spacing: .08em;
+#right{
+    right:0;
+    top:48px;
 }
 
-.touchButton:active {
-    background: rgba(0,255,190,.16);
-    border-color: #00ffc3;
+.touchRight{
+    display:flex;
+    gap:8px;
+    pointer-events:auto;
 }
 
-#touchPause {
-    position: absolute;
-    right: max(18px, env(safe-area-inset-right));
-    top: 15px;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    border: 1px solid rgba(0,255,190,.22);
-    background: rgba(2,15,10,.65);
-    color: #d5fff3;
-    pointer-events: auto;
+.touchAction{
+    width:62px;
+    height:62px;
+    border-radius:12px;
+    background:#0b2018;
+    border:1px solid #21604b;
+    color:#dffff4;
+    font-size:9px;
+    font-weight:bold;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+.touchAction:active{
+    background:#00a879;
+}
 
-@media (pointer: coarse) {
-    #touchControls {
-        display: block;
+@media(pointer:coarse){
+    #touch{
+        display:flex;
     }
 }
 
-@media (max-width: 600px) {
+@media(max-width:600px){
 
-    #gameHeader {
-        min-height: 62px;
+    #topbar{
+        height:58px;
+        flex-basis:58px;
+        padding:6px 7px;
     }
 
-    .gameTitle {
-        font-size: 14px;
+    .title{
+        font-size:13px;
     }
 
-    .statBox {
-        min-width: 58px;
-        padding: 5px 6px;
+    .stat{
+        min-width:52px;
     }
 
-    .statLabel {
-        font-size: 6px;
+    .statValue{
+        font-size:12px;
     }
 
-    .statValue {
-        font-size: 13px;
+    #pause{
+        width:38px;
+        height:38px;
     }
 
-    #pauseButton {
-        width: 40px;
-        height: 40px;
-    }
-
-    #gameArea {
-        padding: 6px;
-    }
-
-    #canvasWrap {
-        width: min(
-            calc(100vw - 12px),
-            calc(100vh - 115px)
+    #board{
+        width:min(
+            calc(100vw - 10px),
+            calc(100vh - 78px)
         );
-    }
-
-    .menuCard {
-        padding: 25px 17px 18px;
-    }
-
-    .menuButton {
-        min-height: 52px;
-    }
-
-    #touchPad {
-        width: 125px;
-        height: 125px;
-    }
-
-    #touchKnob {
-        width: 48px;
-        height: 48px;
-        margin: -24px;
-    }
-}
-
-@media (orientation: landscape) and (max-height: 550px) {
-
-    #gameHeader {
-        min-height: 52px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-
-    #canvasWrap {
-        width: min(
-            calc(100vh - 70px),
-            calc(100vw - 20px)
+        height:min(
+            calc(100vw - 10px),
+            calc(100vh - 78px)
         );
-    }
-
-    .menuCard {
-        max-height: 96vh;
-        padding: 15px 20px;
-    }
-
-    .subtitle {
-        margin: 8px 0 12px;
-    }
-
-    .menuButton {
-        min-height: 40px;
-    }
-
-    .instructions {
-        margin-top: 10px;
-        padding: 8px;
     }
 }
 </style>
@@ -554,270 +409,274 @@ button {
 
 <body>
 
-<div id="app">
+<!-- =========================
+     MAIN MENU
+========================= -->
 
-    <!-- =====================================================
-         MAIN MENU
-    ====================================================== -->
+<div id="menu">
 
-    <section id="menuScreen">
+    <div class="menuBox">
 
-        <div class="menuCard">
-
-            <div class="logo">
-                VOID<span>SNAKE</span>
-            </div>
-
-            <div class="logoSmall">
-                CLASSIC
-            </div>
-
-            <div class="subtitle">
-                Classic Snake Game
-            </div>
-
-            <div class="menuButtons">
-
-                <button
-                    id="playButton"
-                    class="menuButton primary">
-                    PLAY
-                </button>
-
-                <button
-                    id="menuPauseButton"
-                    class="menuButton">
-                    PAUSE / RESUME
-                </button>
-
-                <button
-                    id="menuExitButton"
-                    class="menuButton danger">
-                    EXIT
-                </button>
-
-            </div>
-
-            <div class="instructions">
-
-                <strong>KEYBOARD</strong><br>
-
-                W / ↑ = UP / FORWARD<br>
-                S / ↓ = DOWN / BACK<br>
-                A / ← = LEFT<br>
-                D / → = RIGHT<br>
-                SPACE = PAUSE
-
-                <br><br>
-
-                <strong>TOUCHSCREEN</strong><br>
-
-                Use the joystick to move the snake.
-                Swipe on the game board to change direction.
-
-            </div>
-
+        <div class="logo">
+            VOID<span>SNAKE</span>
         </div>
 
-    </section>
+        <div class="logoSub">
+            CLASSIC
+        </div>
 
+        <div class="description">
+            A simple classic Snake game.
+        </div>
 
-    <!-- =====================================================
-         GAME SCREEN
-    ====================================================== -->
+        <div class="menuButtons">
 
-    <section id="gameScreen">
-
-        <header id="gameHeader">
-
-            <div class="gameTitle">
-                VOID SNAKE
-            </div>
-
-            <div class="stats">
-
-                <div class="statBox">
-                    <div class="statLabel">
-                        Score
-                    </div>
-                    <div
-                        id="scoreValue"
-                        class="statValue">
-                        0
-                    </div>
-                </div>
-
-                <div class="statBox">
-                    <div class="statLabel">
-                        Length
-                    </div>
-                    <div
-                        id="lengthValue"
-                        class="statValue">
-                        5
-                    </div>
-                </div>
-
-                <div class="statBox">
-                    <div class="statLabel">
-                        Level
-                    </div>
-                    <div
-                        id="levelValue"
-                        class="statValue">
-                        1
-                    </div>
-                </div>
-
-            </div>
-
-            <button id="pauseButton">
-                Ⅱ
+            <button
+                id="play"
+                class="menuBtn primary">
+                PLAY
             </button>
 
-        </header>
+            <button
+                id="menuPause"
+                class="menuBtn">
+                PAUSE / RESUME
+            </button>
+
+            <button
+                id="menuExit"
+                class="menuBtn danger">
+                EXIT
+            </button>
+
+        </div>
+
+        <div class="controlsInfo">
+
+            <b>KEYBOARD</b><br>
+            W / ↑ = UP &nbsp;&nbsp;
+            S / ↓ = DOWN<br>
+            A / ← = LEFT &nbsp;&nbsp;
+            D / → = RIGHT<br>
+            SPACE = PAUSE
+
+            <br><br>
+
+            <b>TOUCHSCREEN</b><br>
+            Use the directional buttons.
+
+        </div>
+
+    </div>
+
+</div>
 
 
-        <div id="gameArea">
+<!-- =========================
+     GAME
+========================= -->
 
-            <div id="canvasWrap">
+<div id="game">
 
-                <canvas id="snakeCanvas"></canvas>
+    <div id="topbar">
 
-                <!-- PAUSE -->
+        <div class="title">
+            VOID SNAKE
+        </div>
 
+        <div class="stats">
+
+            <div class="stat">
+                <div class="statLabel">
+                    SCORE
+                </div>
                 <div
-                    id="pauseOverlay"
-                    class="overlay">
-
-                    <div class="overlayCard">
-
-                        <div class="overlayTitle">
-                            PAUSED
-                        </div>
-
-                        <div class="overlayText">
-                            The game is paused.
-                        </div>
-
-                        <div class="overlayButtons">
-
-                            <button
-                                id="resumeButton"
-                                class="menuButton primary">
-                                RESUME
-                            </button>
-
-                            <button
-                                id="pauseRestartButton"
-                                class="menuButton">
-                                RESTART
-                            </button>
-
-                            <button
-                                id="pauseExitButton"
-                                class="menuButton danger">
-                                EXIT
-                            </button>
-
-                        </div>
-
-                    </div>
-
+                    id="score"
+                    class="statValue">
+                    0
                 </div>
+            </div>
 
-
-                <!-- GAME OVER -->
-
+            <div class="stat">
+                <div class="statLabel">
+                    LENGTH
+                </div>
                 <div
-                    id="gameOverOverlay"
-                    class="overlay">
-
-                    <div class="overlayCard">
-
-                        <div class="overlayTitle">
-                            GAME OVER
-                        </div>
-
-                        <div class="overlayText">
-
-                            Score:
-                            <b id="finalScore">
-                                0
-                            </b>
-
-                            <br>
-
-                            Length:
-                            <b id="finalLength">
-                                5
-                            </b>
-
-                            <br>
-
-                            Level:
-                            <b id="finalLevel">
-                                1
-                            </b>
-
-                        </div>
-
-                        <div class="overlayButtons">
-
-                            <button
-                                id="restartButton"
-                                class="menuButton primary">
-                                RESTART
-                            </button>
-
-                            <button
-                                id="gameOverMenuButton"
-                                class="menuButton">
-                                MAIN MENU
-                            </button>
-
-                        </div>
-
-                    </div>
-
+                    id="length"
+                    class="statValue">
+                    5
                 </div>
+            </div>
 
-
-                <!-- TOUCH -->
-
-                <div id="touchControls">
-
-                    <div id="touchPad">
-                        <div id="touchKnob"></div>
-                    </div>
-
-                    <button id="touchPause">
-                        Ⅱ
-                    </button>
-
-                    <div class="touchActions">
-
-                        <button
-                            id="touchRestart"
-                            class="touchButton">
-                            RESTART
-                        </button>
-
-                        <button
-                            id="touchExit"
-                            class="touchButton">
-                            EXIT
-                        </button>
-
-                    </div>
-
+            <div class="stat">
+                <div class="statLabel">
+                    LEVEL
                 </div>
+                <div
+                    id="level"
+                    class="statValue">
+                    1
+                </div>
+            </div>
+
+        </div>
+
+        <button id="pause">
+            Ⅱ
+        </button>
+
+    </div>
+
+
+    <div id="boardArea">
+
+        <canvas id="board"></canvas>
+
+    </div>
+
+
+    <!-- PAUSE -->
+
+    <div
+        id="pauseOverlay"
+        class="overlay">
+
+        <div class="overlayBox">
+
+            <div class="overlayTitle">
+                PAUSED
+            </div>
+
+            <div class="overlayText">
+                Game paused.
+            </div>
+
+            <div class="overlayButtons">
+
+                <button
+                    id="resume"
+                    class="menuBtn primary">
+                    RESUME
+                </button>
+
+                <button
+                    id="pauseRestart"
+                    class="menuBtn">
+                    RESTART
+                </button>
+
+                <button
+                    id="pauseMenu"
+                    class="menuBtn danger">
+                    MAIN MENU
+                </button>
 
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+
+    <!-- GAME OVER -->
+
+    <div
+        id="gameOverOverlay"
+        class="overlay">
+
+        <div class="overlayBox">
+
+            <div class="overlayTitle">
+                GAME OVER
+            </div>
+
+            <div class="overlayText">
+
+                SCORE:
+                <b id="finalScore">0</b>
+
+                <br>
+
+                LENGTH:
+                <b id="finalLength">5</b>
+
+                <br>
+
+                LEVEL:
+                <b id="finalLevel">1</b>
+
+            </div>
+
+            <div class="overlayButtons">
+
+                <button
+                    id="restart"
+                    class="menuBtn primary">
+                    RESTART
+                </button>
+
+                <button
+                    id="gameMenu"
+                    class="menuBtn">
+                    MAIN MENU
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TOUCH CONTROLS
+========================= -->
+
+<div id="touch">
+
+    <div class="dpad">
+
+        <button id="up">
+            ▲
+        </button>
+
+        <button id="left">
+            ◀
+        </button>
+
+        <button id="right">
+            ▶
+        </button>
+
+        <button id="down">
+            ▼
+        </button>
+
+    </div>
+
+    <div class="touchRight">
+
+        <button
+            id="touchPause"
+            class="touchAction">
+            PAUSE
+        </button>
+
+        <button
+            id="touchRestart"
+            class="touchAction">
+            RESTART
+        </button>
+
+        <button
+            id="touchExit"
+            class="touchAction">
+            EXIT
+        </button>
+
+    </div>
 
 </div>
 
@@ -826,62 +685,62 @@ button {
 "use strict";
 
 /* =========================================================
-   VOID SNAKE
-   CLASSIC 2D SNAKE GAME
-   Single-file version
+   CLASSIC SNAKE ENGINE
 ========================================================= */
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+const menu =
+    document.getElementById("menu");
 
-const menuScreen =
-    document.getElementById("menuScreen");
+const game =
+    document.getElementById("game");
 
-const gameScreen =
-    document.getElementById("gameScreen");
+const board =
+    document.getElementById("board");
 
-const playButton =
-    document.getElementById("playButton");
+const ctx =
+    board.getContext("2d");
 
-const menuPauseButton =
-    document.getElementById("menuPauseButton");
+const play =
+    document.getElementById("play");
 
-const menuExitButton =
-    document.getElementById("menuExitButton");
+const menuPause =
+    document.getElementById("menuPause");
 
-const pauseButton =
-    document.getElementById("pauseButton");
+const menuExit =
+    document.getElementById("menuExit");
+
+const pause =
+    document.getElementById("pause");
 
 const pauseOverlay =
     document.getElementById("pauseOverlay");
 
-const resumeButton =
-    document.getElementById("resumeButton");
+const resume =
+    document.getElementById("resume");
 
-const pauseRestartButton =
-    document.getElementById("pauseRestartButton");
+const pauseRestart =
+    document.getElementById("pauseRestart");
 
-const pauseExitButton =
-    document.getElementById("pauseExitButton");
+const pauseMenu =
+    document.getElementById("pauseMenu");
 
 const gameOverOverlay =
     document.getElementById("gameOverOverlay");
 
-const restartButton =
-    document.getElementById("restartButton");
+const restart =
+    document.getElementById("restart");
 
-const gameOverMenuButton =
-    document.getElementById("gameOverMenuButton");
+const gameMenu =
+    document.getElementById("gameMenu");
 
-const scoreValue =
-    document.getElementById("scoreValue");
+const scoreText =
+    document.getElementById("score");
 
-const lengthValue =
-    document.getElementById("lengthValue");
+const lengthText =
+    document.getElementById("length");
 
-const levelValue =
-    document.getElementById("levelValue");
+const levelText =
+    document.getElementById("level");
 
 const finalScore =
     document.getElementById("finalScore");
@@ -892,49 +751,22 @@ const finalLength =
 const finalLevel =
     document.getElementById("finalLevel");
 
-const canvas =
-    document.getElementById("snakeCanvas");
-
-const ctx =
-    canvas.getContext("2d");
-
-const touchControls =
-    document.getElementById("touchControls");
-
-const touchPad =
-    document.getElementById("touchPad");
-
-const touchKnob =
-    document.getElementById("touchKnob");
-
-const touchPause =
-    document.getElementById("touchPause");
-
-const touchRestart =
-    document.getElementById("touchRestart");
-
-const touchExit =
-    document.getElementById("touchExit");
-
 
 /* =========================================================
-   GAME CONFIGURATION
+   GAME SETTINGS
 ========================================================= */
 
-const GRID_SIZE = 28;
+const GRID = 25;
 
 const START_LENGTH = 5;
 
-const START_INTERVAL = 145;
+const INITIAL_SPEED = 150;
 
-const MIN_INTERVAL = 65;
-
-const SPEED_INCREASE =
-    0.94;
+const FASTEST_SPEED = 60;
 
 
 /* =========================================================
-   GAME STATE
+   GAME VARIABLES
 ========================================================= */
 
 let snake = [];
@@ -944,7 +776,7 @@ let food = {
     y: 0
 };
 
-let direction = {
+let currentDirection = {
     x: 1,
     y: 0
 };
@@ -958,35 +790,41 @@ let score = 0;
 
 let level = 1;
 
-let gameInterval = START_INTERVAL;
+let speed = INITIAL_SPEED;
 
-let gameTimer = null;
+let timer = null;
 
-let gameRunning = false;
+let running = false;
 
-let gamePaused = false;
+let paused = false;
 
-let gameOver = false;
+let ended = false;
 
-let canvasSize = 0;
+let boardSize = 0;
 
-let cellSize = 0;
+let cell = 0;
 
 
 /* =========================================================
-   RESPONSIVE CANVAS
+   CANVAS SIZE
 ========================================================= */
 
-function resizeCanvas() {
+function resizeBoard(){
 
     const rect =
-        canvas.getBoundingClientRect();
+        board.getBoundingClientRect();
 
     const size =
-        Math.min(
-            rect.width,
-            rect.height
+        Math.floor(
+            Math.min(
+                rect.width,
+                rect.height
+            )
         );
+
+    if(size <= 0){
+        return;
+    }
 
     const dpr =
         Math.min(
@@ -994,16 +832,16 @@ function resizeCanvas() {
             2
         );
 
-    canvas.width =
-        Math.floor(size * dpr);
+    board.width =
+        size * dpr;
 
-    canvas.height =
-        Math.floor(size * dpr);
+    board.height =
+        size * dpr;
 
-    canvasSize = size;
+    boardSize = size;
 
-    cellSize =
-        size / GRID_SIZE;
+    cell =
+        boardSize / GRID;
 
     ctx.setTransform(
         dpr,
@@ -1019,33 +857,33 @@ function resizeCanvas() {
 
 window.addEventListener(
     "resize",
-    resizeCanvas
+    resizeBoard
 );
 
 
 /* =========================================================
-   INITIAL SNAKE
+   CREATE SNAKE
 ========================================================= */
 
-function createInitialSnake() {
+function createSnake(){
 
     snake = [];
 
-    const startX =
-        Math.floor(GRID_SIZE / 2);
+    const x =
+        Math.floor(GRID / 2);
 
-    const startY =
-        Math.floor(GRID_SIZE / 2);
+    const y =
+        Math.floor(GRID / 2);
 
-    for (
+    for(
         let i = 0;
         i < START_LENGTH;
         i++
-    ) {
+    ){
 
         snake.push({
-            x: startX - i,
-            y: startY
+            x: x - i,
+            y: y
         });
 
     }
@@ -1053,56 +891,59 @@ function createInitialSnake() {
 
 
 /* =========================================================
-   FOOD
+   CREATE FOOD
 ========================================================= */
 
-function placeFood() {
+function createFood(){
 
-    let valid = false;
+    let found = false;
 
-    while (!valid) {
+    while(!found){
 
-        food = {
-            x: Math.floor(
-                Math.random() *
-                GRID_SIZE
-            ),
+        const x =
+            Math.floor(
+                Math.random() * GRID
+            );
 
-            y: Math.floor(
-                Math.random() *
-                GRID_SIZE
-            )
-        };
+        const y =
+            Math.floor(
+                Math.random() * GRID
+            );
 
-        valid = true;
+        found = true;
 
-        for (const part of snake) {
+        for(const part of snake){
 
-            if (
-                part.x === food.x &&
-                part.y === food.y
-            ) {
+            if(
+                part.x === x &&
+                part.y === y
+            ){
 
-                valid = false;
+                found = false;
                 break;
             }
+        }
 
+        if(found){
+
+            food.x = x;
+            food.y = y;
         }
     }
 }
 
 
 /* =========================================================
-   START GAME
+   START
 ========================================================= */
 
-function startGame() {
+function startGame(){
 
     stopTimer();
 
-    createInitialSnake();
+    createSnake();
 
-    direction = {
+    currentDirection = {
         x: 1,
         y: 0
     };
@@ -1116,31 +957,31 @@ function startGame() {
 
     level = 1;
 
-    gameInterval = START_INTERVAL;
+    speed = INITIAL_SPEED;
 
-    gameRunning = true;
+    running = true;
 
-    gamePaused = false;
+    paused = false;
 
-    gameOver = false;
+    ended = false;
+
+    menu.style.display = "none";
+
+    game.style.display = "flex";
 
     pauseOverlay.style.display = "none";
 
     gameOverOverlay.style.display = "none";
 
-    menuScreen.style.display = "none";
-
-    gameScreen.style.display = "flex";
-
-    placeFood();
+    createFood();
 
     updateStats();
 
-    resizeCanvas();
+    requestAnimationFrame(
+        resizeBoard
+    );
 
     startTimer();
-
-    draw();
 }
 
 
@@ -1148,95 +989,99 @@ function startGame() {
    TIMER
 ========================================================= */
 
-function startTimer() {
+function startTimer(){
 
     stopTimer();
 
-    if (
-        !gameRunning ||
-        gamePaused ||
-        gameOver
-    ) {
+    if(
+        !running ||
+        paused ||
+        ended
+    ){
         return;
     }
 
-    gameTimer =
+    timer =
         setInterval(
-            gameStep,
-            gameInterval
+            moveSnake,
+            speed
         );
 }
 
 
-function stopTimer() {
+function stopTimer(){
 
-    if (gameTimer !== null) {
+    if(timer !== null){
 
-        clearInterval(gameTimer);
+        clearInterval(timer);
 
-        gameTimer = null;
+        timer = null;
     }
 }
 
 
 /* =========================================================
-   GAME STEP
+   MOVE
 ========================================================= */
 
-function gameStep() {
+function moveSnake(){
 
-    if (
-        !gameRunning ||
-        gamePaused ||
-        gameOver
-    ) {
+    if(
+        !running ||
+        paused ||
+        ended
+    ){
         return;
     }
 
-    direction = {
+    currentDirection = {
         x: nextDirection.x,
         y: nextDirection.y
     };
 
-    const head = snake[0];
+    const head =
+        snake[0];
 
     const newHead = {
-        x: head.x + direction.x,
-        y: head.y + direction.y
+        x:
+            head.x +
+            currentDirection.x,
+
+        y:
+            head.y +
+            currentDirection.y
     };
 
 
-    /* WALL COLLISION */
+    /* WALL */
 
-    if (
+    if(
         newHead.x < 0 ||
-        newHead.x >= GRID_SIZE ||
+        newHead.x >= GRID ||
         newHead.y < 0 ||
-        newHead.y >= GRID_SIZE
-    ) {
+        newHead.y >= GRID
+    ){
 
-        endGame();
+        gameOver();
 
         return;
     }
 
 
-    /* SELF COLLISION */
+    /* SELF */
 
-    for (
+    for(
         let i = 0;
         i < snake.length;
         i++
-    ) {
+    ){
 
-        const part = snake[i];
+        if(
+            newHead.x === snake[i].x &&
+            newHead.y === snake[i].y
+        ){
 
-        if (
-            newHead.x === part.x &&
-            newHead.y === part.y
-        ) {
-
-            endGame();
+            gameOver();
 
             return;
         }
@@ -1248,33 +1093,32 @@ function gameStep() {
 
     /* FOOD */
 
-    if (
+    if(
         newHead.x === food.x &&
         newHead.y === food.y
-    ) {
+    ){
 
         score += 10;
 
         level =
-            Math.floor(score / 50) + 1;
+            Math.floor(
+                score / 50
+            ) + 1;
 
-        gameInterval =
+        speed =
             Math.max(
-                MIN_INTERVAL,
-                START_INTERVAL *
-                Math.pow(
-                    SPEED_INCREASE,
-                    level - 1
-                )
+                FASTEST_SPEED,
+                INITIAL_SPEED -
+                ((level - 1) * 12)
             );
 
-        placeFood();
+        createFood();
 
         updateStats();
 
-        restartTimer();
+        startTimer();
 
-    } else {
+    }else{
 
         snake.pop();
     }
@@ -1284,53 +1128,33 @@ function gameStep() {
 
 
 /* =========================================================
-   TIMER RESTART AFTER LEVEL UP
+   DIRECTION
 ========================================================= */
 
-function restartTimer() {
+function changeDirection(x,y){
 
-    if (
-        gameRunning &&
-        !gamePaused &&
-        !gameOver
-    ) {
-
-        startTimer();
-    }
-}
-
-
-/* =========================================================
-   CHANGE DIRECTION
-========================================================= */
-
-function setDirection(x, y) {
-
-    if (
-        !gameRunning ||
-        gamePaused ||
-        gameOver
-    ) {
+    if(
+        !running ||
+        paused ||
+        ended
+    ){
         return;
     }
 
 
-    /*
-       Prevent an immediate 180-degree turn.
-       This is the classic Snake rule.
-    */
+    /* Do not allow instant reverse */
 
-    if (
-        x === -direction.x &&
-        y === -direction.y
-    ) {
+    if(
+        x === -currentDirection.x &&
+        y === -currentDirection.y
+    ){
         return;
     }
 
 
     nextDirection = {
-        x: x,
-        y: y
+        x:x,
+        y:y
     };
 }
 
@@ -1339,47 +1163,51 @@ function setDirection(x, y) {
    PAUSE
 ========================================================= */
 
-function pauseGame() {
+function pauseGame(){
 
-    if (
-        !gameRunning ||
-        gameOver
-    ) {
+    if(
+        !running ||
+        ended
+    ){
         return;
     }
 
-    gamePaused = true;
+    paused = true;
 
     stopTimer();
 
-    pauseOverlay.style.display = "flex";
+    pauseOverlay.style.display =
+        "flex";
 }
 
 
-function resumeGame() {
+function resumeGame(){
 
-    if (
-        !gameRunning ||
-        gameOver
-    ) {
+    if(
+        !running ||
+        ended
+    ){
         return;
     }
 
-    gamePaused = false;
+    paused = false;
 
-    pauseOverlay.style.display = "none";
+    pauseOverlay.style.display =
+        "none";
 
     startTimer();
+
+    draw();
 }
 
 
-function togglePause() {
+function togglePause(){
 
-    if (gamePaused) {
+    if(paused){
 
         resumeGame();
 
-    } else {
+    }else{
 
         pauseGame();
     }
@@ -1387,18 +1215,18 @@ function togglePause() {
 
 
 /* =========================================================
-   END GAME
+   GAME OVER
 ========================================================= */
 
-function endGame() {
-
-    gameOver = true;
-
-    gameRunning = false;
-
-    gamePaused = false;
+function gameOver(){
 
     stopTimer();
+
+    running = false;
+
+    paused = false;
+
+    ended = true;
 
     finalScore.textContent =
         score;
@@ -1420,44 +1248,27 @@ function endGame() {
    MAIN MENU
 ========================================================= */
 
-function showMainMenu() {
+function showMenu(){
 
     stopTimer();
 
-    gameRunning = false;
+    running = false;
 
-    gamePaused = false;
+    paused = false;
 
-    gameOver = false;
+    ended = false;
+
+    game.style.display =
+        "none";
+
+    menu.style.display =
+        "flex";
 
     pauseOverlay.style.display =
         "none";
 
     gameOverOverlay.style.display =
         "none";
-
-    gameScreen.style.display =
-        "none";
-
-    menuScreen.style.display =
-        "flex";
-}
-
-
-/* =========================================================
-   EXIT
-========================================================= */
-
-function exitGame() {
-
-    /*
-       A browser normally cannot close a tab
-       that was not opened by JavaScript.
-
-       Therefore EXIT returns to the main menu.
-    */
-
-    showMainMenu();
 }
 
 
@@ -1465,15 +1276,15 @@ function exitGame() {
    STATS
 ========================================================= */
 
-function updateStats() {
+function updateStats(){
 
-    scoreValue.textContent =
+    scoreText.textContent =
         score;
 
-    lengthValue.textContent =
+    lengthText.textContent =
         snake.length;
 
-    levelValue.textContent =
+    levelText.textContent =
         level;
 }
 
@@ -1482,71 +1293,71 @@ function updateStats() {
    DRAW BACKGROUND
 ========================================================= */
 
-function drawBackground() {
+function drawBackground(){
 
     ctx.fillStyle =
-        "#07100c";
+        "#08130e";
 
     ctx.fillRect(
         0,
         0,
-        canvasSize,
-        canvasSize
+        boardSize,
+        boardSize
     );
 
 
-    /* OUTER GLOW */
+    /* subtle checkerboard */
 
-    const glow =
-        ctx.createRadialGradient(
-            canvasSize / 2,
-            canvasSize / 2,
-            0,
-            canvasSize / 2,
-            canvasSize / 2,
-            canvasSize * .75
-        );
+    for(
+        let y = 0;
+        y < GRID;
+        y++
+    ){
 
-    glow.addColorStop(
-        0,
-        "rgba(0,255,180,.035)"
-    );
+        for(
+            let x = 0;
+            x < GRID;
+            x++
+        ){
 
-    glow.addColorStop(
-        1,
-        "rgba(0,0,0,.22)"
-    );
+            if(
+                (x + y) % 2 === 0
+            ){
 
-    ctx.fillStyle = glow;
+                ctx.fillStyle =
+                    "rgba(255,255,255,.012)";
 
-    ctx.fillRect(
-        0,
-        0,
-        canvasSize,
-        canvasSize
-    );
+                ctx.fillRect(
+                    x * cell,
+                    y * cell,
+                    cell,
+                    cell
+                );
+            }
+        }
+    }
 }
 
 
 /* =========================================================
-   DRAW GRID
+   GRID
 ========================================================= */
 
-function drawGrid() {
+function drawGrid(){
+
+    ctx.strokeStyle =
+        "rgba(0,255,180,.045)";
 
     ctx.lineWidth = 1;
 
-    for (
+    for(
         let i = 0;
-        i <= GRID_SIZE;
+        i <= GRID;
         i++
-    ) {
+    ){
 
         const p =
-            i * cellSize;
-
-        ctx.strokeStyle =
-            "rgba(0,255,180,.055)";
+            i * cell;
 
         ctx.beginPath();
 
@@ -1557,7 +1368,7 @@ function drawGrid() {
 
         ctx.lineTo(
             p,
-            canvasSize
+            boardSize
         );
 
         ctx.stroke();
@@ -1570,7 +1381,7 @@ function drawGrid() {
         );
 
         ctx.lineTo(
-            canvasSize,
+            boardSize,
             p
         );
 
@@ -1578,74 +1389,73 @@ function drawGrid() {
     }
 
 
-    /* BORDER */
-
     ctx.strokeStyle =
-        "rgba(0,255,190,.20)";
+        "#1c604b";
 
     ctx.lineWidth = 2;
 
     ctx.strokeRect(
         1,
         1,
-        canvasSize - 2,
-        canvasSize - 2
+        boardSize - 2,
+        boardSize - 2
     );
 }
 
 
 /* =========================================================
-   DRAW FOOD
+   FOOD
 ========================================================= */
 
-function drawFood() {
+function drawFood(){
 
-    const x =
-        food.x * cellSize +
-        cellSize / 2;
+    const cx =
+        food.x * cell +
+        cell / 2;
 
-    const y =
-        food.y * cellSize +
-        cellSize / 2;
+    const cy =
+        food.y * cell +
+        cell / 2;
 
     const radius =
-        cellSize * .32;
+        cell * .31;
 
 
-    /* GLOW */
+    /* glow */
 
     const glow =
         ctx.createRadialGradient(
-            x,
-            y,
+            cx,
+            cy,
             0,
-            x,
-            y,
+            cx,
+            cy,
             radius * 3
         );
 
     glow.addColorStop(
         0,
-        "rgba(255,45,100,.38)"
+        "rgba(255,50,100,.45)"
     );
 
     glow.addColorStop(
         .35,
-        "rgba(255,45,100,.12)"
+        "rgba(255,50,100,.12)"
     );
 
     glow.addColorStop(
         1,
-        "rgba(255,45,100,0)"
+        "rgba(255,50,100,0)"
     );
 
-    ctx.fillStyle = glow;
+    ctx.fillStyle =
+        glow;
 
     ctx.beginPath();
 
     ctx.arc(
-        x,
-        y,
+        cx,
+        cy,
         radius * 3,
         0,
         Math.PI * 2
@@ -1654,16 +1464,16 @@ function drawFood() {
     ctx.fill();
 
 
-    /* FOOD */
+    /* food */
 
     ctx.fillStyle =
-        "#ff3b78";
+        "#ff376f";
 
     ctx.beginPath();
 
     ctx.arc(
-        x,
-        y,
+        cx,
+        cy,
         radius,
         0,
         Math.PI * 2
@@ -1672,7 +1482,7 @@ function drawFood() {
     ctx.fill();
 
 
-    /* HIGHLIGHT */
+    /* highlight */
 
     ctx.fillStyle =
         "#ffffff";
@@ -1680,9 +1490,9 @@ function drawFood() {
     ctx.beginPath();
 
     ctx.arc(
-        x - radius * .3,
-        y - radius * .3,
-        radius * .23,
+        cx - radius * .3,
+        cy - radius * .3,
+        radius * .22,
         0,
         Math.PI * 2
     );
@@ -1692,50 +1502,50 @@ function drawFood() {
 
 
 /* =========================================================
-   DRAW SNAKE
+   SNAKE
 ========================================================= */
 
-function drawSnake() {
+function drawSnake(){
 
-    for (
+    for(
         let i = snake.length - 1;
         i >= 0;
         i--
-    ) {
+    ){
 
         const part =
             snake[i];
 
         const x =
-            part.x * cellSize;
+            part.x * cell;
 
         const y =
-            part.y * cellSize;
+            part.y * cell;
 
-        const padding =
+        const gap =
             Math.max(
                 1,
-                cellSize * .08
+                cell * .07
             );
 
         const size =
-            cellSize - padding * 2;
+            cell - gap * 2;
 
         const radius =
             Math.min(
                 7,
-                cellSize * .22
+                cell * .22
             );
 
 
-        /* SHADOW */
+        /* shadow */
 
         ctx.fillStyle =
             "rgba(0,0,0,.35)";
 
-        roundRect(
-            x + padding + 1,
-            y + padding + 2,
+        roundedRect(
+            x + gap + 1,
+            y + gap + 2,
             size,
             size,
             radius
@@ -1744,64 +1554,64 @@ function drawSnake() {
         ctx.fill();
 
 
-        /* BODY */
+        /* body */
 
-        if (i === 0) {
+        if(i === 0){
 
             const gradient =
                 ctx.createLinearGradient(
                     x,
                     y,
-                    x + cellSize,
-                    y + cellSize
+                    x + cell,
+                    y + cell
                 );
 
             gradient.addColorStop(
                 0,
-                "#d8fff2"
+                "#dffff5"
             );
 
             gradient.addColorStop(
-                .22,
-                "#3effc8"
+                .2,
+                "#50ffd0"
             );
 
             gradient.addColorStop(
                 .65,
-                "#00d89e"
+                "#00d99b"
             );
 
             gradient.addColorStop(
                 1,
-                "#008a68"
+                "#00805f"
             );
 
             ctx.fillStyle =
                 gradient;
 
-        } else {
+        }else{
 
             const gradient =
                 ctx.createLinearGradient(
                     x,
                     y,
-                    x + cellSize,
-                    y + cellSize
+                    x + cell,
+                    y + cell
                 );
 
             gradient.addColorStop(
                 0,
-                "#6affd9"
+                "#6dffdb"
             );
 
             gradient.addColorStop(
-                .45,
-                "#00d89e"
+                .5,
+                "#00c992"
             );
 
             gradient.addColorStop(
                 1,
-                "#007956"
+                "#006b50"
             );
 
             ctx.fillStyle =
@@ -1809,9 +1619,9 @@ function drawSnake() {
         }
 
 
-        roundRect(
-            x + padding,
-            y + padding,
+        roundedRect(
+            x + gap,
+            y + gap,
             size,
             size,
             radius
@@ -1820,20 +1630,20 @@ function drawSnake() {
         ctx.fill();
 
 
-        /* BODY HIGHLIGHT */
+        /* body highlight */
 
-        if (i !== 0) {
+        if(i !== 0){
 
             ctx.fillStyle =
                 "rgba(255,255,255,.10)";
 
-            roundRect(
-                x + padding + 2,
-                y + padding + 2,
-                size * .75,
+            roundedRect(
+                x + gap + 2,
+                y + gap + 2,
+                size * .72,
                 Math.max(
                     2,
-                    size * .18
+                    size * .15
                 ),
                 radius
             );
@@ -1842,11 +1652,9 @@ function drawSnake() {
         }
 
 
-        /* HEAD */
+        if(i === 0){
 
-        if (i === 0) {
-
-            drawHeadEyes(
+            drawEyes(
                 x,
                 y
             );
@@ -1856,106 +1664,80 @@ function drawSnake() {
 
 
 /* =========================================================
-   DRAW HEAD / EYES
+   EYES
 ========================================================= */
 
-function drawHeadEyes(x, y) {
+function drawEyes(x,y){
 
-    const centerX =
-        x + cellSize / 2;
+    const cx =
+        x + cell / 2;
 
-    const centerY =
-        y + cellSize / 2;
-
-    const eyeRadius =
-        Math.max(
-            1.5,
-            cellSize * .09
-        );
+    const cy =
+        y + cell / 2;
 
     const offset =
-        cellSize * .17;
+        cell * .17;
 
-    let e1x =
-        centerX;
+    const radius =
+        Math.max(
+            1.5,
+            cell * .085
+        );
 
-    let e1y =
-        centerY;
+    let a = {
+        x:cx,
+        y:cy
+    };
 
-    let e2x =
-        centerX;
+    let b = {
+        x:cx,
+        y:cy
+    };
 
-    let e2y =
-        centerY;
 
+    if(currentDirection.x > 0){
 
-    if (direction.x === 1) {
+        a.x = cx + offset;
+        a.y = cy - offset;
 
-        e1x =
-            centerX + offset;
+        b.x = cx + offset;
+        b.y = cy + offset;
 
-        e1y =
-            centerY - offset;
+    }else if(currentDirection.x < 0){
 
-        e2x =
-            centerX + offset;
+        a.x = cx - offset;
+        a.y = cy - offset;
 
-        e2y =
-            centerY + offset;
+        b.x = cx - offset;
+        b.y = cy + offset;
 
-    } else if (direction.x === -1) {
+    }else if(currentDirection.y < 0){
 
-        e1x =
-            centerX - offset;
+        a.x = cx - offset;
+        a.y = cy - offset;
 
-        e1y =
-            centerY - offset;
+        b.x = cx + offset;
+        b.y = cy - offset;
 
-        e2x =
-            centerX - offset;
+    }else{
 
-        e2y =
-            centerY + offset;
+        a.x = cx - offset;
+        a.y = cy + offset;
 
-    } else if (direction.y === -1) {
-
-        e1x =
-            centerX - offset;
-
-        e1y =
-            centerY - offset;
-
-        e2x =
-            centerX + offset;
-
-        e2y =
-            centerY - offset;
-
-    } else {
-
-        e1x =
-            centerX - offset;
-
-        e1y =
-            centerY + offset;
-
-        e2x =
-            centerX + offset;
-
-        e2y =
-            centerY + offset;
+        b.x = cx + offset;
+        b.y = cy + offset;
     }
 
 
     ctx.fillStyle =
-        "#02110c";
+        "#00120c";
 
     ctx.beginPath();
 
     ctx.arc(
-        e1x,
-        e1y,
-        eyeRadius,
+        a.x,
+        a.y,
+        radius,
         0,
         Math.PI * 2
     );
@@ -1965,9 +1747,9 @@ function drawHeadEyes(x, y) {
     ctx.beginPath();
 
     ctx.arc(
-        e2x,
-        e2y,
-        eyeRadius,
+        b.x,
+        b.y,
+        radius,
         0,
         Math.PI * 2
     );
@@ -1978,18 +1760,12 @@ function drawHeadEyes(x, y) {
     ctx.fillStyle =
         "#ffffff";
 
-    const shine =
-        Math.max(
-            1,
-            eyeRadius * .35
-        );
-
     ctx.beginPath();
 
     ctx.arc(
-        e1x - eyeRadius * .2,
-        e1y - eyeRadius * .25,
-        shine,
+        a.x - radius * .2,
+        a.y - radius * .25,
+        radius * .32,
         0,
         Math.PI * 2
     );
@@ -1999,9 +1775,9 @@ function drawHeadEyes(x, y) {
     ctx.beginPath();
 
     ctx.arc(
-        e2x - eyeRadius * .2,
-        e2y - eyeRadius * .25,
-        shine,
+        b.x - radius * .2,
+        b.y - radius * .25,
+        radius * .32,
         0,
         Math.PI * 2
     );
@@ -2011,16 +1787,16 @@ function drawHeadEyes(x, y) {
 
 
 /* =========================================================
-   ROUNDED RECTANGLE
+   ROUNDED RECT
 ========================================================= */
 
-function roundRect(
+function roundedRect(
     x,
     y,
     width,
     height,
     radius
-) {
+){
 
     const r =
         Math.min(
@@ -2076,12 +1852,12 @@ function roundRect(
    DRAW
 ========================================================= */
 
-function draw() {
+function draw(){
 
-    if (
-        canvasSize <= 0 ||
-        cellSize <= 0
-    ) {
+    if(
+        boardSize <= 0 ||
+        cell <= 0
+    ){
         return;
     }
 
@@ -2096,400 +1872,142 @@ function draw() {
 
 
 /* =========================================================
-   KEYBOARD CONTROLS
+   KEYBOARD
 ========================================================= */
 
 window.addEventListener(
     "keydown",
-    function(event) {
+    function(event){
 
         const key =
             event.key.toLowerCase();
 
-        if (
-            [
-                "arrowup",
-                "arrowdown",
-                "arrowleft",
-                "arrowright",
-                "w",
-                "a",
-                "s",
-                "d",
-                " ",
-                "escape"
-            ].includes(key)
-        ) {
+        if(
+            key === "arrowup" ||
+            key === "arrowdown" ||
+            key === "arrowleft" ||
+            key === "arrowright" ||
+            key === "w" ||
+            key === "a" ||
+            key === "s" ||
+            key === "d" ||
+            key === " "
+        ){
 
             event.preventDefault();
         }
 
 
-        /* FORWARD / UP */
-
-        if (
+        if(
             key === "w" ||
             key === "arrowup"
-        ) {
+        ){
 
-            setDirection(0, -1);
+            changeDirection(
+                0,
+                -1
+            );
 
-            return;
-        }
-
-
-        /* BACK / DOWN */
-
-        if (
+        }else if(
             key === "s" ||
             key === "arrowdown"
-        ) {
+        ){
 
-            setDirection(0, 1);
+            changeDirection(
+                0,
+                1
+            );
 
-            return;
-        }
-
-
-        /* LEFT */
-
-        if (
+        }else if(
             key === "a" ||
             key === "arrowleft"
-        ) {
+        ){
 
-            setDirection(-1, 0);
+            changeDirection(
+                -1,
+                0
+            );
 
-            return;
-        }
-
-
-        /* RIGHT */
-
-        if (
+        }else if(
             key === "d" ||
             key === "arrowright"
-        ) {
+        ){
 
-            setDirection(1, 0);
+            changeDirection(
+                1,
+                0
+            );
 
-            return;
-        }
+        }else if(
+            key === " "
+        ){
 
-
-        /* PAUSE */
-
-        if (
-            key === " " ||
-            key === "escape"
-        ) {
-
-            if (gameRunning) {
+            if(running){
                 togglePause();
             }
-
-            return;
         }
     },
     {
-        passive: false
+        passive:false
     }
 );
 
 
 /* =========================================================
-   SWIPE CONTROLS
+   BUTTON CONTROLS
 ========================================================= */
 
-let swipeStartX = 0;
-let swipeStartY = 0;
-let swipeActive = false;
-
-canvas.addEventListener(
-    "touchstart",
-    function(event) {
-
-        if (
-            event.touches.length !== 1
-        ) {
-            return;
-        }
-
-        const touch =
-            event.touches[0];
-
-        swipeStartX =
-            touch.clientX;
-
-        swipeStartY =
-            touch.clientY;
-
-        swipeActive = true;
-
-    },
-    {
-        passive: true
-    }
-);
-
-
-canvas.addEventListener(
-    "touchend",
-    function(event) {
-
-        if (!swipeActive) {
-            return;
-        }
-
-        swipeActive = false;
-
-        const touch =
-            event.changedTouches[0];
-
-        const dx =
-            touch.clientX -
-            swipeStartX;
-
-        const dy =
-            touch.clientY -
-            swipeStartY;
-
-        const absX =
-            Math.abs(dx);
-
-        const absY =
-            Math.abs(dy);
-
-        if (
-            Math.max(
-                absX,
-                absY
-            ) < 25
-        ) {
-            return;
-        }
-
-
-        if (absX > absY) {
-
-            if (dx > 0) {
-
-                setDirection(1, 0);
-
-            } else {
-
-                setDirection(-1, 0);
-            }
-
-        } else {
-
-            if (dy > 0) {
-
-                setDirection(0, 1);
-
-            } else {
-
-                setDirection(0, -1);
-            }
-        }
-
-    },
-    {
-        passive: true
-    }
-);
-
-
-/* =========================================================
-   TOUCH JOYSTICK
-========================================================= */
-
-let joystickPointerId = null;
-
-function updateJoystick(
-    clientX,
-    clientY
-) {
-
-    const rect =
-        touchPad.getBoundingClientRect();
-
-    const centerX =
-        rect.left +
-        rect.width / 2;
-
-    const centerY =
-        rect.top +
-        rect.height / 2;
-
-    let dx =
-        clientX - centerX;
-
-    let dy =
-        clientY - centerY;
-
-    const maxDistance =
-        rect.width * .32;
-
-    const distance =
-        Math.sqrt(
-            dx * dx +
-            dy * dy
-        );
-
-    if (
-        distance > maxDistance
-    ) {
-
-        dx =
-            dx / distance *
-            maxDistance;
-
-        dy =
-            dy / distance *
-            maxDistance;
-    }
-
-    touchKnob.style.transform =
-        `translate(${dx}px, ${dy}px)`;
-
-
-    if (
-        distance < 12
-    ) {
-        return;
-    }
-
-
-    if (
-        Math.abs(dx) >
-        Math.abs(dy)
-    ) {
-
-        if (dx > 0) {
-
-            setDirection(1, 0);
-
-        } else {
-
-            setDirection(-1, 0);
-        }
-
-    } else {
-
-        if (dy > 0) {
-
-            setDirection(0, 1);
-
-        } else {
-
-            setDirection(0, -1);
-        }
-    }
-}
-
-
-function resetJoystick() {
-
-    touchKnob.style.transform =
-        "translate(0, 0)";
-
-    joystickPointerId = null;
-}
-
-
-touchPad.addEventListener(
-    "pointerdown",
-    function(event) {
-
-        event.preventDefault();
-
-        joystickPointerId =
-            event.pointerId;
-
-        touchPad.setPointerCapture(
-            event.pointerId
-        );
-
-        updateJoystick(
-            event.clientX,
-            event.clientY
-        );
-    }
-);
-
-
-touchPad.addEventListener(
-    "pointermove",
-    function(event) {
-
-        if (
-            event.pointerId !==
-            joystickPointerId
-        ) {
-            return;
-        }
-
-        event.preventDefault();
-
-        updateJoystick(
-            event.clientX,
-            event.clientY
-        );
-    }
-);
-
-
-touchPad.addEventListener(
-    "pointerup",
-    function(event) {
-
-        if (
-            event.pointerId ===
-            joystickPointerId
-        ) {
-
-            resetJoystick();
-        }
-    }
-);
-
-
-touchPad.addEventListener(
-    "pointercancel",
-    function() {
-
-        resetJoystick();
-    }
-);
-
-
-/* =========================================================
-   BUTTON EVENTS
-========================================================= */
-
-playButton.addEventListener(
+play.addEventListener(
     "click",
     startGame
 );
 
-
-menuPauseButton.addEventListener(
+pause.addEventListener(
     "click",
-    function() {
+    togglePause
+);
 
-        /*
-           If the game hasn't started,
-           start it and immediately pause.
-        */
+resume.addEventListener(
+    "click",
+    resumeGame
+);
 
-        if (!gameRunning) {
+pauseRestart.addEventListener(
+    "click",
+    startGame
+);
+
+pauseMenu.addEventListener(
+    "click",
+    showMenu
+);
+
+restart.addEventListener(
+    "click",
+    startGame
+);
+
+gameMenu.addEventListener(
+    "click",
+    showMenu
+);
+
+menuExit.addEventListener(
+    "click",
+    showMenu
+);
+
+menuPause.addEventListener(
+    "click",
+    function(){
+
+        if(!running){
 
             startGame();
 
             pauseGame();
 
-        } else {
+        }else{
 
             togglePause();
         }
@@ -2497,77 +2015,225 @@ menuPauseButton.addEventListener(
 );
 
 
-menuExitButton.addEventListener(
-    "click",
-    exitGame
+/* =========================================================
+   TOUCH DIRECTION BUTTONS
+========================================================= */
+
+document
+.getElementById("up")
+.addEventListener(
+    "pointerdown",
+    function(event){
+
+        event.preventDefault();
+
+        changeDirection(
+            0,
+            -1
+        );
+    }
 );
 
+document
+.getElementById("down")
+.addEventListener(
+    "pointerdown",
+    function(event){
 
-pauseButton.addEventListener(
-    "click",
-    togglePause
+        event.preventDefault();
+
+        changeDirection(
+            0,
+            1
+        );
+    }
 );
 
+document
+.getElementById("left")
+.addEventListener(
+    "pointerdown",
+    function(event){
 
-touchPause.addEventListener(
-    "click",
-    togglePause
+        event.preventDefault();
+
+        changeDirection(
+            -1,
+            0
+        );
+    }
 );
 
+document
+.getElementById("right")
+.addEventListener(
+    "pointerdown",
+    function(event){
 
-resumeButton.addEventListener(
-    "click",
-    resumeGame
-);
+        event.preventDefault();
 
-
-pauseRestartButton.addEventListener(
-    "click",
-    startGame
-);
-
-
-pauseExitButton.addEventListener(
-    "click",
-    exitGame
-);
-
-
-restartButton.addEventListener(
-    "click",
-    startGame
-);
-
-
-gameOverMenuButton.addEventListener(
-    "click",
-    showMainMenu
-);
-
-
-touchRestart.addEventListener(
-    "click",
-    startGame
-);
-
-
-touchExit.addEventListener(
-    "click",
-    exitGame
+        changeDirection(
+            1,
+            0
+        );
+    }
 );
 
 
 /* =========================================================
-   INITIALIZE
+   TOUCH ACTIONS
 ========================================================= */
 
-createInitialSnake();
+document
+.getElementById("touchPause")
+.addEventListener(
+    "pointerdown",
+    function(event){
 
-placeFood();
+        event.preventDefault();
 
-resizeCanvas();
+        togglePause();
+    }
+);
 
-draw();
+document
+.getElementById("touchRestart")
+.addEventListener(
+    "pointerdown",
+    function(event){
+
+        event.preventDefault();
+
+        startGame();
+    }
+);
+
+document
+.getElementById("touchExit")
+.addEventListener(
+    "pointerdown",
+    function(event){
+
+        event.preventDefault();
+
+        showMenu();
+    }
+);
+
+
+/* =========================================================
+   SWIPE SUPPORT
+========================================================= */
+
+let swipeX = 0;
+let swipeY = 0;
+let swiping = false;
+
+board.addEventListener(
+    "touchstart",
+    function(event){
+
+        if(
+            event.touches.length !== 1
+        ){
+            return;
+        }
+
+        swipeX =
+            event.touches[0].clientX;
+
+        swipeY =
+            event.touches[0].clientY;
+
+        swiping = true;
+    },
+    {
+        passive:true
+    }
+);
+
+board.addEventListener(
+    "touchend",
+    function(event){
+
+        if(!swiping){
+            return;
+        }
+
+        swiping = false;
+
+        const dx =
+            event.changedTouches[0].clientX -
+            swipeX;
+
+        const dy =
+            event.changedTouches[0].clientY -
+            swipeY;
+
+        const ax =
+            Math.abs(dx);
+
+        const ay =
+            Math.abs(dy);
+
+        if(
+            Math.max(ax,ay) < 25
+        ){
+            return;
+        }
+
+        if(ax > ay){
+
+            if(dx > 0){
+
+                changeDirection(
+                    1,
+                    0
+                );
+
+            }else{
+
+                changeDirection(
+                    -1,
+                    0
+                );
+            }
+
+        }else{
+
+            if(dy > 0){
+
+                changeDirection(
+                    0,
+                    1
+                );
+
+            }else{
+
+                changeDirection(
+                    0,
+                    -1
+                );
+            }
+        }
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =========================================================
+   INITIAL DRAW
+========================================================= */
+
+createSnake();
+
+createFood();
+
+requestAnimationFrame(
+    resizeBoard
+);
 
 </script>
 
