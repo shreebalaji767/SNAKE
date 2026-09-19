@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05070a">
+<title>VOID SNAKE 3D</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #05070a;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+}
+
+body {
+    touch-action: none;
+}
+
+button {
+    font: inherit;
+}
+
+#app {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 35%, #18251d 0%, #07100b 38%, #030507 100%);
+}
+
+/* =========================================================
+   GAME CANVAS
+========================================================= */
+
+#gameCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* =========================================================
+   MAIN MENU
+========================================================= */
+
+#mainMenu {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+        radial-gradient(circle at 50% 38%, rgba(31, 76, 48, .32), transparent 34%),
+        linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.78));
+}
+
+.menuBox {
+    width: min(92vw, 460px);
+    padding: clamp(24px, 5vw, 48px);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 24px;
+    background: rgba(7, 10, 12, .84);
+    box-shadow: 0 30px 100px rgba(0,0,0,.65);
+    backdrop-filter: blur(12px);
+}
+
+.logo {
+    margin: 0;
+    font-size: clamp(2.1rem, 8vw, 4.2rem);
+    line-height: .95;
+    letter-spacing: .08em;
+    font-weight: 900;
+}
+
+.logo span {
+    display: block;
+    margin-top: 12px;
+    font-size: clamp(.8rem, 2vw, 1rem);
+    letter-spacing: .4em;
+    opacity: .55;
+}
+
+.menuButtons {
+    display: grid;
+    gap: 13px;
+    margin-top: 38px;
+}
+
+.gameButton {
+    width: 100%;
+    min-height: 54px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 14px;
+    color: #fff;
+    background: rgba(255,255,255,.06);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.gameButton:hover {
+    background: rgba(255,255,255,.11);
+    border-color: rgba(255,255,255,.28);
+    transform: translateY(-2px);
+}
+
+.gameButton:active {
+    transform: scale(.97);
+}
+
+.playButton {
+    background: #d8ff45;
+    color: #071000;
+    border-color: #d8ff45;
+}
+
+.playButton:hover {
+    background: #e3ff72;
+}
+
+.exitButton {
+    color: #ff8f8f;
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+#hud {
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 10;
+    display: none;
+    pointer-events: none;
+    padding:
+        max(14px, env(safe-area-inset-top))
+        max(14px, env(safe-area-inset-right))
+        0
+        max(14px, env(safe-area-inset-left));
+}
+
+.hudTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.hudGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.stat {
+    min-width: 82px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 11px;
+    background: rgba(0,0,0,.5);
+    backdrop-filter: blur(8px);
+}
+
+.statLabel {
+    display: block;
+    font-size: .58rem;
+    letter-spacing: .16em;
+    opacity: .5;
+}
+
+.statValue {
+    display: block;
+    margin-top: 2px;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+#pauseTopButton {
+    pointer-events: auto;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 13px;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* =========================================================
+   PAUSE MENU
+========================================================= */
+
+#pauseMenu {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,.62);
+    backdrop-filter: blur(8px);
+}
+
+.pauseBox {
+    width: min(90vw, 400px);
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 22px;
+    background: rgba(8,11,14,.94);
+    text-align: center;
+}
+
+.pauseBox h2 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+}
+
+.pauseBox p {
+    margin: 0 0 24px;
+    opacity: .55;
+}
+
+/* =========================================================
+   GAME OVER
+========================================================= */
+
+#gameOver {
+    position: absolute;
+    inset: 0;
+    z-index: 35;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,.65);
+    backdrop-filter: blur(8px);
+}
+
+.gameOverBox {
+    width: min(90vw, 420px);
+    padding: 30px;
+    border-radius: 22px;
+    background: rgba(8,11,14,.95);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,.14);
+}
+
+.gameOverBox h2 {
+    margin: 0 0 10px;
+    font-size: 2rem;
+}
+
+.finalScore {
+    margin: 0 0 24px;
+    opacity: .7;
+}
+
+/* =========================================================
+   TOUCH CONTROLS
+========================================================= */
+
+#touchControls {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 12;
+    display: none;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding:
+        0
+        max(20px, env(safe-area-inset-right))
+        max(20px, env(safe-area-inset-bottom))
+        max(20px, env(safe-area-inset-left));
+    pointer-events: none;
+}
+
+.joystick {
+    width: 126px;
+    height: 126px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 50%;
+    background: rgba(0,0,0,.32);
+    position: relative;
+    pointer-events: auto;
+}
+
+.joystickCenter {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: rgba(216,255,69,.75);
+    box-shadow: 0 0 30px rgba(216,255,69,.2);
+}
+
+.touchHint {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: .6rem;
+    letter-spacing: .12em;
+    opacity: .4;
+    pointer-events: none;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.actionButton {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.15);
+    color: #fff;
+    background: rgba(0,0,0,.45);
+    font-weight: 800;
+}
+
+/* =========================================================
+   ORIENTATION / SMALL DEVICES
+========================================================= */
+
+@media (pointer: coarse) {
+    #touchControls {
+        display: flex;
+    }
+}
+
+@media (max-width: 600px) {
+    .menuBox {
+        border-radius: 20px;
+    }
+
+    .stat {
+        min-width: 70px;
+        padding: 7px 9px;
+    }
+
+    .statLabel {
+        font-size: .5rem;
+    }
+
+    .statValue {
+        font-size: .9rem;
+    }
+
+    #pauseTopButton {
+        width: 44px;
+        height: 44px;
+    }
+
+    .joystick {
+        width: 108px;
+        height: 108px;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+    .menuBox {
+        padding: 20px 28px;
+    }
+
+    .logo {
+        font-size: 2.2rem;
+    }
+
+    .menuButtons {
+        margin-top: 20px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .playButton {
+        grid-column: span 2;
+    }
+
+    #touchControls {
+        padding-bottom: 12px;
+    }
+
+    .joystick {
+        width: 90px;
+        height: 90px;
+    }
+
+    .actionButton {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- ================= MAIN MENU ================= -->
+
+    <section id="mainMenu">
+        <div class="menuBox">
+
+            <h1 class="logo">
+                VOID
+                <span>SNAKE 3D</span>
+            </h1>
+
+            <div class="menuButtons">
+
+                <button
+                    id="playButton"
+                    class="gameButton playButton"
+                    type="button">
+                    ▶ PLAY
+                </button>
+
+                <button
+                    id="menuPauseButton"
+                    class="gameButton"
+                    type="button">
+                    ⏸ PAUSE / RESUME
+                </button>
+
+                <button
+                    id="menuExitButton"
+                    class="gameButton exitButton"
+                    type="button">
+                    ✕ EXIT
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= HUD ================= -->
+
+    <section id="hud">
+
+        <div class="hudTop">
+
+            <div class="hudGroup">
+
+                <div class="stat">
+                    <span class="statLabel">SCORE</span>
+                    <span id="scoreValue" class="statValue">0</span>
+                </div>
+
+                <div class="stat">
+                    <span class="statLabel">LENGTH</span>
+                    <span id="lengthValue" class="statValue">3</span>
+                </div>
+
+                <div class="stat">
+                    <span class="statLabel">SPEED</span>
+                    <span id="speedValue" class="statValue">1.0</span>
+                </div>
+
+            </div>
+
+            <button
+                id="pauseTopButton"
+                type="button"
+                aria-label="Pause or resume">
+                ❚❚
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- ================= PAUSE ================= -->
+
+    <section id="pauseMenu">
+
+        <div class="pauseBox">
+
+            <h2>PAUSED</h2>
+            <p>Game is temporarily stopped.</p>
+
+            <div class="menuButtons">
+
+                <button
+                    id="resumeButton"
+                    class="gameButton playButton"
+                    type="button">
+                    ▶ RESUME
+                </button>
+
+                <button
+                    id="restartButton"
+                    class="gameButton"
+                    type="button">
+                    ↻ RESTART
+                </button>
+
+                <button
+                    id="pauseExitButton"
+                    class="gameButton exitButton"
+                    type="button">
+                    ✕ EXIT
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= GAME OVER ================= -->
+
+    <section id="gameOver">
+
+        <div class="gameOverBox">
+
+            <h2>GAME OVER</h2>
+
+            <p class="finalScore">
+                SCORE:
+                <strong id="finalScore">0</strong>
+            </p>
+
+            <div class="menuButtons">
+
+                <button
+                    id="gameOverRestart"
+                    class="gameButton playButton"
+                    type="button">
+                    ↻ PLAY AGAIN
+                </button>
+
+                <button
+                    id="gameOverExit"
+                    class="gameButton exitButton"
+                    type="button">
+                    ✕ EXIT
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= TOUCH ================= -->
+
+    <section id="touchControls">
+
+        <div
+            id="joystick"
+            class="joystick"
+            aria-label="Snake movement control">
+
+            <div class="touchHint">MOVE</div>
+
+            <div
+                id="joystickCenter"
+                class="joystickCenter">
+            </div>
+
+        </div>
+
+        <div class="actionButtons">
+
+            <button
+                id="boostButton"
+                class="actionButton"
+                type="button">
+                ⚡
+            </button>
+
+            <button
+                id="touchPauseButton"
+                class="actionButton"
+                type="button">
+                ❚❚
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   VOID SNAKE 3D
+   SINGLE FILE / NO DATABASE / NO STORAGE
+========================================================= */
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const mainMenu = document.getElementById("mainMenu");
+const hud = document.getElementById("hud");
+const pauseMenu = document.getElementById("pauseMenu");
+const gameOver = document.getElementById("gameOver");
+
+const playButton = document.getElementById("playButton");
+const menuPauseButton = document.getElementById("menuPauseButton");
+const menuExitButton = document.getElementById("menuExitButton");
+
+const pauseTopButton = document.getElementById("pauseTopButton");
+const resumeButton = document.getElementById("resumeButton");
+const restartButton = document.getElementById("restartButton");
+const pauseExitButton = document.getElementById("pauseExitButton");
+
+const gameOverRestart = document.getElementById("gameOverRestart");
+const gameOverExit = document.getElementById("gameOverExit");
+
+const scoreValue = document.getElementById("scoreValue");
+const lengthValue = document.getElementById("lengthValue");
+const speedValue = document.getElementById("speedValue");
+const finalScore = document.getElementById("finalScore");
+
+const joystick = document.getElementById("joystick");
+const joystickCenter = document.getElementById("joystickCenter");
+const boostButton = document.getElementById("boostButton");
+const touchPauseButton = document.getElementById("touchPauseButton");
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const state = {
+    screen: "menu",
+    running: false,
+    paused: false,
+    gameOver: false,
+
+    score: 0,
+    length: 3,
+
+    speed: 1,
+    boost: false,
+
+    direction: {
+        x: 1,
+        y: 0
+    },
+
+    desiredDirection: {
+        x: 1,
+        y: 0
+    },
+
+    camera: {
+        x: 0,
+        y: 0,
+        zoom: 1
+    },
+
+    snake: [],
+    food: [],
+    rocks: [],
+
+    lastTime: 0,
+    accumulator: 0,
+
+    worldSize: 1800
+};
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = Math.floor(window.innerWidth * dpr);
+    canvas.height = Math.floor(window.innerHeight * dpr);
+
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function random(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function distance(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
+/* =========================================================
+   CREATE GAME
+========================================================= */
+
+function startGame() {
+
+    state.screen = "game";
+    state.running = true;
+    state.paused = false;
+    state.gameOver = false;
+
+    state.score = 0;
+    state.length = 3;
+    state.speed = 1;
+
+    state.direction.x = 1;
+    state.direction.y = 0;
+
+    state.desiredDirection.x = 1;
+    state.desiredDirection.y = 0;
+
+    state.camera.x = 0;
+    state.camera.y = 0;
+    state.camera.zoom = 1;
+
+    state.snake = [];
+    state.food = [];
+    state.rocks = [];
+
+    for (let i = 0; i < state.length; i++) {
+
+        state.snake.push({
+            x: -i * 28,
+            y: 0,
+            size: 25
+        });
+
+    }
+
+    createFood();
+
+    for (let i = 0; i < 65; i++) {
+
+        state.rocks.push({
+            x: random(
+                -state.worldSize / 2,
+                state.worldSize / 2
+            ),
+            y: random(
+                -state.worldSize / 2,
+                state.worldSize / 2
+            ),
+            size: random(10, 30)
+        });
+
+    }
+
+    mainMenu.style.display = "none";
+    pauseMenu.style.display = "none";
+    gameOver.style.display = "none";
+    hud.style.display = "block";
+
+    updateHUD();
+
+    state.lastTime = performance.now();
+}
+
+/* =========================================================
+   EXIT
+========================================================= */
+
+function exitToMenu() {
+
+    state.screen = "menu";
+    state.running = false;
+    state.paused = false;
+    state.gameOver = false;
+
+    mainMenu.style.display = "flex";
+    pauseMenu.style.display = "none";
+    gameOver.style.display = "none";
+    hud.style.display = "none";
+
+    state.snake = [];
+    state.food = [];
+    state.rocks = [];
+}
+
+/* =========================================================
+   PAUSE / RESUME
+========================================================= */
+
+function togglePause() {
+
+    if (!state.running || state.gameOver) {
+        return;
+    }
+
+    state.paused = !state.paused;
+
+    if (state.paused) {
+
+        pauseMenu.style.display = "flex";
+
+    } else {
+
+        pauseMenu.style.display = "none";
+        state.lastTime = performance.now();
+
+    }
+}
+
+/* =========================================================
+   FOOD
+========================================================= */
+
+function createFood() {
+
+    let attempts = 0;
+
+    while (attempts < 100) {
+
+        attempts++;
+
+        const candidate = {
+            x: random(
+                -state.worldSize / 2 + 80,
+                state.worldSize / 2 - 80
+            ),
+            y: random(
+                -state.worldSize / 2 + 80,
+                state.worldSize / 2 - 80
+            ),
+            size: 11
+        };
+
+        let valid = true;
+
+        for (const segment of state.snake) {
+
+            if (distance(candidate, segment) < 80) {
+                valid = false;
+                break;
+            }
+
+        }
+
+        if (valid) {
+
+            state.food.push(candidate);
+            return;
+
+        }
+    }
+}
+
+/* =========================================================
+   MOVEMENT
+========================================================= */
+
+function setDirection(x, y) {
+
+    if (x === 0 && y === 0) {
+        return;
+    }
+
+    /*
+        Prevent instant 180-degree reversal.
+    */
+
+    if (
+        x === -state.direction.x &&
+        y === -state.direction.y
+    ) {
+        return;
+    }
+
+    state.desiredDirection.x = x;
+    state.desiredDirection.y = y;
+}
+
+/* =========================================================
+   UPDATE
+========================================================= */
+
+function update(dt) {
+
+    if (
+        !state.running ||
+        state.paused ||
+        state.gameOver
+    ) {
+        return;
+    }
+
+    state.direction.x +=
+        (state.desiredDirection.x - state.direction.x) *
+        Math.min(dt * 12, 1);
+
+    state.direction.y +=
+        (state.desiredDirection.y - state.direction.y) *
+        Math.min(dt * 12, 1);
+
+    const magnitude = Math.hypot(
+        state.direction.x,
+        state.direction.y
+    );
+
+    if (magnitude > 0) {
+
+        state.direction.x /= magnitude;
+        state.direction.y /= magnitude;
+
+    }
+
+    const boostMultiplier = state.boost ? 1.9 : 1;
+
+    const movement =
+        state.speed *
+        115 *
+        boostMultiplier *
+        dt;
+
+    const head = state.snake[0];
+
+    const newHead = {
+        x: head.x + state.direction.x * movement,
+        y: head.y + state.direction.y * movement,
+        size: 25
+    };
+
+    /*
+        World boundary
+    */
+
+    const limit = state.worldSize / 2 - 35;
+
+    if (
+        newHead.x < -limit ||
+        newHead.x > limit ||
+        newHead.y < -limit ||
+        newHead.y > limit
+    ) {
+
+        endGame();
+        return;
+
+    }
+
+    state.snake.unshift(newHead);
+
+    /*
+        Maintain body spacing
+    */
+
+    const wantedLength = Math.max(3, state.length);
+
+    while (state.snake.length > wantedLength) {
+        state.snake.pop();
+    }
+
+    /*
+        Food collision
+    */
+
+    for (let i = state.food.length - 1; i >= 0; i--) {
+
+        const item = state.food[i];
+
+        if (distance(newHead, item) < 35) {
+
+            state.food.splice(i, 1);
+
+            state.length += 1;
+            state.score += 100;
+
+            state.speed = Math.min(
+                2.8,
+                1 + state.length * 0.025
+            );
+
+            createFood();
+
+        }
+
+    }
+
+    /*
+        Self collision
+    */
+
+    for (
+        let i = 12;
+        i < state.snake.length;
+        i++
+    ) {
+
+        if (
+            distance(newHead, state.snake[i]) <
+            18
+        ) {
+
+            endGame();
+            return;
+
+        }
+
+    }
+
+    /*
+        Camera follows snake
+    */
+
+    state.camera.x +=
+        (newHead.x - state.camera.x) *
+        Math.min(dt * 4, 1);
+
+    state.camera.y +=
+        (newHead.y - state.camera.y) *
+        Math.min(dt * 4, 1);
+
+    updateHUD();
+}
+
+/* =========================================================
+   GAME OVER
+========================================================= */
+
+function endGame() {
+
+    state.gameOver = true;
+    state.running = false;
+
+    finalScore.textContent = state.score;
+
+    gameOver.style.display = "flex";
+    hud.style.display = "none";
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+function updateHUD() {
+
+    scoreValue.textContent = state.score;
+    lengthValue.textContent = state.length;
+    speedValue.textContent = state.speed.toFixed(1);
+}
+
+/* =========================================================
+   3D-STYLE PROJECTION
+========================================================= */
+
+function project(worldX, worldY, height = 0) {
+
+    const width = window.innerWidth;
+    const heightScreen = window.innerHeight;
+
+    const scale = Math.min(
+        width,
+        heightScreen
+    ) / 800;
+
+    const x =
+        width / 2 +
+        (worldX - state.camera.x) *
+        scale *
+        state.camera.zoom;
+
+    const y =
+        heightScreen / 2 +
+        (worldY - state.camera.y) *
+        scale *
+        state.camera.zoom -
+        height;
+
+    return {
+        x,
+        y,
+        scale
+    };
+}
+
+/* =========================================================
+   DRAW WORLD
+========================================================= */
+
+function drawWorld() {
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    /*
+        Sky / atmosphere
+    */
+
+    const sky = ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        height
+    );
+
+    sky.addColorStop(0, "#071019");
+    sky.addColorStop(.48, "#122016");
+    sky.addColorStop(1, "#050806");
+
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, width, height);
+
+    /*
+        Ground
+    */
+
+    ctx.save();
+
+    const groundGradient = ctx.createRadialGradient(
+        width / 2,
+        height / 2,
+        50,
+        width / 2,
+        height / 2,
+        Math.max(width, height)
+    );
+
+    groundGradient.addColorStop(0, "#28462b");
+    groundGradient.addColorStop(.55, "#142919");
+    groundGradient.addColorStop(1, "#07100a");
+
+    ctx.fillStyle = groundGradient;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.restore();
+
+    /*
+        Ground grid / perspective
+    */
+
+    ctx.save();
+
+    ctx.globalAlpha = .12;
+    ctx.strokeStyle = "#b5d39d";
+    ctx.lineWidth = 1;
+
+    const gridSize = 100;
+
+    for (
+        let x = -state.worldSize / 2;
+        x <= state.worldSize / 2;
+        x += gridSize
+    ) {
+
+        const a = project(x, -state.worldSize / 2);
+        const b = project(x, state.worldSize / 2);
+
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+
+    }
+
+    for (
+        let y = -state.worldSize / 2;
+        y <= state.worldSize / 2;
+        y += gridSize
+    ) {
+
+        const a = project(-state.worldSize / 2, y);
+        const b = project(state.worldSize / 2, y);
+
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+
+    }
+
+    ctx.restore();
+
+    /*
+        Rocks / trees
+    */
+
+    for (const rock of state.rocks) {
+
+        const p = project(
+            rock.x,
+            rock.y
+        );
+
+        const visibleSize =
+            rock.size *
+            p.scale;
+
+        if (
+            p.x < -100 ||
+            p.x > width + 100 ||
+            p.y < -100 ||
+            p.y > height + 100
+        ) {
+            continue;
+        }
+
+        /*
+            Shadow
+        */
+
+        ctx.fillStyle = "rgba(0,0,0,.3)";
+        ctx.beginPath();
+        ctx.ellipse(
+            p.x,
+            p.y + visibleSize * .35,
+            visibleSize * .9,
+            visibleSize * .35,
+            0,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+
+        /*
+            Rock
+        */
+
+        const rockGradient = ctx.createLinearGradient(
+            p.x,
+            p.y - visibleSize,
+            p.x,
+            p.y
+        );
+
+        rockGradient.addColorStop(0, "#526057");
+        rockGradient.addColorStop(1, "#202923");
+
+        ctx.fillStyle = rockGradient;
+
+        ctx.beginPath();
+        ctx.moveTo(
+            p.x - visibleSize,
+            p.y
+        );
+
+        ctx.lineTo(
+            p.x - visibleSize * .55,
+            p.y - visibleSize
+        );
+
+        ctx.lineTo(
+            p.x + visibleSize * .5,
+            p.y - visibleSize * .8
+        );
+
+        ctx.lineTo(
+            p.x + visibleSize,
+            p.y
+        );
+
+        ctx.lineTo(
+            p.x + visibleSize * .45,
+            p.y + visibleSize * .35
+        );
+
+        ctx.lineTo(
+            p.x - visibleSize * .55,
+            p.y + visibleSize * .3
+        );
+
+        ctx.closePath();
+        ctx.fill();
+
+    }
+}
+
+/* =========================================================
+   DRAW FOOD
+========================================================= */
+
+function drawFood() {
+
+    for (const item of state.food) {
+
+        const p = project(
+            item.x,
+            item.y,
+            12
+        );
+
+        const size = 13 * p.scale;
+
+        /*
+            Glow
+        */
+
+        ctx.shadowBlur = 22;
+        ctx.shadowColor = "#e6ff4f";
+
+        ctx.fillStyle = "#e6ff4f";
+
+        ctx.beginPath();
+        ctx.arc(
+            p.x,
+            p.y,
+            size,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+
+        /*
+            highlight
+        */
+
+        ctx.fillStyle = "#ffffff";
+
+        ctx.beginPath();
+        ctx.arc(
+            p.x - size * .3,
+            p.y - size * .3,
+            size * .25,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    }
+}
+
+/* =========================================================
+   DRAW SNAKE
+========================================================= */
+
+function drawSnake() {
+
+    /*
+        Draw tail first.
+    */
+
+    for (
+        let i = state.snake.length - 1;
+        i >= 0;
+        i--
+    ) {
+
+        const segment = state.snake[i];
+
+        const depth =
+            Math.max(
+                0,
+                1 - i / Math.max(state.snake.length, 1)
+            );
+
+        const p = project(
+            segment.x,
+            segment.y,
+            14
+        );
+
+        const size =
+            (segment.size - i * .025) *
+            p.scale;
+
+        /*
+            Shadow
+        */
+
+        ctx.fillStyle = "rgba(0,0,0,.35)";
+
+        ctx.beginPath();
+        ctx.ellipse(
+            p.x,
+            p.y + size * .45,
+            size * .9,
+            size * .32,
+            0,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        /*
+            Body
+        */
+
+        const gradient = ctx.createRadialGradient(
+            p.x - size * .3,
+            p.y - size * .4,
+            2,
+            p.x,
+            p.y,
+            size
+        );
+
+        gradient.addColorStop(
+            0,
+            `rgba(180,220,90,${.55 + depth * .35})`
+        );
+
+        gradient.addColorStop(
+            .55,
+            `rgba(53,105,48,${.8 + depth * .2})`
+        );
+
+        gradient.addColorStop(
+            1,
+            "#0a1b0d"
+        );
+
+        ctx.fillStyle = gradient;
+
+        ctx.beginPath();
+        ctx.arc(
+            p.x,
+            p.y,
+            Math.max(3, size),
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        /*
+            scale highlight
+        */
+
+        if (i % 2 === 0) {
+
+            ctx.fillStyle = "rgba(220,255,140,.25)";
+
+            ctx.beginPath();
+            ctx.arc(
+                p.x - size * .25,
+                p.y - size * .28,
+                size * .22,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
+
+    }
+
+    /*
+        Snake head
+    */
+
+    if (state.snake.length) {
+
+        const head = state.snake[0];
+
+        const p = project(
+            head.x,
+            head.y,
+            17
+        );
+
+        const size = 30 * p.scale;
+
+        ctx.fillStyle = "#406f36";
+
+        ctx.beginPath();
+        ctx.ellipse(
+            p.x,
+            p.y,
+            size * 1.15,
+            size * .8,
+            Math.atan2(
+                state.direction.y,
+                state.direction.x
+            ),
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        /*
+            eyes
+        */
+
+        const angle = Math.atan2(
+            state.direction.y,
+            state.direction.x
+        );
+
+        const sideX = Math.cos(angle + Math.PI / 2);
+        const sideY = Math.sin(angle + Math.PI / 2);
+
+        const frontX = Math.cos(angle);
+        const frontY = Math.sin(angle);
+
+        for (const side of [-1, 1]) {
+
+            const eyeX =
+                p.x +
+                frontX * size * .48 +
+                sideX * size * .35 * side;
+
+            const eyeY =
+                p.y +
+                frontY * size * .48 +
+                sideY * size * .35 * side;
+
+            ctx.fillStyle = "#111";
+
+            ctx.beginPath();
+            ctx.arc(
+                eyeX,
+                eyeY,
+                size * .13,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+            ctx.fillStyle = "#eaff8a";
+
+            ctx.beginPath();
+            ctx.arc(
+                eyeX,
+                eyeY,
+                size * .05,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
+
+        /*
+            tongue
+        */
+
+        const tongueStartX =
+            p.x + frontX * size * 1.1;
+
+        const tongueStartY =
+            p.y + frontY * size * 1.1;
+
+        const tongueEndX =
+            tongueStartX + frontX * size * .65;
+
+        const tongueEndY =
+            tongueStartY + frontY * size * .65;
+
+        ctx.strokeStyle = "#e96b75";
+        ctx.lineWidth = Math.max(1, size * .06);
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            tongueStartX,
+            tongueStartY
+        );
+
+        ctx.lineTo(
+            tongueEndX,
+            tongueEndY
+        );
+
+        ctx.stroke();
+
+    }
+}
+
+/* =========================================================
+   DRAW
+========================================================= */
+
+function render() {
+
+    drawWorld();
+    drawFood();
+    drawSnake();
+
+    /*
+        Vignette
+    */
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    const vignette = ctx.createRadialGradient(
+        width / 2,
+        height / 2,
+        Math.min(width, height) * .25,
+        width / 2,
+        height / 2,
+        Math.max(width, height) * .75
+    );
+
+    vignette.addColorStop(
+        0,
+        "rgba(0,0,0,0)"
+    );
+
+    vignette.addColorStop(
+        1,
+        "rgba(0,0,0,.5)"
+    );
+
+    ctx.fillStyle = vignette;
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+}
+
+/* =========================================================
+   GAME LOOP
+========================================================= */
+
+function gameLoop(now) {
+
+    let dt =
+        (now - state.lastTime) /
+        1000;
+
+    state.lastTime = now;
+
+    dt = clamp(dt, 0, .05);
+
+    update(dt);
+    render();
+
+    requestAnimationFrame(gameLoop);
+}
+
+requestAnimationFrame(gameLoop);
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+playButton.addEventListener(
+    "click",
+    startGame
+);
+
+menuPauseButton.addEventListener(
+    "click",
+    () => {
+        /*
+            On the main menu there is no active game.
+            Start the game so PAUSE/RESUME has a real game
+            state to operate on.
+        */
+
+        if (!state.running) {
+            startGame();
+        }
+
+        togglePause();
+    }
+);
+
+menuExitButton.addEventListener(
+    "click",
+    exitToMenu
+);
+
+pauseTopButton.addEventListener(
+    "click",
+    togglePause
+);
+
+touchPauseButton.addEventListener(
+    "click",
+    togglePause
+);
+
+resumeButton.addEventListener(
+    "click",
+    togglePause
+);
+
+restartButton.addEventListener(
+    "click",
+    startGame
+);
+
+pauseExitButton.addEventListener(
+    "click",
+    exitToMenu
+);
+
+gameOverRestart.addEventListener(
+    "click",
+    startGame
+);
+
+gameOverExit.addEventListener(
+    "click",
+    exitToMenu
+);
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+window.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Escape") {
+
+            if (state.running) {
+                togglePause();
+            }
+
+            return;
+        }
+
+        if (
+            event.key === " " ||
+            event.code === "Space"
+        ) {
+
+            event.preventDefault();
+
+            if (state.running) {
+                togglePause();
+            }
+
+            return;
+        }
+
+        if (
+            !state.running ||
+            state.paused ||
+            state.gameOver
+        ) {
+            return;
+        }
+
+        switch (event.key.toLowerCase()) {
+
+            case "w":
+            case "arrowup":
+                setDirection(0, -1);
+                break;
+
+            case "s":
+            case "arrowdown":
+                setDirection(0, 1);
+                break;
+
+            case "a":
+            case "arrowleft":
+                setDirection(-1, 0);
+                break;
+
+            case "d":
+            case "arrowright":
+                setDirection(1, 0);
+                break;
+
+        }
+
+    }
+);
+
+/* =========================================================
+   BOOST
+========================================================= */
+
+function setBoost(value) {
+    state.boost = Boolean(value);
+}
+
+boostButton.addEventListener(
+    "pointerdown",
+    event => {
+        event.preventDefault();
+        setBoost(true);
+    }
+);
+
+boostButton.addEventListener(
+    "pointerup",
+    event => {
+        event.preventDefault();
+        setBoost(false);
+    }
+);
+
+boostButton.addEventListener(
+    "pointercancel",
+    () => setBoost(false)
+);
+
+boostButton.addEventListener(
+    "pointerleave",
+    () => setBoost(false)
+);
+
+/* =========================================================
+   JOYSTICK
+========================================================= */
+
+let joystickActive = false;
+
+function handleJoystick(clientX, clientY) {
+
+    const rect =
+        joystick.getBoundingClientRect();
+
+    const centerX =
+        rect.left + rect.width / 2;
+
+    const centerY =
+        rect.top + rect.height / 2;
+
+    let dx =
+        clientX - centerX;
+
+    let dy =
+        clientY - centerY;
+
+    const maxDistance =
+        rect.width * .34;
+
+    const length =
+        Math.hypot(dx, dy);
+
+    if (length > maxDistance) {
+
+        dx =
+            dx / length *
+            maxDistance;
+
+        dy =
+            dy / length *
+            maxDistance;
+
+    }
+
+    joystickCenter.style.transform =
+        `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+
+    const deadZone = 12;
+
+    if (Math.hypot(dx, dy) < deadZone) {
+        return;
+    }
+
+    /*
+        Convert joystick angle to movement.
+    */
+
+    const angle =
+        Math.atan2(dy, dx);
+
+    const x =
+        Math.cos(angle);
+
+    const y =
+        Math.sin(angle);
+
+    setDirection(x, y);
+}
+
+joystick.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        joystickActive = true;
+
+        joystick.setPointerCapture(
+            event.pointerId
+        );
+
+        handleJoystick(
+            event.clientX,
+            event.clientY
+        );
+
+    }
+);
+
+joystick.addEventListener(
+    "pointermove",
+    event => {
+
+        if (!joystickActive) {
+            return;
+        }
+
+        event.preventDefault();
+
+        handleJoystick(
+            event.clientX,
+            event.clientY
+        );
+
+    }
+);
+
+function resetJoystick() {
+
+    joystickActive = false;
+
+    joystickCenter.style.transform =
+        "translate(-50%, -50%)";
+
+}
+
+joystick.addEventListener(
+    "pointerup",
+    resetJoystick
+);
+
+joystick.addEventListener(
+    "pointercancel",
+    resetJoystick
+);
+
+/* =========================================================
+   SWIPE CONTROL
+========================================================= */
+
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swipeActive = false;
+
+canvas.addEventListener(
+    "pointerdown",
+    event => {
+
+        if (
+            !state.running ||
+            state.paused ||
+            state.gameOver
+        ) {
+            return;
+        }
+
+        swipeStartX = event.clientX;
+        swipeStartY = event.clientY;
+
+        swipeActive = true;
+
+    }
+);
+
+canvas.addEventListener(
+    "pointerup",
+    event => {
+
+        if (!swipeActive) {
+            return;
+        }
+
+        swipeActive = false;
+
+        const dx =
+            event.clientX - swipeStartX;
+
+        const dy =
+            event.clientY - swipeStartY;
+
+        if (
+            Math.hypot(dx, dy) < 25
+        ) {
+            return;
+        }
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+
+            setDirection(
+                dx > 0 ? 1 : -1,
+                0
+            );
+
+        } else {
+
+            setDirection(
+                0,
+                dy > 0 ? 1 : -1
+            );
+
+        }
+
+    }
+);
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+mainMenu.style.display = "flex";
+hud.style.display = "none";
+pauseMenu.style.display = "none";
+gameOver.style.display = "none";
+
+</script>
+
+</body>
+</html>
