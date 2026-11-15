@@ -1150,6 +1150,48 @@ button {
   }
 
 }
+
+/* =========================================================
+   RETRO MONOCHROME THEME — GREY / WHITE
+   ========================================================= */
+:root {
+  --bg-deep:#101010; --bg-navy:#181818; --bg-blue:#222;
+  --panel:rgba(28,28,28,.97); --panel-2:rgba(38,38,38,.96); --panel-3:rgba(48,48,48,.96);
+  --border:#484848; --border-light:#686868; --border-bright:#aaa;
+  --text:#f5f5f5; --text-soft:#d5d5d5; --muted:#a0a0a0;
+  --blue:#ddd; --blue-bright:#fff; --blue-soft:#aaa; --blue-dark:#555; --cyan:#eee;
+  --danger:#ddd; --danger-dark:#444; --gold:#fff;
+  --shadow:0 24px 65px rgba(0,0,0,.48);
+}
+html,body { background:#171717; color:#f5f5f5; }
+body { background:radial-gradient(circle at 50% -15%,rgba(255,255,255,.08),transparent 40%),linear-gradient(145deg,#292929,#171717 58%,#101010); }
+.logo { color:#fff; text-shadow:0 2px 0 #555,0 0 24px rgba(255,255,255,.12); }
+.logo-subtitle,.status-bar,.hud-label,.controls-title { color:#aaa; }
+.menu-button,.menu-option,.control-button {
+  color:#f5f5f5; border-color:#666;
+  background:linear-gradient(145deg,#454545,#242424);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 7px 18px rgba(0,0,0,.25);
+}
+.menu-button:hover,.menu-option:hover,.control-button:hover { border-color:#ccc; background:linear-gradient(145deg,#5b5b5b,#303030); }
+.menu-option.primary { border-color:#bbb; background:linear-gradient(145deg,#777,#444); color:#fff; }
+.menu-option.primary:hover { border-color:#fff; background:linear-gradient(145deg,#888,#505050); }
+.menu-option.danger { color:#fff; border-color:#777; background:linear-gradient(145deg,#454545,#252525); }
+.hud-card,.game-frame,.overlay-panel {
+  border-color:#555;
+  background:linear-gradient(145deg,rgba(55,55,55,.98),rgba(24,24,24,.99));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 16px 40px rgba(0,0,0,.32);
+}
+.game-frame::before,.game-frame::after,.hud-card::before { background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent); }
+#gameCanvas { border-color:#777; background:#111; }
+.overlay { background:rgba(0,0,0,.78); }
+.overlay-kicker,.help { color:#aaa; }
+.overlay-title,.hud-value { color:#fff; text-shadow:0 1px 8px rgba(255,255,255,.12); }
+.overlay-text { color:#c0c0c0; }
+.overlay-text strong,.help strong { color:#fff; }
+.status-dot.live { background:#eee; box-shadow:0 0 9px rgba(255,255,255,.5); }
+.control-button:active { border-color:#fff; background:#777; }
+:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+
 </style>
 </head>
 
@@ -2392,17 +2434,17 @@ function drawBackground() {
 
   gradient.addColorStop(
     0,
-    "#06182d"
+    "#292929"
   );
 
   gradient.addColorStop(
     0.5,
-    "#020b18"
+    "#171717"
   );
 
   gradient.addColorStop(
     1,
-    "#01050c"
+    "#101010"
   );
 
   ctx.fillStyle =
@@ -2431,7 +2473,7 @@ function drawBackground() {
 
   glow.addColorStop(
     0,
-    "rgba(30,105,165,0.10)"
+    "rgba(255,255,255,0.035)"
   );
 
   glow.addColorStop(
@@ -2458,7 +2500,7 @@ function drawBackground() {
 function drawGrid() {
 
   ctx.strokeStyle =
-    "rgba(86,154,201,0.075)";
+    "rgba(255,255,255,0.075)";
 
   ctx.lineWidth = 1;
 
@@ -2538,7 +2580,7 @@ function drawFood() {
   );
 
   ctx.fillStyle =
-    "rgba(255,214,107,0.07)";
+    "rgba(255,255,255,0.07)";
 
   ctx.fill();
 
@@ -2557,10 +2599,10 @@ function drawFood() {
   );
 
   ctx.fillStyle =
-    "#ffd66b";
+    "#f2f2f2";
 
   ctx.shadowColor =
-    "rgba(255,214,107,0.65)";
+    "rgba(255,255,255,0.55)";
 
   ctx.shadowBlur = 14;
 
@@ -2583,7 +2625,7 @@ function drawFood() {
   );
 
   ctx.fillStyle =
-    "#fff5c9";
+    "#ffffff";
 
   ctx.fill();
 
@@ -2635,24 +2677,24 @@ function drawSnake() {
 
       headGradient.addColorStop(
         0,
-        "#a5e7ff"
+        "#ffffff"
       );
 
       headGradient.addColorStop(
         0.5,
-        "#62c7f5"
+        "#d8d8d8"
       );
 
       headGradient.addColorStop(
         1,
-        "#3288c2"
+        "#888888"
       );
 
       ctx.fillStyle =
         headGradient;
 
       ctx.shadowColor =
-        "rgba(88,195,255,0.35)";
+        "rgba(255,255,255,0.18)";
 
       ctx.shadowBlur = 10;
 
@@ -2718,7 +2760,7 @@ function drawSnake() {
     if (i !== 0) {
 
       ctx.strokeStyle =
-        "rgba(160,220,255,0.10)";
+        "rgba(255,255,255,0.10)";
 
       ctx.lineWidth = 1;
 
