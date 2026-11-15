@@ -8,7 +8,10 @@
   content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
 >
 
-<title>VOID SNAKE</title>
+<meta name="theme-color" content="#202020">
+<meta name="description" content="A classic Snake arcade game with keyboard, touch and swipe controls.">
+<title>VOID SNAKE — Classic Arcade</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23222222'/%3E%3Cpath d='M12 18h14v14H12zm14 14h14v14H26zm14-14h12v14H40z' fill='%23f5f5f5'/%3E%3C/svg%3E">
 
 <style>
 /* =========================================================
@@ -1192,6 +1195,106 @@ body { background:radial-gradient(circle at 50% -15%,rgba(255,255,255,.08),trans
 .control-button:active { border-color:#fff; background:#777; }
 :focus-visible { outline:2px solid #fff; outline-offset:3px; }
 
+/* =========================================================
+   REFINED RETRO ARCADE FINISH
+   ========================================================= */
+:root {
+  color-scheme: dark;
+  --mono-0: #101010;
+  --mono-1: #191919;
+  --mono-2: #252525;
+  --mono-3: #333;
+  --mono-line: #505050;
+  --mono-soft: #bdbdbd;
+  --mono-white: #f7f7f7;
+}
+html { background: var(--mono-0); }
+body {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.075), transparent 42%),
+    linear-gradient(160deg, #292929 0%, #191919 52%, #111 100%);
+}
+.page { width: min(94vw, 820px); }
+.topbar { min-height: 82px; }
+.logo {
+  font-size: clamp(27px, 6vw, 54px);
+  letter-spacing: clamp(2px, .65vw, 6px);
+  text-shadow: 0 2px 0 #555, 0 10px 28px rgba(0,0,0,.4);
+}
+.logo-subtitle { letter-spacing: 3.5px; }
+.hud { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.hud-card {
+  min-height: 76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #515151;
+  border-radius: 13px;
+  background: linear-gradient(155deg, #353535, #202020 72%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 22px rgba(0,0,0,.22);
+}
+.hud-card::before { opacity: .55; }
+.hud-label { letter-spacing: 2.2px; }
+.hud-value { font-variant-numeric: tabular-nums; }
+.game-frame {
+  padding: 9px;
+  border: 1px solid #5a5a5a;
+  border-radius: 19px;
+  background: linear-gradient(145deg, #373737, #191919);
+  box-shadow: 0 22px 55px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.game-frame::before { border-radius: inherit; }
+#gameCanvas {
+  border: 1px solid #777;
+  background: #141414;
+  box-shadow: inset 0 0 35px rgba(0,0,0,.6), 0 5px 16px rgba(0,0,0,.3);
+}
+.overlay { background: rgba(0,0,0,.76); }
+.overlay-panel {
+  border: 1px solid #686868;
+  border-radius: 17px;
+  background: linear-gradient(155deg, #3b3b3b, #202020 78%);
+  box-shadow: 0 24px 60px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.menu-option, .menu-button, .control-button {
+  border: 1px solid #686868;
+  background: linear-gradient(155deg, #4a4a4a, #292929);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 5px 14px rgba(0,0,0,.22);
+}
+.menu-option.primary {
+  border-color: #c5c5c5;
+  color: #171717;
+  background: linear-gradient(155deg, #f2f2f2, #bdbdbd);
+  text-shadow: none;
+}
+.menu-option.primary:hover { background: linear-gradient(155deg, #fff, #d0d0d0); }
+.menu-option.danger { border-color: #777; background: linear-gradient(155deg, #414141, #242424); }
+.menu-button:hover, .menu-option:hover, .control-button:hover {
+  border-color: #d0d0d0;
+  background: linear-gradient(155deg, #5b5b5b, #333);
+}
+.control-button { min-height: 54px; }
+.help { max-width: 620px; margin-left: auto; margin-right: auto; }
+button { min-width: 44px; }
+button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+@media (max-width: 480px) {
+  .page { width: 97vw; }
+  .topbar { min-height: 62px; }
+  .hud { gap: 7px; }
+  .hud-card { min-height: 66px; padding: 9px 6px; }
+  .hud-label { font-size: 7px; letter-spacing: 1.4px; }
+  .hud-value { font-size: clamp(18px, 5vw, 24px); }
+  .game-frame { padding: 5px; border-radius: 15px; }
+}
+@media (prefers-contrast: more) {
+  .hud-card, .game-frame, .overlay-panel, .menu-option, .control-button {
+    border-color: #fff;
+  }
+}
+
 </style>
 </head>
 
@@ -1242,7 +1345,7 @@ body { background:radial-gradient(circle at 50% -15%,rgba(255,255,255,.08),trans
       id="statusDot"
     ></span>
 
-    <span id="statusText">
+    <span id="statusText" role="status" aria-live="polite">
       READY
     </span>
 
@@ -1282,6 +1385,11 @@ body { background:radial-gradient(circle at 50% -15%,rgba(255,255,255,.08),trans
         3
       </div>
 
+    </div>
+
+    <div class="hud-card">
+      <div class="hud-label">BEST</div>
+      <div class="hud-value" id="bestScoreValue">0</div>
     </div>
 
   </section>
@@ -1695,6 +1803,17 @@ let nextDirection = {
 
 let score = 0;
 
+function readBestScore() {
+  try {
+    const stored = Number(localStorage.getItem("voidSnakeBestScore"));
+    return Number.isFinite(stored) && stored > 0 ? stored : 0;
+  } catch (error) {
+    return 0;
+  }
+}
+
+let bestScore = readBestScore();
+
 let speed = START_SPEED;
 
 let timer = null;
@@ -1714,6 +1833,9 @@ const scoreValue =
 
 const lengthValue =
   document.getElementById("lengthValue");
+
+const bestScoreValue =
+  document.getElementById("bestScoreValue");
 
 const menuButton =
   document.getElementById("menuButton");
@@ -2392,6 +2514,18 @@ function updateHUD() {
 
   lengthValue.textContent =
     String(snake.length);
+
+  if (score > bestScore) {
+    bestScore = score;
+    try {
+      localStorage.setItem("voidSnakeBestScore", String(bestScore));
+    } catch (error) {
+      // The game remains playable when browser storage is unavailable.
+    }
+  }
+
+  bestScoreValue.textContent =
+    String(bestScore);
 
 }
 
