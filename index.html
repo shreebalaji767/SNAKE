@@ -5,7 +5,7 @@
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
 >
 
 <meta name="theme-color" content="#202020">
@@ -1293,6 +1293,135 @@ button:focus-visible {
   .hud-card, .game-frame, .overlay-panel, .menu-option, .control-button {
     border-color: #fff;
   }
+}
+
+
+/* =========================================================
+   DEVICE-ADAPTIVE RESPONSIVE LAYOUT
+   ========================================================= */
+:root {
+  color-scheme: dark;
+  --page-gutter: clamp(10px, 2.4vw, 24px);
+}
+html, body {
+  width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+.page {
+  width: min(100%, 900px);
+  padding-left: max(var(--page-gutter), env(safe-area-inset-left));
+  padding-right: max(var(--page-gutter), env(safe-area-inset-right));
+}
+.topbar, .hud, .game-frame, .canvas-wrap { min-width: 0; }
+#gameCanvas {
+  width: min(100%, 720px);
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  flex: 0 1 auto;
+}
+button {
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+.mobile-controls {
+  width: min(260px, 100%);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.control-button {
+  width: 100%;
+  min-width: 0;
+  min-height: clamp(44px, 7.5vw, 58px);
+  touch-action: none;
+}
+.overlay-panel {
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.help {
+  padding-left: 4px;
+  padding-right: 4px;
+  overflow-wrap: anywhere;
+}
+
+/* Compact phones, including narrow 320px screens */
+@media (max-width: 380px) {
+  .page { padding-top: max(8px, env(safe-area-inset-top)); }
+  .topbar { grid-template-columns: 40px minmax(0, 1fr) 40px; min-height: 54px; }
+  .top-spacer, .menu-button { width: 40px; height: 40px; }
+  .logo { font-size: clamp(20px, 7.8vw, 29px); letter-spacing: 0; }
+  .logo-subtitle { font-size: 6px; letter-spacing: 1.2px; }
+  .hud { gap: 5px; }
+  .hud-card { min-height: 58px; padding: 7px 4px; }
+  .hud-label { font-size: 6px; letter-spacing: 1px; }
+  .hud-value { font-size: clamp(16px, 5vw, 21px); }
+  .game-frame { padding: 4px; }
+  .mobile-controls { width: min(210px, 76vw); gap: 6px; }
+  .control-button { min-height: 44px; font-size: 18px; }
+  .overlay-panel { width: min(100%, 360px); padding: 18px 12px; }
+  .menu-option { min-height: 46px; padding: 10px; }
+}
+
+/* Standard phones and portrait tablets */
+@media (min-width: 381px) and (max-width: 767px) {
+  .page { width: min(100%, 620px); }
+  .hud { gap: clamp(7px, 2vw, 12px); }
+  .mobile-controls { width: min(235px, 72vw); }
+}
+
+/* Tablet and desktop: centered board with comfortable controls */
+@media (min-width: 768px) {
+  .page { width: min(94vw, 900px); }
+  .topbar { min-height: clamp(66px, 8vw, 86px); }
+  .hud { gap: 14px; }
+  .hud-card { min-height: 78px; }
+  .mobile-controls { width: 220px; }
+}
+
+/* Landscape phones/tablets and short laptop windows */
+@media (orientation: landscape) and (max-height: 620px) {
+  .page { width: min(100%, 980px); padding-top: 5px; padding-bottom: 8px; }
+  .topbar { min-height: 42px; margin-bottom: 3px; }
+  .top-spacer, .menu-button { width: 38px; height: 38px; }
+  .logo { font-size: clamp(20px, 4vh, 29px); }
+  .logo-subtitle { display: none; }
+  .status-bar { margin-bottom: 4px; font-size: 8px; }
+  .hud { gap: 7px; margin-bottom: 5px; }
+  .hud-card { min-height: 48px; padding: 5px 8px; }
+  .hud-label { font-size: 7px; }
+  .hud-value { font-size: 18px; margin-top: 1px; }
+  .game-frame { width: fit-content; max-width: 100%; margin: 0 auto; padding: 4px; }
+  .canvas-wrap { width: fit-content; max-width: 100%; }
+  #gameCanvas {
+    width: auto;
+    height: min(48vh, calc(100svh - 155px), 430px);
+    max-width: min(100%, calc(100vw - 24px));
+  }
+  .controls-title { margin-top: 5px; }
+  .mobile-controls { width: 156px; margin-top: 4px; gap: 4px; }
+  .control-button { min-height: 34px; font-size: 16px; border-radius: 9px; }
+  .help { margin-top: 4px; font-size: 9px; line-height: 1.35; }
+}
+
+/* Very short landscape viewports: keep the board usable without clipping */
+@media (orientation: landscape) and (max-height: 430px) {
+  .topbar { min-height: 34px; }
+  .top-spacer, .menu-button { width: 32px; height: 32px; }
+  #gameCanvas { height: min(42vh, calc(100svh - 125px), 300px); }
+  .mobile-controls { width: 132px; }
+  .control-button { min-height: 30px; }
+}
+
+/* Reduced motion and high contrast remain respected */
+@media (prefers-contrast: more) {
+  .hud-card, .game-frame, .overlay-panel, .menu-option, .control-button { border-color: #fff; }
 }
 
 </style>
@@ -2849,20 +2978,14 @@ function drawSnake() {
           )
         );
 
-      const r =
+      const shade =
         Math.floor(
-          35 + 40 * fade
+          92 + 125 * fade
         );
 
-      const g =
-        Math.floor(
-          111 + 70 * fade
-        );
-
-      const b =
-        Math.floor(
-          163 + 65 * fade
-        );
+      const r = shade;
+      const g = shade;
+      const b = shade;
 
       ctx.fillStyle =
         `rgb(${r},${g},${b})`;
